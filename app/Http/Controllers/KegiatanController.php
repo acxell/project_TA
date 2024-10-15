@@ -64,24 +64,23 @@ class KegiatanController extends Controller
             'dana_bulan_berjalan' => 'numeric|required',
             'outcomes.*' => 'string|required',
             'indikators.*' => 'string|required',
-
-            'waktu_persiapan.*' => 'date|required',
-            'penjelasan_persiapan.*' => 'string|required',
-
-            'waktu_pelaksanaan.*' => 'date|required',
-            'penjelasan_pelaksanaan.*' => 'string|required',
-
-            'waktu_pelaporan.*' => 'date|required',
-            'penjelasan_pelaporan.*' => 'string|required',
+            'waktu_aktivitas.*' => 'date|required',
+            'penjelasan.*' => 'string|required',
+            'kategori.*' => 'string|required',
+            'uraian_aktivitas.*' => 'string|required',
+            'frekwensi.*' => 'numeric|required',
+            'nominal_volume.*' => 'numeric|required',
+            'satuan_volume.*' => 'string|required',
+            'jumlah.*' => 'numeric|required',
         ]);
-
+    
         $validateData['user_id'] = Auth::id();
         $validateData['unit_id'] = Auth::user()->unit_id;
         $validateData['satuan_id'] = Auth::user()->unit->satuan_id;
-
+    
         // Create Kegiatan
         $kegiatan = Kegiatan::create($validateData);
-
+    
         if ($kegiatan) {
             // Store outcomes
             foreach ($request->outcomes as $outcome) {
@@ -90,7 +89,7 @@ class KegiatanController extends Controller
                     'outcome' => $outcome,
                 ]);
             }
-
+    
             // Store indicators
             foreach ($request->indikators as $indikator) {
                 IndikatorKegiatan::create([
@@ -98,29 +97,36 @@ class KegiatanController extends Controller
                     'indikator' => $indikator,
                 ]);
             }
-
-            // Store aktivitas for each category
-            $this->storeAktivitas($kegiatan->id, 'Persiapan', $request->waktu_persiapan, $request->penjelasan_persiapan);
-            $this->storeAktivitas($kegiatan->id, 'Pelaksanaan', $request->waktu_pelaksanaan, $request->penjelasan_pelaksanaan);
-            $this->storeAktivitas($kegiatan->id, 'Pelaporan', $request->waktu_pelaporan, $request->penjelasan_pelaporan);
-
+    
+            // Store aktivitas details and budget needs
+            foreach ($request->waktu_aktivitas as $index => $waktu) {
+                // Create aktivitas and link with kegiatan_id
+                $aktivitas = Aktivitas::create([
+                    'kegiatan_id' => $kegiatan->id, // Automatically add kegiatan_id
+                    'waktu_aktivitas' => $waktu,
+                    'penjelasan' => $request->penjelasan[$index],
+                    'kategori' => $request->kategori[$index],
+                ]);
+    
+                // Create budget needs for each aktivitas
+                foreach ($request->uraian_aktivitas as $budgetIndex => $uraian) {
+                    KebutuhanAnggaran::create([
+                        'aktivitas_id' => $aktivitas->id, // Link budget need to aktivitas
+                        'uraian_aktivitas' => $uraian,
+                        'frekwensi' => $request->frekwensi[$budgetIndex],
+                        'nominal_volume' => $request->nominal_volume[$budgetIndex],
+                        'satuan_volume' => $request->satuan_volume[$budgetIndex],
+                        'jumlah' => $request->jumlah[$budgetIndex],
+                    ]);
+                }
+            }
+    
             return redirect()->route('penyusunan.kegiatan.view')->with('success', 'Data telah ditambahkan.');
         }
-
+    
         return redirect()->route('penyusunan.kegiatan.view')->with('failed', 'Data gagal ditambahkan.');
     }
-
-    private function storeAktivitas($kegiatanId, $kategori, $waktuList, $penjelasanList)
-    {
-        foreach ($waktuList as $index => $waktu) {
-            Aktivitas::create([
-                'kegiatan_id' => $kegiatanId,
-                'kategori' => $kategori,
-                'waktu' => $waktu,
-                'penjelasan' => $penjelasanList[$index],
-            ]);
-        }
-    }
+    
 
 
 

@@ -17,7 +17,7 @@ class Aktivitas extends Model
 
     protected $fillable = [
         'kegiatan_id',
-        'waktu',
+        'waktu_aktivitas',
         'penjelasan',
         'kategori',
     ];

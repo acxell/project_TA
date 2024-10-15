@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('aktivitas', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('kegiatan_id');
-            $table->date('waktu');
+            $table->date('waktu_aktivitas');
             $table->string('penjelasan');
             $table->string('kategori');
             $table->timestamps();

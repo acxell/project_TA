@@ -204,32 +204,89 @@
                                         </div>
                                     </div>
 
-                                    @php
-                                    $categories = ['Persiapan', 'Pelaksanaan', 'Pelaporan'];
-                                    @endphp
+                                    <div class="row">
+    <!-- Aktivitas Section -->
+    <div class="col-md-12 col-12">
+        <label for="Aktivitas">Aktivitas</label>
+        <div id="aktivitas-wrapper">
+            <!-- Aktivitas pertama -->
+            <div class="form-group d-flex" id="aktivitas-group-1">
+                <div class="col-md-3 col-12">
+                    <label for="waktu_aktivitas">Waktu Aktivitas</label>
+                    <input type="date" name="waktu_aktivitas[]" class="form-control" placeholder="mm/dd/yyyy">
+                </div>
 
-                                    <div class="card">
-                                        <div class="card-content">
-                                            <div class="card-body">
-                                                @foreach($categories as $category)
-                                                <!-- Cleaned Dynamic Section for Each Category -->
-                                                <div class="row mt-3">
-                                                    <div class="col-md-12">
-                                                        <label for="aktivitas_{{ strtolower($category) }}">Aktivitas - {{ $category }}</label>
-                                                        <div id="{{ strtolower($category) }}-wrapper">
-                                                            <div class="form-group d-flex align-items-center mb-2" id="{{ strtolower($category) }}-group-1">
-                                                                <input type="date" name="waktu_{{ strtolower($category) }}[]" class="form-control me-2" placeholder="Waktu {{ $category }}">
-                                                                <textarea name="penjelasan_{{ strtolower($category) }}[]" class="form-control me-2" placeholder="Penjelasan {{ $category }}" rows="1"></textarea>
-                                                                <button type="button" class="btn btn-danger remove-{{ strtolower($category) }}">Delete</button>
-                                                            </div>
-                                                        </div>
-                                                        <button type="button" class="btn btn-primary me-1 mb-1" id="add-{{ strtolower($category) }}">Add More {{ $category }}</button>
-                                                    </div>
-                                                </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
+                <div class="col-md-5 col-12">
+                    <label for="penjelasan">Penjelasan</label>
+                    <textarea name="penjelasan[]" class="form-control" placeholder="Penjelasan" rows="1"></textarea>
+                </div>
+
+                <div class="col-md-3 col-12">
+                    <label for="kategori">Kategori</label>
+                    <select class="choices form-select" name="kategori[]">
+                        <option value="Persiapan">Persiapan</option>
+                        <option value="Pelaksanaan">Pelaksanaan</option>
+                        <option value="Pelaporan">Pelaporan</option>
+                    </select>
+                </div>
+
+                <div class="col-md-1 col-12 d-flex align-items-end">
+                    <!-- Delete Button -->
+                    <button type="button" class="btn btn-danger remove-aktivitas">Delete</button>
+                    <!-- Modal Trigger for Budget Needs -->
+                    <button type="button" class="btn btn-primary me-1 mb-1" data-bs-toggle="modal" data-bs-target="#budgetModal1">Add Budget Needs</button>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary me-1 mb-1" id="add-aktivitas">Add More Aktivitas</button>
+    </div>
+</div>
+
+<!-- Modal Template for Budget Needs -->
+<div id="modal-placeholder">
+    <div class="modal fade" id="budgetModal1" tabindex="-1" aria-labelledby="budgetModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="budgetModalLabel">Input Budget Needs</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="budget-needs-wrapper-1">
+                        <div class="form-group">
+                            <label for="uraian_aktivitas">Uraian Aktivitas</label>
+                            <input type="text" name="uraian_aktivitas[]" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="frekwensi">Frekwensi</label>
+                            <input type="number" name="frekwensi[]" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="nominal_volume">Nominal Volume</label>
+                            <input type="number" name="nominal_volume[]" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="satuan_volume">Satuan Volume</label>
+                            <input type="text" name="satuan_volume[]" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="jumlah">Jumlah</label>
+                            <input type="number" name="jumlah[]" class="form-control">
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-success" id="add-budget-need-1">Add More Budget Need</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save Budget Needs</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">

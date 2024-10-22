@@ -15,16 +15,13 @@ class Aktivitas extends Model
 
     protected $table = "aktivitas";
 
-    protected $fillable = [
-        'kegiatan_id',
-        'waktu_aktivitas',
-        'penjelasan',
-        'kategori',
+    protected $guarded = [
+        'id',
     ];
 
-    public function kegiatan()
+    public function tor()
     {
-        return $this->belongsTo(Kegiatan::class, 'kegiatan_id', 'id');
+        return $this->belongsTo(Tor::class, 'tor_id', 'id');
     }
 
     public function kebutuhanAnggaran()

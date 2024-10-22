@@ -14,14 +14,11 @@ class Lpj extends Model
 
     protected $table = "lpjs";
 
-    protected $fillable = [
-        'penjelasan_kegiatan',
-        'jumlah_peserta_undangan',
-        'jumlah_peserta_hadir',
+    protected $guarded = [
+        'id',
         'proker_id',
         'lpj_id',
         'kegiatan_id',
-        'status',
         'user_id',
         'unit_id',
     ];

@@ -14,13 +14,8 @@ class kebutuhanAnggaran extends Model
 
     protected $table = "kebutuhan_anggarans";
 
-    protected $fillable = [
-        'aktivitas_id',
-        'uraian_aktivitas',
-        'frekwensi',
-        'nominal_volume',
-        'satuan_volume',
-        'jumlah',
+    protected $guarded = [
+        'id',
     ];
 
     public function aktivitas()

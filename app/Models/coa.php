@@ -15,10 +15,8 @@ class coa extends Model
 
     protected $table = "coas";
 
-    protected $fillable = [
-        'kode',
-        'nama',
-        'status',
+    protected $guarded = [
+        'id',
     ];
 
     public function kegiatan ()

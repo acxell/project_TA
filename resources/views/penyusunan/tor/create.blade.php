@@ -6,14 +6,14 @@
     <div class="page-title">
         <div class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
-                <p class="text-subtitle text-muted">Input Detail Data Kegiatan Program Kerja</p>
+                <p class="text-subtitle text-muted">Input Detail Data Tor Kegiatan</p>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="{{ route('penyusunan.kegiatan.view') }}">Data Kegiatan</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Insert</li>
+                        <li class="breadcrumb-item active" aria-current="page">Insert TOR</li>
                     </ol>
                 </nav>
             </div>
@@ -26,13 +26,13 @@
                 <div class="card">
                     <div class="card-content">
                         <div class="card-body">
-                            <form class="form" method="POST" action=" {{ route('penyusunan.kegiatan.store') }}">
+                            <form class="form" method="POST" action=" {{ route('penyusunan.tor.store') }}">
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label>Program Kerja</label>
-                                            <select class="choices form-select" name="proker_id" id="proker_id" type="text" aria-placeholder="Program Kerja">
+                                            <select class="choices form-select" name="proker_id" id="proker_id" type="text" aria-placeholder="Program Kerja" required>
                                                 @foreach ($proker as $prokers)
                                                 <option value="{{ $prokers->id }}">{{ $prokers->nama }}</option>
                                                 @endforeach

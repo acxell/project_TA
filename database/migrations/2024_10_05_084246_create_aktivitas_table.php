@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('aktivitas', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('kegiatan_id');
+            $table->uuid('tor_id');
             $table->date('waktu_aktivitas');
             $table->string('penjelasan');
             $table->string('kategori');
             $table->timestamps();
 
-            $table->foreign('kegiatan_id')->references('id')->on('kegiatans')->onDelete('cascade');
+            $table->foreign('tor_id')->references('id')->on('tors')->onDelete('cascade');
         });
     }
 

@@ -12,38 +12,18 @@ class Kegiatan extends Model
 {
     use HasFactory, Notifiable, HasUuids, HasRoles;
 
-    protected $table = "kegiatans";
+    protected $table = 'kegiatans';
 
-    protected $fillable = [
-        'proker_id',
-        'nama_kegiatan',
-        'pic',
-        'kepesertaan',
-        'nomor_standar_akreditasi',
-        'penjelasan_standar_akreditasi',
-        'coa_id',
-        'latar_belakang',
-        'tujuan',
-        'manfaat_internal',
-        'manfaat_eksternal',
-        'metode_pelaksanaan',
-        'persen_dana',
-        'biaya_keperluan',
-        'dana_bulan_berjalan',
-        'status',
-        'user_id',
-        'unit_id',
-        'satuan_id',
-    ];
+    protected $guarded = ['id',];
 
     protected $attributes = [
         'status' => 'Belum Diajukan',
     ];
 
-    // Relational
-    public function proker()
+    // Relasi ke TOR
+    public function tor()
     {
-        return $this->belongsTo(ProgramKerja::class, 'proker_id', 'id');
+        return $this->belongsTo(Tor::class, 'tor_id', 'id');
     }
 
     public function pesan_perbaikan()
@@ -55,7 +35,7 @@ class Kegiatan extends Model
     {
         return $this->belongsTo(Pengguna::class, 'user_id', 'id');
     }
-    
+
     public function pendanaan()
     {
         return $this->hasMany(Pendanaan::class, 'kegiatan_id', 'id');
@@ -71,31 +51,6 @@ class Kegiatan extends Model
         return $this->hasOne(Lpj::class, 'kegiatan_id', 'id');
     }
 
-    public function aktivitas()
-    {
-        return $this->hasMany(Aktivitas::class, 'kegiatan_id', 'id');
-    }
-
-    public function kebutuhanAnggaran()
-    {
-        return $this->hasManyThrough(kebutuhanAnggaran::class, Aktivitas::class, 'id', 'id', 'kebutuhanAnggaran_id', 'aktivitas_id');
-    }
-
-    public function indikatorKegiatan()
-    {
-        return $this->hasMany(indikatorKegiatan::class, 'kegiatan_id', 'id');
-    }
-
-    public function outcomeKegiatan()
-    {
-        return $this->hasMany(outcomeKegiatan::class, 'kegiatan_id', 'id');
-    }
-
-    public function coa()
-    {
-        return $this->belongsTo(coa::class, 'coa_id', 'id');
-    }
-
     public function getIncrementing()
     {
         return false;
@@ -104,5 +59,14 @@ class Kegiatan extends Model
     public function getKeyType()
     {
         return 'string';
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($kegiatan) {
+            $kegiatan->tor()->delete();
+        });
     }
 }

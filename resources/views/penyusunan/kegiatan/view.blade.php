@@ -23,7 +23,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 col-md-12 order-md-2 order-last">
-                        <a class="btn btn-primary" href="{{ route('penyusunan.kegiatan.create') }}">Create</a>
+                        <a class="btn btn-primary" href="{{ route('penyusunan.tor.create') }}">Create</a>
                     </div>
                 </div>
                 <table class="table table-striped" id="table1">
@@ -31,16 +31,22 @@
                         <tr>
                             <th>Nama Kegiatan</th>
                             <th>Nama Program Kerja</th>
-                            <th>Biaya Keperluan</th>
+                            <th>Total Biaya</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($kegiatan as $item)
                         <tr>
-                            <td>{{ $item->nama_kegiatan }}</td>
-                            <td>{{ $item->proker->nama }}</td>
-                            <td>@currency($item->biaya_keperluan)</td>
+                            <td>{{ $item->tor->nama_kegiatan }}</td>
+                            <td>{{ $item->tor->proker->nama }}</td>
+                            <td>
+                            @unless(empty($item->tor->rab->total_biaya))
+                            {{ $item->tor->rab->total_biaya }}
+                            @else
+                            N/A <!-- Atau pesan lain -->
+                            @endunless
+                            </td>
                             <td><a href="{{ route('penyusunan.kegiatan.detail', $item->id) }}"><i class="badge-circle font-small-1"
                                         data-feather="eye"></i></a>
                                 <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $item->id }}').submit();">
@@ -50,8 +56,10 @@
                                     @csrf
                                     @method('DELETE')
                                 </form>
-                                <a href="{{ route('penyusunan.kegiatan.edit', $item->id) }}"><i class="badge-circle font-medium-1"
+                                <a href="{{ route('penyusunan.tor.edit', $item->tor->id) }}"><i class="badge-circle font-medium-1"
                                         data-feather="edit"></i></a>
+
+                                <a href="{{ route('penyusunan.tor.aktivitas', $item->tor->id) }}" class="btn btn-info">Lihat Aktivitas</a>
 
                             </td>
                         </tr>

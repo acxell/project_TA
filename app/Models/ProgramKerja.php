@@ -14,21 +14,13 @@ class ProgramKerja extends Model
 
     protected $table = "program_kerjas";
 
-    protected $fillable = [
-        'nama',
-        'deskripsi',
-        'status',
-        'user_id',
+    protected $guarded = [
+        'id',
     ];
 
-    public function user()
+    public function tor()
     {
-        return $this->belongsTo(Pengguna::class, 'user_id', 'id');
-    }
-
-    public function kegiatan()
-    {
-        return $this->hasMany(Kegiatan::class, 'proker_id', 'id');
+        return $this->hasMany(Tor::class, 'proker_id', 'id');
     }
 
     public function getIncrementing()

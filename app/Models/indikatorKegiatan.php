@@ -14,14 +14,13 @@ class indikatorKegiatan extends Model
 
     protected $table = "indikator_kegiatans";
 
-    protected $fillable = [
-        'kegiatan_id',
-        'indikator',
+    protected $guarded = [
+        'id',
     ];
 
-    public function kegiatan()
+    public function tor()
     {
-        return $this->belongsTo(Kegiatan::class, 'kegiatan_id', 'id');
+        return $this->belongsTo(Tor::class, 'tor_id', 'id');
     }
 
     public function getIncrementing()

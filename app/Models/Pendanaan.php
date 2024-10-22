@@ -14,9 +14,8 @@ class Pendanaan extends Model
 
     protected $table = "pendanaans";
 
-    protected $fillable = [
-        'bukti_transfer',
-        'besaran_transfer',
+    protected $guarded = [
+        'id',
         'kegiatan_id',
         'user_id',
         'unit_id',

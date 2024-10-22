@@ -15,10 +15,8 @@ class Unit extends Model
 
     protected $table = "units";
 
-    protected $fillable = [
-        'nama',
-        'description',
-        'status',
+    protected $guarded = [
+        'id',
         'satuan_id',
     ];
 

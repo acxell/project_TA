@@ -14,8 +14,8 @@ class PesanPerbaikan extends Model
 
     protected $table = "pesan_perbaikans";
 
-    protected $fillable = [
-        'pesan',
+    protected $guarded = [
+        'id',
         'kegiatan_id',
         'lpj_id',
         'user_id',

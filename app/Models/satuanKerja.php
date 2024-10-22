@@ -15,10 +15,8 @@ class satuanKerja extends Model
 
     protected $table = "satuan_kerjas";
 
-    protected $fillable = [
-        'kode',
-        'nama',
-        'status',
+    protected $guarded = [
+        'id',
     ];
 
     public function unit ()

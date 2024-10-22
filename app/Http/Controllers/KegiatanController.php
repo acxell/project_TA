@@ -46,9 +46,10 @@ class KegiatanController extends Controller
     public function store(Request $request)
     {
         // Validate input
+         //dd($request->all());
         $validateData = $request->validate([
             'proker_id' => 'string|required|exists:program_kerjas,id',
-            'nama_kegiatan' => 'string|required|unique:kegiatans',
+            'nama_kegiatan' => 'string|required|unique:tors',
             'pic' => 'string|required',
             'kepesertaan' => 'string|required',
             'nomor_standar_akreditasi' => 'string|required',
@@ -67,20 +68,15 @@ class KegiatanController extends Controller
             'waktu_aktivitas.*' => 'date|required',
             'penjelasan.*' => 'string|required',
             'kategori.*' => 'string|required',
-            'uraian_aktivitas.*' => 'string|required',
-            'frekwensi.*' => 'numeric|required',
-            'nominal_volume.*' => 'numeric|required',
-            'satuan_volume.*' => 'string|required',
-            'jumlah.*' => 'numeric|required',
         ]);
-    
+
         $validateData['user_id'] = Auth::id();
         $validateData['unit_id'] = Auth::user()->unit_id;
         $validateData['satuan_id'] = Auth::user()->unit->satuan_id;
-    
+
         // Create Kegiatan
         $kegiatan = Kegiatan::create($validateData);
-    
+
         if ($kegiatan) {
             // Store outcomes
             foreach ($request->outcomes as $outcome) {
@@ -89,7 +85,7 @@ class KegiatanController extends Controller
                     'outcome' => $outcome,
                 ]);
             }
-    
+
             // Store indicators
             foreach ($request->indikators as $indikator) {
                 IndikatorKegiatan::create([
@@ -97,7 +93,7 @@ class KegiatanController extends Controller
                     'indikator' => $indikator,
                 ]);
             }
-    
+
             // Store aktivitas details and budget needs
             foreach ($request->waktu_aktivitas as $index => $waktu) {
                 // Create aktivitas and link with kegiatan_id
@@ -107,26 +103,14 @@ class KegiatanController extends Controller
                     'penjelasan' => $request->penjelasan[$index],
                     'kategori' => $request->kategori[$index],
                 ]);
-    
-                // Create budget needs for each aktivitas
-                foreach ($request->uraian_aktivitas as $budgetIndex => $uraian) {
-                    KebutuhanAnggaran::create([
-                        'aktivitas_id' => $aktivitas->id, // Link budget need to aktivitas
-                        'uraian_aktivitas' => $uraian,
-                        'frekwensi' => $request->frekwensi[$budgetIndex],
-                        'nominal_volume' => $request->nominal_volume[$budgetIndex],
-                        'satuan_volume' => $request->satuan_volume[$budgetIndex],
-                        'jumlah' => $request->jumlah[$budgetIndex],
-                    ]);
-                }
             }
-    
+
             return redirect()->route('penyusunan.kegiatan.view')->with('success', 'Data telah ditambahkan.');
         }
-    
+
         return redirect()->route('penyusunan.kegiatan.view')->with('failed', 'Data gagal ditambahkan.');
     }
-    
+
 
 
 

@@ -35,6 +35,7 @@ class PesanPerbaikanController extends Controller
      */
     public function store(Request $request)
     {
+        
         $validateData = $request->validate([
             'pesan' => 'string|required',
             'kegiatan_id' => 'string|required|exists:kegiatans,id',
@@ -43,7 +44,10 @@ class PesanPerbaikanController extends Controller
         $validateData['user_id'] = Auth::id();
         $validateData['unit_id'] = Auth::user()->unit_id;
 
+        //dd($validateData);
+
         $pesanPerbaikan = PesanPerbaikan::create($validateData);
+        
 
         if ($pesanPerbaikan) {
             $kegiatan = Kegiatan::find($validateData['kegiatan_id']);

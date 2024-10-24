@@ -16,9 +16,6 @@ class Pendanaan extends Model
 
     protected $guarded = [
         'id',
-        'kegiatan_id',
-        'user_id',
-        'unit_id',
     ];
 
 

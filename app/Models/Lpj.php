@@ -16,11 +16,6 @@ class Lpj extends Model
 
     protected $guarded = [
         'id',
-        'proker_id',
-        'lpj_id',
-        'kegiatan_id',
-        'user_id',
-        'unit_id',
     ];
 
     protected $attributes = [
@@ -35,7 +30,7 @@ class Lpj extends Model
 
     public function proker()
     {
-        return $this->hasOneThrough(ProgramKerja::class, kegiatan::class, 'id', 'id', 'kegiatan_id', 'proker_id');
+        return $this->hasOneThrough(ProgramKerja::class, Tor::class, 'id', 'id', 'kegiatan_id', 'proker_id');
     }
 
     public function pesan_perbaikan()

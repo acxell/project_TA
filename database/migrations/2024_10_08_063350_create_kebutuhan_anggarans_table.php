@@ -18,6 +18,7 @@ return new class extends Migration
             $table->bigInteger('frekwensi');
             $table->bigInteger('nominal_volume');
             $table->string('satuan_volume');
+            $table->bigInteger('harga');
             $table->bigInteger('jumlah');
             $table->timestamps();
 

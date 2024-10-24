@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('program_kerjas', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('nama')->unique();
-            $table->string('deskripsi');
+            $table->longText('deskripsi');
             $table->string('status');
             $table->uuid('user_id');
             $table->timestamps();

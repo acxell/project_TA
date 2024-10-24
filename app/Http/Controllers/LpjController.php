@@ -49,7 +49,7 @@ class LpjController extends Controller
         $validateData['unit_id'] = $user->unit_id;
 
         $kegiatan = Kegiatan::findOrFail($validateData['kegiatan_id']);
-        $validateData['proker_id'] = $kegiatan->proker_id;
+        $validateData['proker_id'] = $kegiatan->tor->proker_id;
 
         $lpj = Lpj::create($validateData);
 
@@ -101,7 +101,7 @@ class LpjController extends Controller
         $validateData['unit_id'] = $user->unit_id;
 
         $kegiatan = Kegiatan::findOrFail($validateData['kegiatan_id']);
-        $validateData['proker_id'] = $kegiatan->proker_id;
+        $validateData['proker_id'] = $kegiatan->tor->proker_id;
 
         $lpj->update(['status' => 'Belum Diajukan']);
         $lpj->update($validateData);

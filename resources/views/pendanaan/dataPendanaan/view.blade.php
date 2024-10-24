@@ -33,8 +33,8 @@
                     <tbody>
                         @foreach ($pendanaan as $item)
                         <tr>
-                            <td>{{ $item->kegiatan->nama_kegiatan }}</td>
-                            <td>@currency($item->kegiatan->total_biaya)</td>
+                            <td>{{ $item->kegiatan->tor->nama_kegiatan }}</td>
+                            <td>@currency($item->kegiatan->tor->rab->total_biaya)</td>
                             <td>{{ $item->bukti_transfer }}</td>
                             <td><a href="{{ route('pendanaan.dataPendanaan.detail', $item->id) }}"><i class="badge-circle font-small-1"
                                         data-feather="eye"></i></a>

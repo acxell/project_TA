@@ -17,7 +17,6 @@ class Unit extends Model
 
     protected $guarded = [
         'id',
-        'satuan_id',
     ];
 
     public function penggunas(){

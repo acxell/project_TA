@@ -46,6 +46,7 @@ class TorController extends Controller
         $validateData = $request->validate([
             'proker_id' => 'string|required|exists:program_kerjas,id',
             'nama_kegiatan' => 'string|required|unique:tors',
+            'waktu' => 'required|date_format:Y-m',
             'pic' => 'string|required',
             'kepesertaan' => 'string|required',
             'nomor_standar_akreditasi' => 'string|required',
@@ -138,6 +139,7 @@ class TorController extends Controller
         $validateData = $request->validate([
             'proker_id' => 'string|required|exists:program_kerjas,id',
             'nama_kegiatan' => 'string|required|unique:tors,nama_kegiatan,' . $id,
+            'waktu' => 'required|date_format:Y-m',
             'pic' => 'string|required',
             'kepesertaan' => 'string|required',
             'nomor_standar_akreditasi' => 'string|required',
@@ -219,11 +221,12 @@ class TorController extends Controller
             'frekwensi' => 'integer|required',
             'nominal_volume' => 'integer|required',
             'satuan_volume' => 'string|required',
+            'harga' => 'integer|required',
             'aktivitas_id' => 'required|uuid',
         ]);
 
         $validateData['aktivitas_id'] = $aktivitas_id;
-        $validateData['jumlah'] = $validateData['frekwensi'] * $validateData['nominal_volume'];
+        $validateData['jumlah'] = ($validateData['frekwensi'] * $validateData['nominal_volume']) * $validateData['harga'];
 
         kebutuhanAnggaran::create($validateData);
 
@@ -254,14 +257,17 @@ class TorController extends Controller
             'frekwensi' => 'integer|required',
             'nominal_volume' => 'integer|required',
             'satuan_volume' => 'string|required',
+            'harga' => 'integer|required',
         ]);
 
         $anggaran = KebutuhanAnggaran::findOrFail($anggaran_id);
 
+        $validateData['jumlah'] = ($validateData['frekwensi'] * $validateData['nominal_volume']) * $validateData['harga'];
+        $anggaran->save();
+
         $anggaran->update($validateData);
 
-        $anggaran->jumlah = $validateData['frekwensi'] * $validateData['nominal_volume'];
-        $anggaran->save();
+       
 
         $tor_id = $anggaran->aktivitas->tor_id;
         $rab = RAB::where('tor_id', $tor_id)->first();

@@ -34,9 +34,9 @@
                     <tbody>
                         @foreach ($kegiatan as $item)
                         <tr>
-                            <td>{{ $item->nama_kegiatan }}</td>
-                            <td>{{ $item->proker->nama }}</td>
-                            <td>@currency($item->total_biaya)</td>
+                            <td>{{ $item->tor->nama_kegiatan }}</td>
+                            <td>{{ $item->tor->proker->nama }}</td>
+                            <td>@currency($item->tor->rab->total_biaya)</td>
                             <td>
                                 <span class="badge {{ $item->status == 'Aktif' ? 'bg-success' : 'bg-danger' }}">
                                     {{ $item->status }}

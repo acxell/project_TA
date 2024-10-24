@@ -18,7 +18,6 @@ class pengguna extends Authenticatable
 
     protected $guarded = [
         'id',
-        'unit_id',
     ];
 
     public function unit(){

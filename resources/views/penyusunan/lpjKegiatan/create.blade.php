@@ -34,7 +34,7 @@
                                             <label>Kegiatan</label>
                                                 <select class="choices form-select" name="kegiatan_id" id="kegiatan_id" type="text" aria-placeholder="Kegiatan">
                                                     @foreach ($kegiatan as $kegiatans)
-                                                    <option value="{{ $kegiatans->id }}">{{ $kegiatans->nama_kegiatan }}</option>
+                                                    <option value="{{ $kegiatans->id }}">{{ $kegiatans->tor->nama_kegiatan }}</option>
                                                     @endforeach
                                                 </select>
                                         </div>

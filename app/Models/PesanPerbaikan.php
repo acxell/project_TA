@@ -16,10 +16,6 @@ class PesanPerbaikan extends Model
 
     protected $guarded = [
         'id',
-        'kegiatan_id',
-        'lpj_id',
-        'user_id',
-        'unit_id',
     ];
 
 

@@ -46,7 +46,7 @@ class KegiatanController extends Controller
     public function store(Request $request)
     {
         // Validate input
-         //dd($request->all());
+        //dd($request->all());
         $validateData = $request->validate([
             'proker_id' => 'string|required|exists:program_kerjas,id',
             'nama_kegiatan' => 'string|required|unique:tors',
@@ -123,11 +123,14 @@ class KegiatanController extends Controller
     {
         $proker = ProgramKerja::all();
 
-        $kegiatan->load('unit');
+        // Load relasi kegiatan -> tor -> outcomes, indikators, aktivitas
+        $kegiatan->load(['tor.outcomeKegiatan', 'tor.indikatorKegiatan', 'tor.aktivitas', 'tor.aktivitas.kebutuhanAnggaran', 'tor.rab']);
 
-        return view('penyusunan.kegiatan.detail', ['kegiatan' => $kegiatan, 'proker' => $proker]);
+        return view('penyusunan.kegiatan.detail', [
+            'kegiatan' => $kegiatan,
+            'proker' => $proker
+        ]);
     }
-
     /**
      * Show the form for editing the specified resource.
      */

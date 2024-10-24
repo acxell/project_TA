@@ -73,6 +73,10 @@
                                             <label for="satuan_volume">Satuan Volume</label>
                                             <input type="text" name="satuan_volume" class="form-control" required>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="harga">Harga</label>
+                                            <input type="number" name="harga" class="form-control" required>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -131,6 +135,7 @@
                                         <th>Frekwensi</th>
                                         <th>Nominal Volume</th>
                                         <th>Satuan Volume</th>
+                                        <th>Harga</th>
                                         <th>Jumlah</th>
                                         <th>Actions</th>
                                     </tr>
@@ -142,6 +147,7 @@
                                         <td>{{ $anggaran->frekwensi }}</td>
                                         <td>{{ $anggaran->nominal_volume }}</td>
                                         <td>{{ $anggaran->satuan_volume }}</td>
+                                        <td>{{ $anggaran->harga }}</td>
                                         <td>{{ $anggaran->jumlah }}</td>
                                         <td>
                                             <!-- Button Edit -->
@@ -185,6 +191,10 @@
                                                         <div class="form-group">
                                                             <label for="satuan_volume">Satuan Volume</label>
                                                             <input type="text" name="satuan_volume" class="form-control" value="{{ $anggaran->satuan_volume }}" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="harga">Harga</label>
+                                                            <input type="number" name="harga" class="form-control" value="{{ $anggaran->harga }}" required>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">

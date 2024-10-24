@@ -36,7 +36,7 @@
                                                 <select class="choices form-select @error('nama_kegiatan') is-invalid @enderror" name="kegiatan_id" id="kegiatan_id" type="text" aria-placeholder="Kegiatan">
                                                     @foreach ($kegiatan as $kegiatans)
                                                     <option value="{{ $kegiatans->id }}" {{ (old('kegiatans_id') ?? $lpj->kegiatan_id) == $kegiatans->id ? 'selected' : '' }}>
-                                                    {{ $kegiatans->nama_kegiatan }}
+                                                    {{ $kegiatans->tor->nama_kegiatan }}
                                                 </option>
                                                     @endforeach
                                                 </select>

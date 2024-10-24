@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('proker_id');
             $table->string('nama_kegiatan')->unique();
+            $table->string('waktu', 7);
             $table->string('pic');
             $table->string('kepesertaan');
             $table->string('nomor_standar_akreditasi');
@@ -31,7 +32,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('proker_id')->references('id')->on('program_kerjas')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('penggunas')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('penggunas');
         });
     }
 

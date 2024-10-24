@@ -34,11 +34,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($kegiatan as $item)
+                            @foreach ($kegiatan as $item)
                         <tr>
-                            <td>{{ $item->nama_kegiatan }}</td>
-                            <td>{{ $item->proker->nama }}</td>
-                            <td>@currency($item->total_biaya)</td>
+                            <td>{{ $item->tor->nama_kegiatan }}</td>
+                            <td>{{ $item->tor->proker->nama }}</td>
+                            <td>
+                                @unless(empty($item->tor->rab->total_biaya))
+                                {{ $item->tor->rab->total_biaya }}
+                                @else
+                                N/A <!-- Atau pesan lain -->
+                                @endunless
+                            </td>
                             <td>
                                 <span class="badge {{ $item->status == 'Aktif' ? 'bg-success' : 'bg-danger' }}">
                                     {{ $item->status }}

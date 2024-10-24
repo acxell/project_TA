@@ -38,9 +38,9 @@
                     <tbody>
                         @foreach ($lpj as $item)
                         <tr>
-                            <td>{{ $item->kegiatan->nama_kegiatan }}</td>
-                            <td>{{ $item->proker->nama }}</td>
-                            <td>@currency($item->kegiatan->total_biaya)</td>
+                            <td>{{ $item->kegiatan->tor->nama_kegiatan }}</td>
+                            <td>{{ $item->kegiatan->tor->proker->nama }}</td>
+                            <td>@currency($item->kegiatan->tor->rab->total_biaya)</td>
                             <td>
                             <a href="{{ route('penyusunan.lpjKegiatan.detail', $item->id) }}"><i class="badge-circle font-small-1"
                                     data-feather="eye"></i></a>

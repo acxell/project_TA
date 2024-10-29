@@ -3,7 +3,22 @@
 @section('content')
 
 <div class="page-heading">
-    <h3>Rincian LPJ untuk Kegiatan: {{ $lpj->kegiatan->tor->nama_kegiatan }}</h3>
+<div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <p class="text-subtitle text-muted">Seluruh Data Pertanggung Jawaban Penggunaan Anggaran</p>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('penyusunan.lpjKegiatan.view') }}">Data LPJ</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Data Rincian LPJ</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
 
     <!-- Button to Open the Modal for Creating New Rincian -->
     <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#modalCreateRincian">

@@ -31,7 +31,7 @@
 
                                 <input type="hidden" name="lpj_id" value="{{ $lpj->id }}">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-group with-title mb-3">
                                             <label>Pesan Perbaikan</label>
                                             <textarea id="pesan" class="form-control 

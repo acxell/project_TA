@@ -12,7 +12,7 @@
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('validasi.validasiLpj.view') }}">Data Pengajuan Anggaran Tahunan</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('pengajuan.lpj.view') }}">Data Pelaporan Pertanggung Jawaban</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Pesan Perbaikan</li>
                     </ol>
                 </nav>

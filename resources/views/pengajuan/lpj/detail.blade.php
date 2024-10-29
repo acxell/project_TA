@@ -59,33 +59,60 @@
                                         <td colspan="5">{{ $lpj->penjelasan_kegiatan }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Nama Kegiatan</th>
+                                        <th>Jumlah Peserta Undangan</th>
                                         <td colspan="5">{{ $lpj->jumlah_peserta_undangan }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Nama Kegiatan</th>
+                                        <th>Jumlah Peserta Hadir</th>
                                         <td colspan="5">{{ $lpj->jumlah_peserta_hadir }}</td>
                                     </tr>
-
-
-
                                 </table>
+
+                                <!-- Detail Rincian Section Start -->
+                                <section class="section mt-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5>Rincian Belanja</h5>
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Waktu Belanja</th>
+                                                        <th>Harga</th>
+                                                        <th>Keterangan</th>
+                                                        <th>Bukti</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @forelse($lpj->rincian_lpj as $rincian)
+                                                    <tr>
+                                                        <td>{{ $rincian->waktu_belanja }}</td>
+                                                        <td>@currency($rincian->harga)</td>
+                                                        <td>{{ $rincian->keterangan }}</td>
+                                                        <td><a href="{{ asset('storage/' . $rincian->bukti) }}" target="_blank">View Bukti</a></td>
+                                                    </tr>
+                                                    @empty
+                                                    <tr>
+                                                        <td colspan="5">Tidak ada rincian LPJ untuk kegiatan ini.</td>
+                                                    </tr>
+                                                    @endforelse
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </section>
+                                <!-- Detail Rincian Section End -->
 
                                 <div class="col-12 d-flex justify-content-end">
                                     <button type="button" class="btn btn-primary me-1 mb-1" onclick="window.history.back();">Go Back</button>
                                     <button type="submit" class="btn btn-primary me-1 mb-1">Laporkan</button>
                                 </div>
                             </div>
-
                         </div>
+                    </div>
                 </form>
             </div>
         </div>
-</div>
-</div>
-
-
-</section>
-<!-- Detail Kegiatan Section End -->
+    </section>
+    <!-- Detail Kegiatan Section End -->
 </div>
 @endsection

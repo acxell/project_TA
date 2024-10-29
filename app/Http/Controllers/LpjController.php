@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kegiatan;
 use App\Models\Lpj;
+use App\Models\Retur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -156,7 +157,7 @@ class LpjController extends Controller
     //Validasi Pengajuan
     public function validasi_lpj_index()
     {
-        $lpj = Lpj::whereIn('status', ['Proses Pelaporan', 'Diterima'])->get();
+        $lpj = Lpj::whereIn('status', ['Proses Pelaporan', 'Selesai', 'Perlu Retur'])->get();
 
         $kegiatan = Kegiatan::all();
 
@@ -177,8 +178,33 @@ class LpjController extends Controller
         if ($request->input('action') == 'reject') {
             return redirect()->route('pesanPerbaikan.lpj.create')->with('success', 'Pengajuan telah ditolak.');
         } elseif ($request->input('action') == 'accept') {
-            $lpj->update(['status' => 'Diterima']);
-            return redirect()->route('validasi.validasiLpj.view')->with('success', 'Pengajuan telah diterima.');
+            // Load related Kegiatan and Pendanaan data
+            $lpj->load('kegiatan.pendanaan');
+
+            // Calculate the total transfer amount from Pendanaan
+            $totalTransfer = $lpj->kegiatan->pendanaan->first()->besaran_transfer;
+
+            // Calculate the difference between total transfer and total belanja
+            $remainingBalance = $totalTransfer - $lpj->total_belanja;
+
+            // Determine status based on the remaining balance
+            if ($remainingBalance > 0) {
+                $lpj->update(['status' => 'Perlu Retur']);
+
+                // Create a new Retur record
+                Retur::create([
+                    'lpj_id' => $lpj->id,
+                    'total_retur' => $remainingBalance,
+                    'status' => 'Lakukan Retur', // Initial status
+                ]);
+
+                return redirect()->route('validasi.validasiLpj.view')
+                    ->with('success', 'Pengajuan diterima, tetapi terdapat sisa dana yang perlu dikembalikan.');
+            } else {
+                $lpj->update(['status' => 'Selesai']);
+                return redirect()->route('validasi.validasiLpj.view')
+                    ->with('success', 'Pengajuan diterima dan status telah selesai.');
+            }
         }
     }
 }

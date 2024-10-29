@@ -40,24 +40,26 @@ class RincianLpjController extends Controller
             'bukti' => 'required|file|mimes:pdf',
         ]);
 
-        // Generate unique filename and store file
         $filename = 'bukti_' . uniqid() . '.' . $request->file('bukti')->getClientOriginalExtension();
         $filePath = $request->file('bukti')->storeAs('bukti', $filename, 'public');
 
-        // Prepare validated data for saving
         $validatedData = [
             'lpj_id' => $lpjId,
             'waktu_belanja' => $request->waktu_belanja,
             'harga' => $request->harga,
             'keterangan' => $request->keterangan,
-            'bukti' => $filePath, // Save the correct file path
+            'bukti' => $filePath,
         ];
 
-        // Save to the database
         RincianLpj::create($validatedData);
+
+        // Recalculate total_belanja for the specified lpj
+        $totalBelanja = RincianLpj::where('lpj_id', $lpjId)->sum('harga');
+        Lpj::where('id', $lpjId)->update(['total_belanja' => $totalBelanja]);
 
         return redirect()->route('penyusunan.lpjKegiatan.rincian', $lpjId)->with('success', 'Rincian LPJ berhasil ditambahkan.');
     }
+
 
 
     /**
@@ -93,6 +95,10 @@ class RincianLpjController extends Controller
         $rincianLpj = RincianLpj::findOrFail($id);
         $lpjId = $rincianLpj->lpj_id;
         $rincianLpj->delete();
+
+        // Recalculate total_belanja after deletion
+        $totalBelanja = RincianLpj::where('lpj_id', $lpjId)->sum('harga');
+        Lpj::where('id', $lpjId)->update(['total_belanja' => $totalBelanja]);
 
         return redirect()->route('penyusunan.lpjKegiatan.rincian', $lpjId)->with('success', 'Rincian LPJ berhasil dihapus.');
     }

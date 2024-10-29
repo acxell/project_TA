@@ -53,6 +53,11 @@ class Lpj extends Model
         return $this->hasOneThrough(Unit::class, Pengguna::class, 'id', 'id', 'user_id', 'unit_id');
     }
 
+    public function retur()
+    {
+        return $this->hasOne(Lpj::class, 'lpj_id', 'id');
+    }
+
     public function getIncrementing()
     {
         return false;

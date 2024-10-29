@@ -11,6 +11,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PesanPerbaikanController;
 use App\Http\Controllers\ProgramKerjaController;
 use App\Http\Controllers\RabController;
+use App\Http\Controllers\ReturController;
 use App\Http\Controllers\RincianLpjController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SatuanKerjaController;
@@ -194,4 +195,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('tor/{tor}/aktivitas', [TorController::class, 'storeAktivitas'])->name('penyusunan.aktivitas.store');
     Route::put('tor/aktivitas/{aktivitas}', [TorController::class, 'updateAktivitas'])->name('penyusunan.aktivitas.update');
     Route::delete('tor/aktivitas/{aktivitas}', [TorController::class, 'destroyAktivitas'])->name('penyusunan.aktivitas.destroy');
+
+    Route::get('/data-retur', [ReturController::class, 'index'])->name('pengajuan.retur.view');
+    Route::patch('/retur/{retur}', [ReturController::class, 'update'])->name('retur.update');
+    Route::post('/retur/{retur}/ajukan', [ReturController::class, 'ajukan'])->name('retur.ajukan');
+
+    Route::get('/validasi-data-retur', [ReturController::class, 'indexVal'])->name('pengajuan.retur.validasi');
+    Route::patch('/retur/{retur}/accept', [ReturController::class, 'accept'])->name('retur.accept');
 });

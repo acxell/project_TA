@@ -32,6 +32,7 @@
                             <th>Nama Kegiatan</th>
                             <th>Nama Program Kerja</th>
                             <th>Total Biaya</th>
+                            <th>Total Belanja</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -40,7 +41,8 @@
                         <tr>
                             <td>{{ $item->kegiatan->tor->nama_kegiatan }}</td>
                             <td>{{ $item->kegiatan->tor->proker->nama }}</td>
-                            <td>@currency($item->kegiatan->tor->rab->total_biaya)</td>
+                            <td>@currency($item->kegiatan->pendanaan->first()->besaran_transfer ?? 0)</td>
+                            <td>@currency($item->total_belanja)</td>
                             <td>
                                 <a href="{{ route('penyusunan.lpjKegiatan.detail', $item->id) }}"><i class="badge-circle font-small-1"
                                         data-feather="eye"></i></a>

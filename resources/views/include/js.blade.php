@@ -167,3 +167,29 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Select all update buttons
+        const updateButtons = document.querySelectorAll(".updateReturBtn");
+
+        updateButtons.forEach(button => {
+            button.addEventListener("click", function() {
+                // Get data attributes from clicked button
+                const id = button.getAttribute("data-id");
+                const nominal = button.getAttribute("data-nominal");
+                const buktiLink = button.getAttribute("data-bukti");
+
+                // Set form action to include the specific retur ID
+                const updateForm = document.getElementById("updateReturForm");
+                updateForm.action = `/retur/${id}`;
+
+                // Populate modal fields with the selected retur data
+                document.getElementById("nominal_retur").value = nominal;
+                const currentBuktiLink = document.getElementById("current_bukti_retur");
+                currentBuktiLink.href = buktiLink;
+                currentBuktiLink.textContent = "View Current Bukti Retur";
+            });
+        });
+    });
+</script>

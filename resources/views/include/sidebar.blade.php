@@ -87,7 +87,7 @@
                         </li>
 
                         <li class="submenu-item  ">
-                            <a href="component-badge.html" class="submenu-link">Retur</a>
+                            <a href="{{ route('pengajuan.retur.view') }}" class="submenu-link">Retur</a>
 
                         </li>
 
@@ -160,7 +160,7 @@
                         </li>
 
                         <li class="submenu-item  ">
-                            <a href="#" class="submenu-link">Retur</a>
+                            <a href="{{ route('pengajuan.retur.validasi') }}" class="submenu-link">Retur</a>
 
                         </li>
 

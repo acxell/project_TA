@@ -69,6 +69,39 @@
                                 </tr>
                             </table>
 
+                            <section class="section mt-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5>Rincian Belanja</h5>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Waktu Belanja</th>
+                                                    <th>Harga</th>
+                                                    <th>Keterangan</th>
+                                                    <th>Bukti</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse($lpj->rincian_lpj as $rincian)
+                                                <tr>
+                                                    <td>{{ $rincian->waktu_belanja }}</td>
+                                                    <td>@currency($rincian->harga)</td>
+                                                    <td>{{ $rincian->keterangan }}</td>
+                                                    <td><a href="{{ asset('storage/' . $rincian->bukti) }}" target="_blank">View Bukti</a></td>
+                                                </tr>
+                                                @empty
+                                                <tr>
+                                                    <td colspan="5">Tidak ada rincian LPJ untuk kegiatan ini.</td>
+                                                </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </section>
+                            <!-- Detail Rincian Section End -->
+
 
                             <!-- Button Back to Kegiatan List -->
                             <div class="col-12 d-flex justify-content-end mt-3">

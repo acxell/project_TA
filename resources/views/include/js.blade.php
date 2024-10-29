@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <script>
-    // Adding dynamic Outcome input fields
+    // =================== Outcome Section ===================
     let outcomeCount = 1;
     document.getElementById('add-outcome').addEventListener('click', function() {
         outcomeCount++;
@@ -97,7 +97,13 @@ document.addEventListener('DOMContentLoaded', function() {
         outcomeWrapper.appendChild(newOutcomeGroup);
     });
 
-    // Adding dynamic Indikator input fields
+    document.getElementById('outcome-wrapper').addEventListener('click', function(event) {
+        if (event.target.classList.contains('remove-outcome')) {
+            event.target.closest('.form-group').remove();
+        }
+    });
+
+    // =================== Indikator Section ===================
     let indikatorCount = 1;
     document.getElementById('add-indikator').addEventListener('click', function() {
         indikatorCount++;
@@ -111,6 +117,13 @@ document.addEventListener('DOMContentLoaded', function() {
         indikatorWrapper.appendChild(newIndikatorGroup);
     });
 
+    document.getElementById('indikator-wrapper').addEventListener('click', function(event) {
+        if (event.target.classList.contains('remove-indikator')) {
+            event.target.closest('.form-group').remove();
+        }
+    });
+
+    // =================== Aktivitas Section ===================
     let aktivitasCount = 1;
     document.getElementById('add-aktivitas').addEventListener('click', function() {
         aktivitasCount++;
@@ -120,7 +133,6 @@ document.addEventListener('DOMContentLoaded', function() {
         newAktivitasGroup.classList.add('row', 'align-items-center', 'mb-3');
         newAktivitasGroup.id = 'aktivitas-group-' + aktivitasCount;
 
-        // Constructing the new Aktivitas form group dynamically
         newAktivitasGroup.innerHTML = `
         <div class="col-md-2 col-12">
             <label for="waktu_aktivitas">Waktu Aktivitas</label>
@@ -146,28 +158,12 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     `;
 
-        // Append the new Aktivitas group to the wrapper
         aktivitasWrapper.appendChild(newAktivitasGroup);
     });
 
-    // Event delegation for removing activity rows
-    document.getElementById('aktivitas-wrapper').addEventListener('click', function(e) {
-        if (e.target && e.target.classList.contains('remove-aktivitas')) {
-            e.target.closest('.row').remove();
-        }
-    });
-
-
-
-
-
-    // Event delegation to remove outcome/indikator/aktivitas
-    document.addEventListener('click', function(event) {
-        if (event.target.classList.contains('remove-outcome')) {
-            event.target.parentElement.remove();
-        }
-        if (event.target.classList.contains('remove-indikator')) {
-            event.target.parentElement.remove();
+    document.getElementById('aktivitas-wrapper').addEventListener('click', function(event) {
+        if (event.target.classList.contains('remove-aktivitas')) {
+            event.target.closest('.row').remove();
         }
     });
 </script>

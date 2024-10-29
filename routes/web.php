@@ -11,6 +11,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PesanPerbaikanController;
 use App\Http\Controllers\ProgramKerjaController;
 use App\Http\Controllers\RabController;
+use App\Http\Controllers\RincianLpjController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SatuanKerjaController;
 use App\Http\Controllers\TorController;
@@ -178,7 +179,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/pesan-perbaikan/lpj', [PesanPerbaikanController::class, 'store_lpj'])->name('pesanPerbaikan.lpj.store');
     Route::get('/pesan-perbaikan/lpj/{lpj_id}', [PesanPerbaikanController::class, 'show_lpj'])->name('pesanPerbaikan.lpj.view');
 
-
+    Route::get('/lpjKegiatan/rincian/{id}', [RincianLpjController::class, 'index'])->name('penyusunan.lpjKegiatan.rincian');
+    Route::post('/lpjKegiatan/rincian/store/{lpj}', [RincianLpjController::class, 'store'])->name('penyusunan.lpjKegiatan.rincian.store');
+    Route::delete('/lpjKegiatan/rincian/destroy/{id}', [RincianLpjController::class, 'destroy'])->name('penyusunan.lpjKegiatan.rincian.destroy');
+    Route::put('/penyusunan/lpjKegiatan/rincian/{id}', [RincianLpjController::class, 'update'])->name('penyusunan.lpjKegiatan.rincian.update');
 
 
     Route::get('penyusunan/tor/{tor}/aktivitas', [TorController::class, 'showAktivitas'])->name('penyusunan.tor.aktivitas');

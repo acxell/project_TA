@@ -26,7 +26,6 @@
                         <tr>
                             <th>Nama Kegiatan</th>
                             <th>Total Biaya</th>
-                            <th>Bukti Transfer</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -35,7 +34,6 @@
                         <tr>
                             <td>{{ $item->kegiatan->tor->nama_kegiatan }}</td>
                             <td>@currency($item->kegiatan->tor->rab->total_biaya)</td>
-                            <td>{{ $item->bukti_transfer }}</td>
                             <td><a href="{{ route('pendanaan.dataPendanaan.detail', $item->id) }}"><i class="badge-circle font-small-1"
                                         data-feather="eye"></i></a>
                             </td>

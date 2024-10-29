@@ -1,10 +1,24 @@
 @extends('master.master')
-@section('title', 'Daftar Aktivitas untuk TOR: ' . $tor->nama_kegiatan)
+@section('title', 'Daftar Aktivitas untuk Kegiatan : ' . $tor->nama_kegiatan)
 @section('content')
 
 <div class="page-heading">
-    <h3>Daftar Aktivitas untuk TOR: {{ $tor->nama_kegiatan }}</h3>
-
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <p class="text-subtitle text-muted">Seluruh Aktivitas dan Kebutuhan Anggaran</p>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('penyusunan.kegiatan.view') }}">Data Kegiatan</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Data Aktivitas Kegiatan</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
     <!-- Tombol Create Aktivitas -->
     <a href="#" class="btn btn-success my-3" data-bs-toggle="modal" data-bs-target="#modalCreateAktivitas">Create Aktivitas</a>
 </div>

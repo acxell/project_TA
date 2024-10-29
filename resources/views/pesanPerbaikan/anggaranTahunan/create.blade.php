@@ -31,13 +31,13 @@
 
                                 <input type="hidden" name="kegiatan_id" value="{{ $kegiatan->id }}">
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-group with-title mb-3">
                                             <label>Pesan Perbaikan</label>
-                                            <input type="text" id="pesan" class="form-control 
+                                            <textarea id="pesan" class="form-control 
                                             @error ('pesan') is invalid
                                             @enderror"
-                                                placeholder="Pesan Perbaikan" name="pesan" value="{{ old('pesan') }}">
+                                                placeholder="Pesan Perbaikan" name="pesan" value="{{ old('pesan') }}" rows="4"></textarea>
                                                 @error('pesan')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                                 @enderror

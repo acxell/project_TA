@@ -53,11 +53,8 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label>Bukti Transfer</label>
-                                            <input type="text" id="bukti_transfer" class="form-control @error('bukti_transfer') is-invalid @enderror"
-                                                name="bukti_transfer" value="{{ old('bukti_transfer')  ?? $pendanaan->bukti_transfer }}" disabled>
-                                            @error('bukti_transfer')
-                                            <div class="alert alert-danger">{{ $message }}</div>
-                                            @enderror
+                                            <a href="{{ asset('storage/' . $pendanaan->bukti_transfer) }}"
+                                                target="_blank">Download</a>
                                         </div>
                                     </div>
                                     <div class="col-12 d-flex justify-content-end">

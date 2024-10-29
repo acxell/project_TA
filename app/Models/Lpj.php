@@ -38,6 +38,11 @@ class Lpj extends Model
         return $this->hasMany(PesanPerbaikan::class, 'lpj_id', 'id');
     }
 
+    public function rincian_lpj()
+    {
+        return $this->hasMany(RincianLpj::class, 'lpj_id', 'id');
+    }
+
     public function user()
     {
         return $this->belongsTo(Pengguna::class, 'user_id', 'id');

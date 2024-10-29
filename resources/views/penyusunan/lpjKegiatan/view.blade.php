@@ -42,17 +42,19 @@
                             <td>{{ $item->kegiatan->tor->proker->nama }}</td>
                             <td>@currency($item->kegiatan->tor->rab->total_biaya)</td>
                             <td>
-                            <a href="{{ route('penyusunan.lpjKegiatan.detail', $item->id) }}"><i class="badge-circle font-small-1"
-                                    data-feather="eye"></i></a>
-                            <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $item->id }}').submit();">
-                                <i class="badge-circle font-medium-1" data-feather="trash"></i>
-                            </a>
-                            <form id="delete-form-{{ $item->id }}" action="{{ route('penyusunan.lpjKegiatan.destroy', $item->id) }}" method="POST" style="display:none;">
-                                @csrf
-                                @method('DELETE')
-                            </form>
-                            <a href="{{ route('penyusunan.lpjKegiatan.edit', $item->id) }}"><i class="badge-circle font-medium-1"
-                                    data-feather="edit"></i></a>
+                                <a href="{{ route('penyusunan.lpjKegiatan.detail', $item->id) }}"><i class="badge-circle font-small-1"
+                                        data-feather="eye"></i></a>
+                                <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $item->id }}').submit();">
+                                    <i class="badge-circle font-medium-1" data-feather="trash"></i>
+                                </a>
+                                <form id="delete-form-{{ $item->id }}" action="{{ route('penyusunan.lpjKegiatan.destroy', $item->id) }}" method="POST" style="display:none;">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+                                <a href="{{ route('penyusunan.lpjKegiatan.edit', $item->id) }}"><i class="badge-circle font-medium-1"
+                                        data-feather="edit"></i></a>
+
+                                <a href="{{ route('penyusunan.lpjKegiatan.rincian', $item->id) }}" class="btn btn-info">Lihat Rincian</a>
 
                             </td>
                         </tr>

@@ -32,15 +32,15 @@
                                 <input type="hidden" name="lpj_id" value="{{ $lpj->id }}">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group">
+                                        <div class="form-group with-title mb-3">
                                             <label>Pesan Perbaikan</label>
-                                            <input type="text" id="pesan" class="form-control 
+                                            <textarea id="pesan" class="form-control 
                                             @error ('pesan') is invalid
                                             @enderror"
-                                                placeholder="Pesan Perbaikan" name="pesan" value="{{ old('pesan') }}">
-                                                @error('pesan')
-                                                <div class="alert alert-danger">{{ $message }}</div>
-                                                @enderror
+                                                placeholder="Pesan Perbaikan" name="pesan" value="{{ old('pesan') }}" rows="4"></textarea>
+                                            @error('pesan')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-12 d-flex justify-content-end">

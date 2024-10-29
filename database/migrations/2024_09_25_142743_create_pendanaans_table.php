@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('pendanaans', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('kegiatan_id');
-            $table->string('bukti_transfer');
+            $table->string('bukti_transfer', 100);
             $table->bigInteger('besaran_transfer');
             $table->uuid('user_id');
             $table->uuid('unit_id');

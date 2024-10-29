@@ -13,7 +13,7 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="{{ route('penyusunan.kegiatan.view') }}">Data Kegiatan</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Edit TOR</li>
+                        <li class="breadcrumb-item active" aria-current="page">Insert TOR</li>
                     </ol>
                 </nav>
             </div>
@@ -35,7 +35,8 @@
                                             <select class="choices form-select" name="proker_id" id="proker_id" type="text" aria-placeholder="Program Kerja" required>
                                                 @foreach ($proker as $prokers)
                                                 <option value="{{ $prokers->id }}" {{ (old('proker_id') ?? $tor->proker_id) == $prokers->id ? 'selected' : '' }}>
-                                                    {{ $prokers->nama }}</option>
+                                                    {{ $prokers->nama }}
+                                                </option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -146,7 +147,8 @@
                                             <select class="choices form-select" name="coa_id" id="coa_id" type="text" aria-placeholder="COA">
                                                 @foreach ($coa as $coas)
                                                 <option value="{{ $coas->id }}" {{ (old('coa_id') ?? $tor->coa_id) == $coas->id ? 'selected' : '' }}>
-                                                {{ $coas->kode }} - {{ $coas->nama }}</option>
+                                                    {{ $coas->kode }} - {{ $coas->nama }}
+                                                </option>
                                                 @endforeach
                                             </select>
                                         </div>

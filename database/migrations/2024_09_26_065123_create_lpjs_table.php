@@ -19,6 +19,7 @@ return new class extends Migration
             $table->bigInteger('jumlah_peserta_undangan');
             $table->bigInteger('jumlah_peserta_hadir');
             $table->string('status');
+            $table->bigInteger('total_belanja')->nullable();
             $table->uuid('user_id');
             $table->uuid('unit_id');
             $table->timestamps();

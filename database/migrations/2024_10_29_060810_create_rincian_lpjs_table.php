@@ -11,18 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pesan_perbaikans', function (Blueprint $table) {
+        Schema::create('rincian_lpjs', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('kegiatan_id')->nullable();
-            $table->uuid('lpj_id')->nullable();
-            $table->longText('pesan');
-            $table->uuid('user_id');
-            $table->uuid('unit_id');
+            $table->uuid('lpj_id');
+            $table->date('waktu_belanja');
+            $table->bigInteger('harga');
+            $table->string('keterangan');
+            $table->string('bukti');
             $table->timestamps();
 
-            $table->foreign('kegiatan_id')->references('id')->on('kegiatans')->onDelete('cascade');
             $table->foreign('lpj_id')->references('id')->on('lpjs')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('penggunas')->onDelete('cascade');
         });
     }
 
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pesan_perbaikans');
+        Schema::dropIfExists('rincian_lpjs');
     }
 };

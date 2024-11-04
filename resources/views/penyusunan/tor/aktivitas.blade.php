@@ -161,8 +161,8 @@
                                         <td>{{ $anggaran->frekwensi }}</td>
                                         <td>{{ $anggaran->nominal_volume }}</td>
                                         <td>{{ $anggaran->satuan_volume }}</td>
-                                        <td>{{ $anggaran->harga }}</td>
-                                        <td>{{ $anggaran->jumlah }}</td>
+                                        <td>{{ @currency($anggaran->harga) }}</td>
+                                        <td>{{ @currency($anggaran->jumlah) }}</td>
                                         <td>
                                             <!-- Button Edit -->
                                             <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalEditAnggaran{{ $anggaran->id }}">Edit</button>

@@ -135,6 +135,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/pengajuan-anggaran-tahunan/{kegiatan}/validasi-pengajuan', [KegiatanController::class, 'validasi_pengajuan_tahunan'])->name('validasi.validasiAnggaran.validasi');
     Route::post('/pengajuan-anggaran-tahunan/{kegiatan}/acc-validasi', [KegiatanController::class, 'acc_validasi_pengajuan_tahunan'])->name('validasi.validasiAnggaran.acc');
 
+    Route::get('/data-finalisasi-pengajuan-anggaran-tahunan', [KegiatanController::class, 'finalisasi_index'])->name('finalisasi.finalisasiKegiatan.view');
+    Route::get('/finalisasi-pengajuan-anggaran-tahunan/{kegiatan}/finalisasi-pengajuan', [KegiatanController::class, 'finalisasi_pengajuan_tahunan'])->name('finalisasi.finalisasiKegiatan.finalisasi');
+    Route::post('/finalisasi-pengajuan-anggaran-tahunan/{kegiatan}/acc-finalisasis', [KegiatanController::class, 'acc_finalisasi_pengajuan_tahunan'])->name('finalisasi.finalisasiKegiatan.acc');
+
     //Actions Pesan Perbaikan Anggaran Tahunan
     Route::get('/buat-pesan-perbaikan/{kegiatan_id}', [PesanPerbaikanController::class, 'create'])->name('pesanPerbaikan.anggaranTahunan.create');
     Route::post('/pesan-perbaikan', [PesanPerbaikanController::class, 'store'])->name('pesanPerbaikan.anggaranTahunan.store');

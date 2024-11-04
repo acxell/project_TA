@@ -170,7 +170,7 @@
                                         <th>Biaya yang Diperlukan</th>
                                         <td colspan="5">
                                             @unless(empty($kegiatan->tor->rab->total_biaya))
-                                            {{ $kegiatan->tor->rab->total_biaya }}
+                                            @currency($kegiatan->tor->rab->total_biaya)
                                             @else
                                             N/A <!-- Atau pesan lain -->
                                             @endunless
@@ -180,7 +180,7 @@
                                         <th>Terbilang</th>
                                         <td colspan="5">
                                             @unless(empty($kegiatan->tor->rab->total_biaya))
-                                            {{ $kegiatan->tor->rab->total_biaya }}
+                                            @currency($kegiatan->tor->rab->total_biaya)
                                             @else
                                             N/A <!-- Atau pesan lain -->
                                             @endunless
@@ -275,10 +275,10 @@
                                                         <tr>
                                                             <td>{{ $anggaran->uraian_aktivitas }}</td>
                                                             <td>{{ $anggaran->frekwensi }}</td>
-                                                            <td>Rp. {{ number_format($anggaran->nominal_volume, 2, ',', '.') }}</td>
+                                                            <td>{{ $anggaran->nominal_volume }}</td>
                                                             <td>{{ $anggaran->satuan_volume }}</td>
-                                                            <td>{{ number_format($anggaran->harga, 2, ',', '.') }}</td>
-                                                            <td>{{ number_format($anggaran->jumlah, 2, ',', '.') }}</td>
+                                                            <td>@currency($anggaran->harga)</td>
+                                                            <td>@currency($anggaran->jumlah)</td>
                                                         </tr>
                                                         @endforeach
                                                     </tbody>
@@ -309,7 +309,7 @@
                                             <th>Terbilang</th>
                                             <td colspan="5">
                                                 @unless(empty($kegiatan->tor->rab->total_biaya))
-                                                {{ $kegiatan->tor->rab->total_biaya }}
+                                                @currency($kegiatan->tor->rab->total_biaya)
                                                 @else
                                                 N/A <!-- Atau pesan lain -->
                                                 @endunless
@@ -366,7 +366,7 @@
                                     </tr>
                                     <tr>
                                         <th>Total Biaya</th>
-                                        <td>Rp {{ number_format($kegiatan->tor->rab->total_biaya, 0, ',', '.') }}</td>
+                                        <td>@currency($kegiatan->tor->rab->total_biaya)</td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -119,7 +119,7 @@
 
                 </li>
 
-                <li class="sidebar-title">Pendanaan
+                <li class="sidebar-title">Akuntan
 
                 <li
                     class="sidebar-item  has-sub">
@@ -140,6 +140,12 @@
                         </li>
 
                     </ul>
+                </li>
+                <li class="sidebar-item  ">
+                    <a href="#" class='sidebar-link'>
+                        <i class="bi bi-file-earmark-medical-fill"></i>
+                        <span>Kriteria & Sub Kriteria</span>
+                    </a>
                 </li>
 
                 </li>
@@ -173,6 +179,16 @@
                     <a href="{{ route('validasi.validasiLpj.view') }}" class='sidebar-link'>
                         <i class="bi bi-journal-check"></i>
                         <span>Pelaporan Pertanggung Jawaban</span>
+                    </a>
+
+                </li>
+
+                <li class="sidebar-title">Atasan Yayasan</li>
+
+                <li class="sidebar-item  ">
+                    <a href="{{ route('finalisasi.finalisasiKegiatan.view') }}" class='sidebar-link'>
+                        <i class="bi bi-journal-check"></i>
+                        <span>Finalisasi Pengajuan Tahunan</span>
                     </a>
 
                 </li>
@@ -211,8 +227,9 @@
                         <i class="bi bi-file-earmark-medical-fill"></i>
                         <span>Unit</span>
                     </a>
+                </li>
 
-                    <li class="sidebar-item  ">
+                <li class="sidebar-item  ">
                     <a href="{{ route('satuan_kerja.view') }}" class='sidebar-link'>
                         <i class="bi bi-building-fill"></i>
                         <span>Satuan Kerja</span>
@@ -230,12 +247,12 @@
                 </li>
                 <br>
                 <li class="sidebar-item  ">
-                @auth
-                <form method="post" action="{{ route('logout') }}">
-                    @csrf
-                    <button class="btn btn-danger">Log Out</button>
-                </form>
-                @endauth
+                    @auth
+                    <form method="post" action="{{ route('logout') }}">
+                        @csrf
+                        <button class="btn btn-danger">Log Out</button>
+                    </form>
+                    @endauth
                 </li>
 
                 </li>

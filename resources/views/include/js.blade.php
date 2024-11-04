@@ -193,3 +193,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 </script>
+
+<script>
+    function showModal(item) {
+        // Set modal title and body dynamically
+        document.getElementById('modalTitle').innerText = item.nama;
+        document.getElementById('modalBody').innerText = item.deskripsi;
+
+        // Show the modal
+        var myModal = new bootstrap.Modal(document.getElementById('primary'));
+        myModal.show();
+    }
+</script>

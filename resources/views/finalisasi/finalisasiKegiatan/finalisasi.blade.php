@@ -1,19 +1,19 @@
 @extends('master.master')
-@section('title', 'Pengajuan Pendanaan Kegiatan')
+@section('title', 'finalisasi Pengajuan Anggaran Tahunan')
 @section('content')
 
 <div class="page-heading">
     <div class="page-title">
         <div class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
-                <p class="text-subtitle text-muted">Detail Data Pengajuan Pendanaan Kegiatan</p>
+                <p class="text-subtitle text-muted">finalisasi Pengajuan Anggaran Tahunan</p>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('pengajuan.pendanaanKegiatan.view') }}">Data Pengajuan Pendanaann Kegiatan</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Detail</li>
+                        <li class="breadcrumb-item"><a href="{{ route('finalisasi.finalisasiKegiatan.view') }}">Data Pengajuan Anggaran Tahunan</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">finalisasi</li>
                     </ol>
                 </nav>
             </div>
@@ -25,7 +25,7 @@
     <div class="row match-height">
         <div class="col-12">
             <div class="card">
-                <form class="form" action="{{ route('pengajuan.pendanaanKegiatan.ajukan', $kegiatan->id) }}" method="POST">
+                <form class="form" action="{{ route('finalisasi.finalisasiKegiatan.acc', $kegiatan->id) }}" method="POST">
                     @csrf
                     <div class="card-header">
                         <div class="col d-flex justify-content-center">
@@ -318,10 +318,8 @@
                                 </table>
                             </div>
                             <div class="col-12 d-flex justify-content-end">
-
-                            <!-- Button Back to Kegiatan List -->
-                            <button type="button" class="btn btn-primary me-1 mb-1" onclick="window.history.back();">Go Back</button>
-                            <button type="submit" class="btn btn-primary me-1 mb-1">Ajukan</button>
+                                <button type="button" class="btn btn-primary me-1 mb-1" onclick="window.history.back();">Go Back</button>
+                                <button type="submit" name="action" value="accept" class="btn btn-primary me-1 mb-1">Terima Validasi</button>
                             </div>
 
                         </div>

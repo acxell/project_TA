@@ -38,7 +38,7 @@
                             <td>{{ $item->tor->proker->nama }}</td>
                             <td>
                                 @unless(empty($item->tor->rab->total_biaya))
-                                {{ $item->tor->rab->total_biaya }}
+                                @currency($item->tor->rab->total_biaya)
                                 @else
                                 N/A <!-- Atau pesan lain -->
                                 @endunless

@@ -34,8 +34,13 @@ class ReturController extends Controller
         $retur->lpj->status = 'Selesai';
         $retur->lpj->save();
 
-        return redirect()->route('pengajuan.retur.validasi')->with('success', 'Retur accepted and LPJ status updated to Selesai.');
+        // Update the associated Kegiatan status to 'Selesai'
+        $retur->lpj->kegiatan->status = 'Selesai';
+        $retur->lpj->kegiatan->save();
+
+        return redirect()->route('pengajuan.retur.validasi')->with('success', 'Retur accepted and LPJ and Kegiatan statuses updated to Selesai.');
     }
+
 
 
     /**
@@ -87,6 +92,7 @@ class ReturController extends Controller
         }
 
         $retur->nominal_retur = $request->nominal_retur;
+        $retur->status = 'Proses Validasi';
         $retur->save();
 
         return redirect()->route('pengajuan.retur.view')->with('success', 'Retur updated successfully');

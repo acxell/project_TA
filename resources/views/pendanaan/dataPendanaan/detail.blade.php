@@ -32,7 +32,7 @@
                                         <div class="form-group">
                                             <label>Nama Kegiatan</label>
                                             <input type="text" id="nama_kegiatan" class="form-control @error('nama_kegiatan') is-invalid @enderror"
-                                                name="nama_kegiatan" value="{{ old('nama_kegiatan')  ?? $pendanaan->kegiatan->nama_kegiatan }}" disabled>
+                                                name="nama_kegiatan" value="{{ old('nama_kegiatan')  ?? $pendanaan->kegiatan->tor->nama_kegiatan }}" disabled>
                                             @error('nama_kegiatan')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror

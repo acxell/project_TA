@@ -217,7 +217,7 @@ class KegiatanController extends Controller
     }
 
 
-    // Validasi Pengajuan by Atasan
+    // Validasi Pengajuan by Unit & Atasan
 
     public function validasi_index()
     {
@@ -242,10 +242,41 @@ class KegiatanController extends Controller
         if ($request->input('action') == 'reject') {
             return redirect()->route('pesanPerbaikan.anggaranTahunan.create')->with('success', 'Pengajuan telah ditolak.');
         } elseif ($request->input('action') == 'accept') {
-            $kegiatan->update(['status' => 'Diterima']);
+            $kegiatan->update(['status' => 'Proses Finalisasi Pengajuan']);
             return redirect()->route('validasi.validasiAnggaran.view')->with('success', 'Pengajuan telah diterima.');
         }
     }
+
+    // Finalisasi Pengajuan Untuk Pendanaan
+
+    public function finalisasi_index()
+    {
+        $kegiatan = Kegiatan::whereIn('status', ['Proses Finalisasi Pengajuan ', 'Diterima'])->get();
+
+        $proker = ProgramKerja::all();
+
+        return view('finalisasi.finalisasiKegiatan.view', ['kegiatan' => $kegiatan, 'proker' => $proker]);
+    }
+
+    public function finalisasi_pengajuan_tahunan(Kegiatan $kegiatan)
+    {
+        $proker = ProgramKerja::all();
+
+        $kegiatan->load('unit');
+
+        return view('finalisasi.finalisasiKegiatan.finalisasi', ['kegiatan' => $kegiatan, 'proker' => $proker]);
+    }
+
+    public function acc_finalisasi_pengajuan_tahunan(Request $request, Kegiatan $kegiatan)
+    {
+        if ($request->input('action') == 'Tidak Didanai') {
+            return redirect()->route('finalisasi.finalisasiKegiatan.view')->with('success', 'Pengajuan telah ditolak.');
+        } elseif ($request->input('action') == 'accept') {
+            $kegiatan->update(['status' => 'Diterima']);
+            return redirect()->route('finalisasi.finalisasiKegiatan.view')->with('success', 'Pengajuan telah diterima.');
+        }
+    }
+
 
     // Pengajuan Pendanaan Kegiatan
 

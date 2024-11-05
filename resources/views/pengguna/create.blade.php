@@ -78,18 +78,6 @@
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label>Nomor Rekening</label>
-                                            <input type="text" id="nomor_rekening" class="form-control 
-                                            @error ('nomor_rekening') is invalid
-                                            @enderror"
-                                                placeholder="Nomor Rekening" name="nomor_rekening" value="{{ old('nomor_rekening') }}">
-                                            @error('nomor_rekening')
-                                            <div class="alert alert-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
                                             <label>Unit</label>
                                                 <select class="choices form-select" name="unit_id" id="unit_id" type="text" aria-placeholder="Unit">
                                                     @foreach ($units as $unit)

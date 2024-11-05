@@ -30,6 +30,7 @@ class userUnitDataSeed extends Seeder
             'id' => $unitId,
             'nama' => 'BKA',
             'description' => Str::random(10),
+            'nomor_rekening' => Str::random(10),
             'status' => 'Aktif',
             'satuan_id' => $satkerId,
         ]);
@@ -47,7 +48,6 @@ class userUnitDataSeed extends Seeder
             'email' => 'admin@gmail.com',
             'password' => bcrypt('admin123'),
             'status' => '1',
-            'nomor_rekening' => Str::random(10),
             'unit_id' => $unitId,  // Use the ID from the previous insert
         ]);
 

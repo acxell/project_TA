@@ -31,7 +31,6 @@
                         <tr>
                             <th>Nama</th>
                             <th>Email</th>
-                            <th>No Rekening</th>
                             <th>Role</th>
                             <th>Unit</th>
                             <th>Status</th>
@@ -43,7 +42,6 @@
                         <tr>
                             <td>{{ $pengguna->nama }}</td>
                             <td>{{ $pengguna->email }}</td>
-                            <td>{{ $pengguna->nomor_rekening }}</td>
                             <td>
                                 @if (!empty($pengguna->getRoleNames()))
                                 @foreach ($pengguna->getRoleNames() as $rolename)

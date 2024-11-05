@@ -46,7 +46,6 @@ class penggunaController extends Controller
             'email' => 'string|required|unique:penggunas',
             'password' => 'string|required|min:10',
             'status' => 'string|required',
-            'nomor_rekening' => 'string|required',
             'roles' => 'required',
             'unit_id' => 'string|required|exists:units,id',
         ]);
@@ -96,7 +95,6 @@ class penggunaController extends Controller
             'email' => 'string|required|unique:penggunas,email,' . $pengguna->id,
             'password' => 'nullable|string|min:10',
             'status' => 'string|required',
-            'nomor_rekening' => 'string|required',
             'roles' => 'required',
             'unit_id' => 'string|required|exists:units,id',
         ]);

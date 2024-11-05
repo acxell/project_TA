@@ -362,7 +362,7 @@
                                     </tr>
                                     <tr>
                                         <th>Nomor Rekening Tujuan</th>
-                                        <td>{{ $kegiatan->user->nomor_rekening }}</td>
+                                        <td>{{ $kegiatan->user->unit->nomor_rekening }}</td>
                                     </tr>
                                     <tr>
                                         <th>Total Biaya</th>

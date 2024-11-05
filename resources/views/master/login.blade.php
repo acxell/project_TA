@@ -19,8 +19,9 @@
             <div class="col-12">
                 <div id="auth-left">
                     <div class="auth-logo">
-                        <a href="index.html"><img src="{{ asset('template/assets/compiled/svg/logo.svg') }}" alt="Logo"></a>
+                        <a href="index.html"><img src="{{ asset('logo.png') }}" alt="Logo" style="width: 300px; height: auto;"></a>
                     </div>
+
                     <h1 class="auth-title">Login</h1>
                     <p class="auth-subtitle mb-5">Lakukan Login dengan Input Email dan Password</p>
 

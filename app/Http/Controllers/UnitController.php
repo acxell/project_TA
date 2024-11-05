@@ -41,6 +41,7 @@ class UnitController extends Controller
             'nama' => 'string|required|unique:units',
             'description' => 'string|required',
             'status' => 'string|required',
+            'nomor_rekening' => 'string|required',
             'satuan_id' => 'string|required|exists:satuan_kerjas,id',
         ]);
 
@@ -82,6 +83,7 @@ class UnitController extends Controller
             'nama' => 'string|required',
             'description' => 'string|required',
             'status' => 'string|required',
+            'nomor_rekening' => 'string|required',
             'satuan_id' => 'string|required|exists:satuan_kerjas,id',
         ]);
 

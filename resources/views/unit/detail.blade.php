@@ -62,6 +62,18 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label>Nomor Rekening</label>
+                                            <input type="text" id="nomor_rekening" class="form-control 
+                                            @error ('nomor_rekening') is invalid
+                                            @enderror"
+                                                placeholder="Nomor Rekening" name="nomor_rekening" value="{{ old('nomor_rekening') ?? $unit->nomor_rekening }}" disabled>
+                                            @error('nomor_rekening')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label>Deskripsi</label>

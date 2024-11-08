@@ -40,7 +40,7 @@ class UnitController extends Controller
         $validateData = $request->validate([
             'nama' => 'string|required|unique:units',
             'description' => 'string|required',
-            'status' => 'string|required',
+            'status' => 'boolean|required',
             'nomor_rekening' => 'string|required',
             'satuan_id' => 'string|required|exists:satuan_kerjas,id',
         ]);
@@ -82,7 +82,7 @@ class UnitController extends Controller
         $validateData = $request->validate([
             'nama' => 'string|required',
             'description' => 'string|required',
-            'status' => 'string|required',
+            'status' => 'boolean|required',
             'nomor_rekening' => 'string|required',
             'satuan_id' => 'string|required|exists:satuan_kerjas,id',
         ]);

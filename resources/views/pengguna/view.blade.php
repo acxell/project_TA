@@ -51,8 +51,8 @@
                             </td>
                             <td>{{ $pengguna->unit->nama }}</td>
                             <td>
-                                <span class="badge {{ $pengguna->status == 'Aktif' ? 'bg-success' : 'bg-danger' }}">
-                                    {{ $pengguna->status }}
+                                <span class="badge {{ $pengguna->status == 1 ? 'bg-success' : 'bg-danger' }}">
+                                    {{ $pengguna->status == 1 ? 'Aktif' : 'Tidak Aktif' }}
                                 </span>
                             </td>
 

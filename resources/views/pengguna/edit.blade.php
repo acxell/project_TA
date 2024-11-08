@@ -70,8 +70,8 @@
                                             <label>Status</label>
                                             <fieldset class="form-group">
                                                 <select class="form-select @error('status') is-invalid @enderror" name="status" id="status">
-                                                    <option value="Aktif" {{ (old('status') ?? $pengguna->status) == 'Aktif' ? 'selected' : '' }}>Aktif</option>
-                                                    <option value="Tidak Aktif" {{ (old('status') ?? $pengguna->status) == 'Tidak Aktif' ? 'selected' : '' }}>Tidak Aktif</option>
+                                                    <option value="1" {{ (old('status') ?? $pengguna->status) == 1 ? 'selected' : '' }}>Aktif</option>
+                                                    <option value="0" {{ (old('status') ?? $pengguna->status) == 0 ? 'selected' : '' }}>Tidak Aktif</option>
                                                 </select>
                                                 @error('status')
                                                 <div class="alert alert-danger">{{ $message }}</div>

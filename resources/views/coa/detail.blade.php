@@ -58,7 +58,7 @@
                                             <input type="text" id="status" class="form-control 
                                             @error ('status') is invalid
                                             @enderror"
-                                                placeholder="Status" name="status" value="{{ old('status') ?? $coa->status }}" disabled>
+                                                placeholder="Status" name="status" value="{{ old('status') ?? $coa->status == 1 ? 'Aktif' : 'Tidak Aktif' }}" disabled>
                                             @error('status')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror

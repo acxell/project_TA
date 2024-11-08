@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('nama')->unique();
             $table->text('description');
-            $table->string('status');
+            $table->boolean('status');
             $table->string('nomor_rekening');
             $table->uuid('satuan_id');
             $table->timestamps();

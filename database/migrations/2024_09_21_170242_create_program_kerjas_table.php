@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('nama')->unique();
             $table->longText('deskripsi');
-            $table->string('status');
+            $table->boolean('status');
             $table->uuid('user_id');
             $table->timestamps();
 

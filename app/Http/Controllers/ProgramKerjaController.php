@@ -39,7 +39,7 @@ class ProgramKerjaController extends Controller
         $validateData = $request->validate([
             'nama' => 'string|required|unique:program_kerjas',
             'deskripsi' => 'string|required',
-            'status' => 'string|required',
+            'status' => 'boolean|required',
         ]);
 
         $validateData['user_id'] = Auth::id();
@@ -81,7 +81,7 @@ class ProgramKerjaController extends Controller
                 Rule::unique('program_kerjas')->ignore($programKerja->id),
             ],
             'deskripsi' => 'string|required',
-            'status' => 'string|required',
+            'status' => 'boolean|required',
         ]);
     
         $validateData['user_id'] = Auth::id();

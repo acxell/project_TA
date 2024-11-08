@@ -69,9 +69,9 @@
                                         <div class="form-group">
                                             <label>Status</label>
                                             <fieldset class="form-group">
-                                                <select class="form-select" name="status" id="status" type="text" aria-placeholder="Status">
-                                                    <option value="Aktif">Aktif</option>
-                                                    <option value="Tidak Aktif">Tidak Aktif</option>
+                                                <select class="form-select" name="status" id="status">
+                                                    <option value="1">Aktif</option>
+                                                    <option value="0">Tidak Aktif</option>
                                                 </select>
                                             </fieldset>
                                         </div>
@@ -79,11 +79,11 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label>Unit</label>
-                                                <select class="choices form-select" name="unit_id" id="unit_id" type="text" aria-placeholder="Unit">
-                                                    @foreach ($units as $unit)
-                                                    <option value="{{ $unit->id }}">{{ $unit->nama }}</option>
-                                                    @endforeach
-                                                </select>
+                                            <select class="choices form-select" name="unit_id" id="unit_id" type="text" aria-placeholder="Unit">
+                                                @foreach ($units as $unit)
+                                                <option value="{{ $unit->id }}">{{ $unit->nama }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">

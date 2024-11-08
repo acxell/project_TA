@@ -41,8 +41,8 @@
                             <td>{{ $item->kode }}</td>
                             <td>{{ $item->nama }}</td>
                             <td>
-                                <span class="badge {{ $item->status == 'Aktif' ? 'bg-success' : 'bg-danger' }}">
-                                    {{ $item->status }}
+                                 <span class="badge {{ $item->status == 1 ? 'bg-success' : 'bg-danger' }}">
+                                    {{ $item->status == 1 ? 'Aktif' : 'Tidak Aktif' }}
                                 </span>
                             </td>
                             <td><a href="{{ route('coa.detail', $item->id) }}"><i class="badge-circle font-small-1"

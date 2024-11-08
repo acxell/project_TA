@@ -38,7 +38,7 @@ class SatuanKerjaController extends Controller
         $validateData = $request->validate([
             'kode' => 'string|required|unique:satuan_kerjas',
             'nama' => 'string|required|unique:satuan_kerjas',
-            'status' => 'string|required',
+            'status' => 'boolean|required',
         ]);
 
         $satuan = satuanKerja::create($validateData);

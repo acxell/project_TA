@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('kode');
             $table->string('nama');
-            $table->string('status');
+            $table->boolean('status');
             $table->timestamps();
         });
     }

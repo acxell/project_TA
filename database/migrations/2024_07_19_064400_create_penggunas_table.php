@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('status');
+            $table->boolean('status');
             $table->uuid('unit_id');
             $table->timestamps();
 

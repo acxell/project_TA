@@ -38,7 +38,7 @@ class CoaController extends Controller
         $validateData = $request->validate([
             'kode' => 'string|required|unique:coas',
             'nama' => 'string|required|unique:coas',
-            'status' => 'string|required',
+            'status' => 'boolean|required',
         ]);
 
         $coa = coa::create($validateData);
@@ -76,7 +76,7 @@ class CoaController extends Controller
         $validateData = $request->validate([
             'kode' => 'string|required|unique:coas',
             'nama' => 'string|required|unique:coas',
-            'status' => 'string|required',
+            'status' => 'boolean|required',
         ]);
 
         $coa->update($validateData);

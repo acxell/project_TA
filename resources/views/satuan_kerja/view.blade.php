@@ -41,8 +41,8 @@
                             <td>{{ $satuans->kode }}</td>
                             <td>{{ $satuans->nama }}</td>
                             <td>
-                                <span class="badge {{ $satuans->status == 'Aktif' ? 'bg-success' : 'bg-danger' }}">
-                                    {{ $satuans->status }}
+                                <span class="badge {{ $satuans->status == 1 ? 'bg-success' : 'bg-danger' }}">
+                                    {{ $satuans->status == 1 ? 'Aktif' : 'Tidak Aktif' }}
                                 </span>
                             </td>
                             <td><a href="{{ route('satuan_kerja.detail', $satuans->id) }}"><i class="badge-circle font-small-1"

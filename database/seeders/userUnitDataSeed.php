@@ -23,7 +23,7 @@ class userUnitDataSeed extends Seeder
             'id' => $satkerId,
             'kode' => '112',
             'nama' => 'UNTAG Surabaya',
-            'status' => 'Aktif',
+            'status' => '1',
         ]);
 
         DB::table('units')->insert([
@@ -31,7 +31,7 @@ class userUnitDataSeed extends Seeder
             'nama' => 'BKA',
             'description' => Str::random(10),
             'nomor_rekening' => Str::random(10),
-            'status' => 'Aktif',
+            'status' => '1',
             'satuan_id' => $satkerId,
         ]);
 

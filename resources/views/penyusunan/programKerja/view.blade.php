@@ -39,8 +39,8 @@
                         <tr>
                             <td>{{ $item->nama }}</td>
                             <td>
-                                <span class="badge {{ $item->status == 'Aktif' ? 'bg-success' : 'bg-danger' }}">
-                                    {{ $item->status }}
+                                <span class="badge {{ $item->status == 1 ? 'bg-success' : 'bg-danger' }}">
+                                    {{ $item->status == 1 ? 'Aktif' : 'Tidak Aktif' }}
                                 </span>
                             </td>
                             <td> <a onclick="showModal({ nama: '{{ $item->nama }}', deskripsi: '{{ $item->deskripsi }}' })" href="javascript:void(0)">

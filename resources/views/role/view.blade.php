@@ -38,16 +38,16 @@
                         <tr>
                             <td>{{ $role->name }}</td>
                             <td>
-                            <a href="{{ route('addRolePermission.create', $role->uuid) }}"><i class="badge-circle font-medium-1"
+                            <a href="{{ route('addRolePermission.create', $role->id) }}"><i class="badge-circle font-medium-1"
                             data-feather="settings"></i></a>
-                                <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $role->uuid }}').submit();">
+                                <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $role->id }}').submit();">
                                     <i class="badge-circle font-medium-1" data-feather="trash"></i>
                                 </a>
-                                <form id="delete-form-{{ $role->uuid }}" action="{{ route('role.destroy', $role->uuid) }}" method="POST" style="display:none;">
+                                <form id="delete-form-{{ $role->id }}" action="{{ route('role.destroy', $role->id) }}" method="POST" style="display:none;">
                                     @csrf
                                     @method('DELETE')
                                 </form>
-                                <a href="{{ route('role.edit', $role->uuid) }}"><i class="badge-circle font-medium-1"
+                                <a href="{{ route('role.edit', $role->id) }}"><i class="badge-circle font-medium-1"
                                         data-feather="edit"></i></a>
                             </td>
                         </tr>

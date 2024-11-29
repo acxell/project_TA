@@ -38,14 +38,14 @@
                         <tr>
                             <td>{{ $permission->name }}</td>
                             <td>
-                                <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $permission->uuid }}').submit();">
+                                <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $permission->id }}').submit();">
                                     <i class="badge-circle font-medium-1" data-feather="trash"></i>
                                 </a>
-                                <form id="delete-form-{{ $permission->uuid }}" action="{{ route('permission.destroy', $permission->uuid) }}" method="POST" style="display:none;">
+                                <form id="delete-form-{{ $permission->id }}" action="{{ route('permission.destroy', $permission->id) }}" method="POST" style="display:none;">
                                     @csrf
                                     @method('DELETE')
                                 </form>
-                                <a href="{{ route('permission.edit', $permission->uuid) }}"><i class="badge-circle font-medium-1"
+                                <a href="{{ route('permission.edit', $permission->id) }}"><i class="badge-circle font-medium-1"
                                         data-feather="edit"></i></a>
                             </td>
                         </tr>

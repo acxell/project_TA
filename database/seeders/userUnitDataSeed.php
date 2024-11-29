@@ -36,7 +36,7 @@ class userUnitDataSeed extends Seeder
         ]);
 
         DB::table('roles')->insert([
-            'uuid' => $roleId,
+            'id' => $roleId,
             'name' => 'Super Admin',
             'guard_name' => 'web',
         ]);

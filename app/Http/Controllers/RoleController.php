@@ -98,27 +98,24 @@ class RoleController extends Controller
 
     public function addPermissionToRole(Role $role)
     {
-        $permission = Permission::get();
+        $permissions = Permission::all();
         $rolePermissions = DB::table('role_has_permissions')
-                        ->where('role_has_permissions.role_id', $role->uuid)
-                        ->pluck('role_has_permissions.permission_id', 'role_has_permissions.permission_id')
-                        ->all();
+            ->where('role_id', $role->id)
+            ->pluck('permission_id')
+            ->toArray();
 
-        return view('addRolePermission.create', ['role' => $role, 'permissions' => $permission, 'rolePermissions' => $rolePermissions]);
+        return view('addRolePermission.create', compact('role', 'permissions', 'rolePermissions'));
     }
 
     public function storePermissionToRole(Request $request, Role $role)
     {
-        // Debugging output
-        //dd($request->all());
-    
         $request->validate([
-            'permission' => 'required|array',
+            'permission' => 'nullable|array',
         ]);
+
+        $role->syncPermissions($request->input('permission', []));
     
-        $role->syncPermissions($request->permission);
-    
-        return redirect()->route('addRolePermission.create', $role->uuid)
-                         ->with('success', 'Permissions successfully updated.');
+        return redirect()->route('role.view')->with('success', 'Permissions successfully updated.');
     }
+    
 }

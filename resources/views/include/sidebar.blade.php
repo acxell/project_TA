@@ -143,7 +143,7 @@
                     </ul>
                 </li>
                 <li class="sidebar-item  ">
-                    <a href="#" class='sidebar-link'>
+                    <a href="{{ route('penyusunan.kriteria') }}" class='sidebar-link'>
                         <i class="bi bi-file-earmark-medical-fill"></i>
                         <span>Kriteria & Sub Kriteria</span>
                     </a>

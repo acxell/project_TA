@@ -3,6 +3,7 @@
 use App\Http\Controllers\CoaController;
 use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\KegiatanController;
+use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\LpjController;
 use App\Http\Controllers\PendanaanController;
@@ -206,4 +207,18 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/validasi-data-retur', [ReturController::class, 'indexVal'])->name('pengajuan.retur.validasi');
     Route::patch('/retur/{retur}/accept', [ReturController::class, 'accept'])->name('retur.accept');
+
+    //Kriteria Sub Kriteria
+    Route::get('penyusunan/kriteria', [KriteriaController::class, 'showKriteria'])->name('penyusunan.kriteria');
+    Route::post('penyusunan/kriteria/{subkriteria}', [KriteriaController::class, 'storeSubkriteria'])->name('penyusunan.subkriteria.store');
+    Route::put('penyusunan/kriteria/subkriteria/{id}', [KriteriaController::class, 'updateSubkriteria'])->name('penyusunan.subkriteria.update');
+    Route::delete('penyusunan/aktivitas/subkriteria/{subkriteria}', [KriteriaController::class, 'destroySubkriteria'])->name('penyusunan.subkriteria.destroy');
+
+
+    Route::post('kriteria/store', [KriteriaController::class, 'storeKriteria'])->name('penyusunan.kriteria.store');
+    Route::put('updateKriteria/{kriteria}', [KriteriaController::class, 'updateKriteria'])->name('penyusunan.kriteria.update');
+    Route::delete('deleteKriteria/{kriteria}', [KriteriaController::class, 'destroyKriteria'])->name('penyusunan.kriteria.destroy');
+
+    //SAW
+    Route::post('/calculate-saw', [KegiatanController::class, 'triggerCalculateSAW'])->name('saw.calculate');
 });

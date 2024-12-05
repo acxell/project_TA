@@ -21,8 +21,19 @@
     <section class="section">
         <div class="card">
             <div class="card-body">
-                <div class="row">
+                <!-- Tombol Trigger SAW -->
+                <div class="row mb-3">
+                    <div class="col">
+                        <button id="trigger-saw" class="btn btn-primary">Hitung Ulang SAW</button>
+                    </div>
                 </div>
+
+                <!-- Hasil Perhitungan SAW -->
+                <div id="hasil-saw">
+                    <!-- Konten akan diperbarui melalui JavaScript -->
+                </div>
+
+                <!-- Tabel Kegiatan -->
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
@@ -34,7 +45,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                            @foreach ($kegiatan as $item)
+                        @foreach ($kegiatan as $item)
                         <tr>
                             <td>{{ $item->tor->nama_kegiatan }}</td>
                             <td>{{ $item->tor->proker->nama }}</td>
@@ -59,8 +70,43 @@
                 </table>
             </div>
         </div>
-
     </section>
 </div>
+
+<script>
+   document.getElementById('trigger-saw').addEventListener('click', function () {
+    if (confirm('Apakah Anda yakin ingin menghitung ulang SAW?')) {
+        fetch('{{ route('saw.calculate') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            const hasilSaw = document.getElementById('hasil-saw');
+            if (data.success) {
+                hasilSaw.innerHTML = `
+                    <div class="alert alert-success">
+                        ${data.message}
+                    </div>`;
+            } else {
+                hasilSaw.innerHTML = `
+                    <div class="alert alert-danger">
+                        ${data.message}
+                    </div>`;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('hasil-saw').innerHTML = `
+                <div class="alert alert-danger">
+                    Terjadi kesalahan saat memproses perhitungan SAW.
+                </div>`;
+        });
+    }
+});
+</script>
 
 @endsection

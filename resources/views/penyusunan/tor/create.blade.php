@@ -208,6 +208,31 @@
                                         </div>
                                     </div>
 
+                                    <div class="row">
+                                        @foreach($kriterias as $kriteria)
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label>{{ $kriteria->nama_kriteria }}</label>
+                                                @if($kriteria->tipe_kriteria === 'Select')
+                                                @if($kriteria->subkriteria && $kriteria->subkriteria->isNotEmpty())
+                                                <select name="kriteria[{{ $kriteria->id }}][subkriteria_id]" class="form-select">
+                                                    <option value="">-- Pilih --</option>
+                                                    @foreach($kriteria->subkriteria as $subkriteria)
+                                                    <option value="{{ $subkriteria->id }}">{{ $subkriteria->bobot_text_subkriteria }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @else
+                                                <p class="text-danger">Tidak ada subkriteria tersedia.</p>
+                                                @endif
+                                                @elseif($kriteria->tipe_kriteria === 'Interval')
+                                                <input type="number" name="kriteria[{{ $kriteria->id }}][nilai]" class="form-control" placeholder="Masukkan nilai">
+                                                @endif
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                    </div>
+
+
                                     <div class="card">
                                         <div class="card-content">
                                             <div class="card-body">

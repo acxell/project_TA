@@ -7,12 +7,15 @@ use App\Models\coa;
 use App\Models\indikatorKegiatan;
 use App\Models\kebutuhanAnggaran;
 use App\Models\Kegiatan;
+use App\Models\Kriteria;
 use App\Models\outcomeKegiatan;
 use App\Models\ProgramKerja;
 use App\Models\Rab;
 use App\Models\Tor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class TorController extends Controller
 {
@@ -32,8 +35,11 @@ class TorController extends Controller
         $tor = Tor::all();
         $proker = ProgramKerja::all();
         $coa = coa::all();
+        $kriterias = Kriteria::with('subkriteria')
+        ->where('status_kriteria', 1)
+        ->get();
 
-        return view('penyusunan.tor.create', ['tor' => $tor, 'proker' => $proker, 'coa' => $coa]);
+        return view('penyusunan.tor.create', compact('tor', 'proker', 'coa', 'kriterias'));
     }
 
     /**
@@ -62,6 +68,7 @@ class TorController extends Controller
             'waktu_aktivitas.*' => 'date|required',
             'penjelasan.*' => 'string|required',
             'kategori.*' => 'string|required',
+            'kriteria' => 'array|required',
         ]);
 
         $validateData['user_id'] = Auth::id();
@@ -101,6 +108,20 @@ class TorController extends Controller
                     'penjelasan' => $request->penjelasan[$index],
                     'kategori' => $request->kategori[$index],
                 ]);
+            }
+
+            foreach ($request->kriteria as $kriteriaId => $data) {
+                if (isset($data['nilai']) || isset($data['subkriteria_id'])) {
+                    DB::table('kriteria_kegiatan')->insert([
+                        'id' => Str::uuid(),
+                        'kegiatan_id' => $kegiatan->id,
+                        'kriteria_id' => $kriteriaId,
+                        'subkriteria_id' => $data['subkriteria_id'] ?? null,
+                        'nilai' => $data['nilai'] ?? null,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
             }
 
             return redirect()->route('penyusunan.kegiatan.view')->with('success', 'Data telah ditambahkan.');

@@ -7,6 +7,7 @@ use App\Models\coa;
 use App\Models\indikatorKegiatan;
 use App\Models\kebutuhanAnggaran;
 use App\Models\Kegiatan;
+use App\Models\Kriteria;
 use App\Models\outcomeKegiatan;
 use App\Models\pengguna;
 use App\Models\ProgramKerja;
@@ -15,6 +16,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class KegiatanController extends Controller
 {
@@ -123,7 +125,6 @@ class KegiatanController extends Controller
     {
         $proker = ProgramKerja::all();
 
-        // Load relasi kegiatan -> tor -> outcomes, indikators, aktivitas
         $kegiatan->load(['tor.outcomeKegiatan', 'tor.indikatorKegiatan', 'tor.aktivitas', 'tor.aktivitas.kebutuhanAnggaran', 'tor.rab']);
 
         return view('penyusunan.kegiatan.detail', [
@@ -276,6 +277,86 @@ class KegiatanController extends Controller
             return redirect()->route('finalisasi.finalisasiKegiatan.view')->with('success', 'Pengajuan telah diterima.');
         }
     }
+
+    //SAW
+    public function calculateSAW()
+{
+    $kriteria = DB::table('kriterias')
+        ->where('status_kriteria', true)
+        ->get();
+
+    $kegiatanKriteria = DB::table('kriteria_kegiatan')
+        ->join('kegiatans', 'kriteria_kegiatan.kegiatan_id', '=', 'kegiatans.id')
+        ->join('kriterias', 'kriteria_kegiatan.kriteria_id', '=', 'kriterias.id')
+        ->leftJoin('subkriterias', 'kriteria_kegiatan.subkriteria_id', '=', 'subkriterias.id')
+        ->select(
+            'kriteria_kegiatan.kegiatan_id',
+            'kriteria_kegiatan.kriteria_id',
+            'subkriterias.nilai_bobot_subkriteria',
+            'kriterias.jenis_kriteria',
+            'kriterias.bobot_kriteria'
+        )
+        ->get();
+
+    $normalisasi = [];
+    foreach ($kriteria as $k) {
+        $filtered = $kegiatanKriteria->where('kriteria_id', $k->id);
+        if ($filtered->isEmpty()) continue; 
+    
+        if ($k->jenis_kriteria === 'Benefit') {
+            $maxValue = $filtered->max('nilai_bobot_subkriteria');
+            if ($maxValue > 0) {
+                foreach ($filtered as $item) {
+                    $normalisasi[$item->kegiatan_id][$k->id] = $item->nilai_bobot_subkriteria / $maxValue;
+                }
+            }
+        } elseif ($k->jenis_kriteria === 'Cost') {
+            $minValue = $filtered->min('nilai_bobot_subkriteria');
+            if ($minValue > 0) {
+                foreach ($filtered as $item) {
+                    $normalisasi[$item->kegiatan_id][$k->id] = $minValue / $item->nilai_bobot_subkriteria;
+                }
+            }
+        }
+    }
+
+    $hasilSAW = [];
+    foreach ($normalisasi as $kegiatanId => $kriteriaValues) {
+        $totalScore = 0;
+        foreach ($kriteriaValues as $kriteriaId => $normalizedValue) {
+            $kriteriaObj = $kriteria->firstWhere('id', $kriteriaId);
+            if ($kriteriaObj) { 
+                $totalScore += $normalizedValue * $kriteriaObj->bobot_kriteria;
+            }
+        }
+        $hasilSAW[$kegiatanId] = $totalScore;
+    }
+
+    foreach ($hasilSAW as $kegiatanId => $score) {
+        DB::table('perangkingan')->updateOrInsert(
+            ['id' => Str::uuid(),
+                'kegiatan_id' => $kegiatanId],
+            ['hasil_akhir' => $score, 'updated_at' => now()]
+        );
+    }
+
+    return response()->json(['success' => true, 'message' => 'Perhitungan SAW selesai.']);
+}
+
+
+
+public function triggerCalculateSAW()
+{
+    try {
+        DB::table('perangkingan')->truncate();
+
+        $this->calculateSAW();
+
+        return response()->json(['success' => true, 'message' => 'Perhitungan SAW berhasil dilakukan dan disimpan.']);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => 'Terjadi kesalahan: ' . $e->getMessage()]);
+    }
+}
 
 
     // Pengajuan Pendanaan Kegiatan

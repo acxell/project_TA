@@ -24,6 +24,43 @@
 </div>
 
 <section class="section">
+    <div class="modal fade" id="modalCreateAktivitas" tabindex="-1" role="dialog" aria-labelledby="modalCreateAktivitasLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalCreateAktivitasLabel">Create Aktivitas</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ route('penyusunan.aktivitas.store', $tor->id) }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="penjelasan">Penjelasan Aktivitas</label>
+                            <input type="text" name="penjelasan" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="waktu_aktivitas">Waktu Aktivitas</label>
+                            <input type="date" name="waktu_aktivitas" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="kategori">Kategori</label>
+                            <select class="choices form-select" name="kategori">
+                                <option value="Persiapan">Persiapan</option>
+                                <option value="Pelaksanaan">Pelaksanaan</option>
+                                <option value="Pelaporan">Pelaporan</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     @foreach($aktivitas as $item)
     <div class="card">
         <div class="card-body">
@@ -233,43 +270,6 @@
                 </tbody>
             </table>
             <!-- Modal Create Aktivitas -->
-            <div class="modal fade" id="modalCreateAktivitas" tabindex="-1" role="dialog" aria-labelledby="modalCreateAktivitasLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalCreateAktivitasLabel">Create Aktivitas</h5>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <form action="{{ route('penyusunan.aktivitas.store', $tor->id) }}" method="POST">
-                            @csrf
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="penjelasan">Penjelasan Aktivitas</label>
-                                    <input type="text" name="penjelasan" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="waktu_aktivitas">Waktu Aktivitas</label>
-                                    <input type="date" name="waktu_aktivitas" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="kategori">Kategori</label>
-                                    <select class="choices form-select" name="kategori">
-                                        <option value="Persiapan">Persiapan</option>
-                                        <option value="Pelaksanaan">Pelaksanaan</option>
-                                        <option value="Pelaporan">Pelaporan</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Simpan</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     @endforeach

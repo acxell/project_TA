@@ -78,7 +78,7 @@ class KriteriaController extends Controller
              'nama_kriteria' => 'required|string|max:50',
              'jenis_kriteria' => 'required|string',
              'tipe_kriteria' => 'required|string',
-             'bobot_kriteria' => 'required|max:1',
+             'bobot_kriteria' => 'required|numeric|between:0,1',
              'status_kriteria' => 'required',
          ]);
  
@@ -100,7 +100,7 @@ class KriteriaController extends Controller
             'nama_kriteria' => 'required|string|max:50',
              'jenis_kriteria' => 'required|string',
              'tipe_kriteria' => 'required|string',
-             'bobot_kriteria' => 'required|numeric|max:1',
+             'bobot_kriteria' => 'required|numeric|between:0,1',
              'status_kriteria' => 'required',
          ]);
  

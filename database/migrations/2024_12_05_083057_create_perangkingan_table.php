@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('perangkingan', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('kegiatan_id');
-            $table->double('hasil_akhir');
+            $table->decimal('hasil_akhir');
             $table->timestamps();
 
             $table->foreign('kegiatan_id')->references('id')->on('kegiatans')->cascadeOnDelete();

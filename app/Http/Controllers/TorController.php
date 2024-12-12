@@ -11,6 +11,7 @@ use App\Models\Kriteria;
 use App\Models\outcomeKegiatan;
 use App\Models\ProgramKerja;
 use App\Models\Rab;
+use App\Models\Subkriteria;
 use App\Models\Tor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -111,18 +112,41 @@ class TorController extends Controller
             }
 
             foreach ($request->kriteria as $kriteriaId => $data) {
-                if (isset($data['nilai']) || isset($data['subkriteria_id'])) {
+                $kriteria = Kriteria::find($kriteriaId);
+            
+                if ($kriteria && $kriteria->tipe_kriteria === 'Interval' && isset($data['nilai'])) {
+                    $nilai = $data['nilai'];
+            
+                    // Cari subkriteria yang sesuai dengan nilai
+                    $subkriteria = Subkriteria::where('id_kriteria', $kriteriaId)
+                        ->where('batas_bawah_bobot_subkriteria', '<=', $nilai)
+                        ->where('batas_atas_bobot_subkriteria', '>=', $nilai)
+                        ->first();
+            
+                    if ($subkriteria) {
+                        DB::table('kriteria_kegiatan')->insert([
+                            'id' => Str::uuid(),
+                            'kegiatan_id' => $kegiatan->id,
+                            'kriteria_id' => $kriteriaId,
+                            'subkriteria_id' => $subkriteria->id,
+                            'nilai' => $nilai,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+                    }
+                } elseif ($kriteria && $kriteria->tipe_kriteria === 'Select' && isset($data['subkriteria_id'])) {
                     DB::table('kriteria_kegiatan')->insert([
                         'id' => Str::uuid(),
                         'kegiatan_id' => $kegiatan->id,
                         'kriteria_id' => $kriteriaId,
-                        'subkriteria_id' => $data['subkriteria_id'] ?? null,
-                        'nilai' => $data['nilai'] ?? null,
+                        'subkriteria_id' => $data['subkriteria_id'],
+                        'nilai' => null,
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);
                 }
             }
+            
 
             return redirect()->route('penyusunan.kegiatan.view')->with('success', 'Data telah ditambahkan.');
         }

@@ -56,7 +56,7 @@
                         </div>
                         <div class="form-group">
                             <label for="bobot_kriteria">Bobot Kriteria</label>
-                            <input type="number" name="bobot_kriteria" class="form-control" required>
+                            <input type="number" name="bobot_kriteria" class="form-control" min="0" max="1" step="0.1" required>
                         </div>
                         <div class="form-group">
                             <label for="status_kriteria">Status Kriteria</label>
@@ -186,7 +186,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="bobot_kriteria">Bobot Kriteria</label>
-                                            <input type="number" name="bobot_kriteria" class="form-control" value="{{ $item->bobot_kriteria }}" required>
+                                            <input type="number" name="bobot_kriteria" class="form-control" value="{{ $item->bobot_kriteria }}" min="0" max="1" step="0.1" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="status_kriteria">Status Kriteria</label>

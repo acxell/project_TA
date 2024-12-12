@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama_kriteria');
             $table->string('jenis_kriteria');
             $table->string('tipe_kriteria');
-            $table->double('bobot_kriteria');
+            $table->decimal('bobot_kriteria',2,1);
             $table->boolean('status_kriteria');
             $table->timestamps();
         });

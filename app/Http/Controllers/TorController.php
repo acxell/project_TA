@@ -37,8 +37,8 @@ class TorController extends Controller
         $proker = ProgramKerja::all();
         $coa = coa::all();
         $kriterias = Kriteria::with('subkriteria')
-        ->where('status_kriteria', 1)
-        ->get();
+            ->where('status_kriteria', 1)
+            ->get();
 
         return view('penyusunan.tor.create', compact('tor', 'proker', 'coa', 'kriterias'));
     }
@@ -113,16 +113,16 @@ class TorController extends Controller
 
             foreach ($request->kriteria as $kriteriaId => $data) {
                 $kriteria = Kriteria::find($kriteriaId);
-            
+
                 if ($kriteria && $kriteria->tipe_kriteria === 'Interval' && isset($data['nilai'])) {
                     $nilai = $data['nilai'];
-            
+
                     // Cari subkriteria yang sesuai dengan nilai
                     $subkriteria = Subkriteria::where('id_kriteria', $kriteriaId)
                         ->where('batas_bawah_bobot_subkriteria', '<=', $nilai)
                         ->where('batas_atas_bobot_subkriteria', '>=', $nilai)
                         ->first();
-            
+
                     if ($subkriteria) {
                         DB::table('kriteria_kegiatan')->insert([
                             'id' => Str::uuid(),
@@ -146,7 +146,7 @@ class TorController extends Controller
                     ]);
                 }
             }
-            
+
 
             return redirect()->route('penyusunan.kegiatan.view')->with('success', 'Data telah ditambahkan.');
         }
@@ -170,12 +170,25 @@ class TorController extends Controller
         $proker = ProgramKerja::all();
         $coa = Coa::all();
 
-        // Only fetch related records for the current TOR
         $aktivitas = Aktivitas::where('tor_id', $tor->id)->get();
         $outcomes = outcomeKegiatan::where('tor_id', $tor->id)->get();
         $indikators = indikatorKegiatan::where('tor_id', $tor->id)->get();
 
-        return view('penyusunan.tor.edit', compact('tor', 'aktivitas', 'proker', 'coa', 'outcomes', 'indikators'));
+        $kegiatan = Kegiatan::where('tor_id', $tor->id)->first();
+
+        if (!$kegiatan) {
+            return redirect()->back()->with('error', 'Kegiatan tidak ditemukan.');
+        }
+
+        $kriterias = Kriteria::with('subkriteria')->where('status_kriteria', 1)->get();
+
+        $kriteriaKegiatan = DB::table('kriteria_kegiatan')
+            ->where('kegiatan_id', $kegiatan->id)
+            ->get()
+            ->keyBy('kriteria_id');
+
+
+        return view('penyusunan.tor.edit', compact('tor', 'aktivitas', 'proker', 'coa', 'outcomes', 'indikators', 'kriterias', 'kriteriaKegiatan'));
     }
 
     public function update(Request $request, $id)
@@ -197,11 +210,55 @@ class TorController extends Controller
             'metode_pelaksanaan' => 'string|required',
             'outcomes.*' => 'string|required',
             'indikators.*' => 'string|required',
+            'kriteria' => 'array|required',
+            'kriteria.*.nilai' => 'nullable|numeric',
+            'kriteria.*.subkriteria_id' => 'nullable|exists:subkriterias,id',
         ]);
 
-        // Update the main TOR record
         $tor = Tor::findOrFail($id);
+        $kegiatan = Kegiatan::where('tor_id', $tor->id)->first();
+
+        if (!$kegiatan) {
+            return redirect()->back()->with('error', 'Kegiatan tidak ditemukan.');
+        }
         $tor->update($validateData);
+
+        foreach ($validateData['kriteria'] as $kriteriaId => $data) {
+            $kriteria = Kriteria::find($kriteriaId);
+
+            if ($kriteria && $kriteria->tipe_kriteria === 'Interval' && isset($data['nilai'])) {
+                $nilai = $data['nilai'];
+
+                $subkriteria = Subkriteria::where('id_kriteria', $kriteriaId)
+                    ->where('batas_bawah_bobot_subkriteria', '<=', $nilai)
+                    ->where('batas_atas_bobot_subkriteria', '>=', $nilai)
+                    ->first();
+
+                DB::table('kriteria_kegiatan')->updateOrInsert(
+                    [
+                        'kegiatan_id' => $kegiatan->id,
+                        'kriteria_id' => $kriteriaId,
+                    ],
+                    [
+                        'subkriteria_id' => $subkriteria ? $subkriteria->id : null,
+                        'nilai' => $nilai,
+                        'updated_at' => now(),
+                    ]
+                );
+            } elseif ($kriteria && $kriteria->tipe_kriteria === 'Select' && isset($data['subkriteria_id'])) {
+                DB::table('kriteria_kegiatan')->updateOrInsert(
+                    [
+                        'kegiatan_id' => $kegiatan->id,
+                        'kriteria_id' => $kriteriaId,
+                    ],
+                    [
+                        'subkriteria_id' => $data['subkriteria_id'],
+                        'nilai' => null,
+                        'updated_at' => now(),
+                    ]
+                );
+            }
+        }
 
         // Retrieve current outcomes, indikator, and aktivitas IDs
         $existingOutcomeIds = $request->outcome_ids ?? [];
@@ -312,7 +369,7 @@ class TorController extends Controller
 
         $anggaran->update($validateData);
 
-       
+
 
         $tor_id = $anggaran->aktivitas->tor_id;
         $rab = RAB::where('tor_id', $tor_id)->first();

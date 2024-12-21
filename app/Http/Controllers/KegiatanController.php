@@ -10,6 +10,7 @@ use App\Models\Kegiatan;
 use App\Models\Kriteria;
 use App\Models\outcomeKegiatan;
 use App\Models\pengguna;
+use App\Models\Perangkingan;
 use App\Models\ProgramKerja;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -25,7 +26,7 @@ class KegiatanController extends Controller
      */
     public function index()
     {
-        $kegiatan = Kegiatan::all();
+        $kegiatan = Kegiatan::where('jenis', 'Tahunan')->get();
 
         return view('penyusunan.kegiatan.view', ['kegiatan' => $kegiatan]);
     }
@@ -112,11 +113,6 @@ class KegiatanController extends Controller
 
         return redirect()->route('penyusunan.kegiatan.view')->with('failed', 'Data gagal ditambahkan.');
     }
-
-
-
-
-
 
     /**
      * Display the specified resource.
@@ -252,7 +248,7 @@ class KegiatanController extends Controller
 
     public function finalisasi_index()
     {
-        $kegiatan = Kegiatan::whereIn('status', ['Proses Finalisasi Pengajuan ', 'Diterima'])->get();
+        $kegiatan = Perangkingan::all();
 
         $proker = ProgramKerja::all();
 
@@ -377,7 +373,7 @@ class KegiatanController extends Controller
 
     public function pendanaan_kegiatan_index()
     {
-        $kegiatan = Kegiatan::whereIn('status', ['Diterima', 'Proses Pendanaan'])->get();
+        $kegiatan = Kegiatan::where('jenis', 'Tahunan')->whereIn('status', ['Diterima', 'Proses Pendanaan'])->get();
 
         $proker = ProgramKerja::all();
 

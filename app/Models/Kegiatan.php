@@ -56,6 +56,11 @@ class Kegiatan extends Model
         return $this->hasOne(Lpj::class, 'kegiatan_id', 'id');
     }
 
+    public function perangkingan ()
+    {
+        return $this->belongsTo(Perangkingan::class, 'kegiatan_id', 'id');
+    }
+
     public function getIncrementing()
     {
         return false;

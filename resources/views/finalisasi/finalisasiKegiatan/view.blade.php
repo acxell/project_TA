@@ -47,21 +47,21 @@
                     <tbody>
                         @foreach ($kegiatan as $item)
                         <tr>
-                            <td>{{ $item->tor->nama_kegiatan }}</td>
-                            <td>{{ $item->tor->proker->nama }}</td>
+                            <td>{{ $item->kegiatan->tor->nama_kegiatan }}</td>
+                            <td>{{ $item->kegiatan->tor->proker->nama }}</td>
                             <td>
-                                @unless(empty($item->tor->rab->total_biaya))
-                                @currency($item->tor->rab->total_biaya)
+                                @unless(empty($item->kegiatan->tor->rab->total_biaya))
+                                @currency($item->kegiatan->tor->rab->total_biaya)
                                 @else
                                 N/A <!-- Atau pesan lain -->
                                 @endunless
                             </td>
                             <td>
-                                <span class="badge {{ $item->status == 'Aktif' ? 'bg-success' : 'bg-danger' }}">
-                                    {{ $item->status }}
+                                <span class="badge {{ $item->kegiatan->status == 'Aktif' ? 'bg-success' : 'bg-danger' }}">
+                                    {{ $item->kegiatan->status }}
                                 </span>
                             </td>
-                            <td><a href="{{ route('finalisasi.finalisasiKegiatan.finalisasi', $item->id) }}"><i class="badge-circle font-small-1"
+                            <td><a href="{{ route('finalisasi.finalisasiKegiatan.finalisasi', $item->kegiatan->id) }}"><i class="badge-circle font-small-1"
                                         data-feather="check"></i></a>
                             </td>
                         </tr>

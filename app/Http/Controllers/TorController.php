@@ -86,6 +86,8 @@ class TorController extends Controller
                 'unit_id' => $validateData['unit_id'],
                 'satuan_id' => $validateData['satuan_id'],
                 'rab_id' => null,
+                'jenis' => 'Tahunan',
+                'tahunan_id' => null,
             ]);
 
             foreach ($request->outcomes as $outcome) {
@@ -383,7 +385,7 @@ class TorController extends Controller
             $rab->save();
         }
 
-        return redirect()->route('penyusunan.tor.aktivitas', ['tor' => $tor_id])
+        return redirect()->back()
             ->with('success', 'Kebutuhan anggaran berhasil diperbarui dan total biaya RAB diperbarui.');
     }
 
@@ -407,7 +409,7 @@ class TorController extends Controller
             $rab->save();
         }
 
-        return redirect()->route('penyusunan.tor.aktivitas', ['tor' => $tor_id])
+        return redirect()->back()
             ->with('success', 'Kebutuhan anggaran berhasil dihapus dan total biaya RAB diperbarui.');
     }
 
@@ -427,7 +429,7 @@ class TorController extends Controller
             'tor_id' => $tor->id,
         ]);
 
-        return redirect()->route('penyusunan.tor.aktivitas', $tor->id);
+        return redirect()->back();
     }
 
     // Update Aktivitas
@@ -441,13 +443,13 @@ class TorController extends Controller
 
         $aktivitas->update($request->all());
 
-        return redirect()->route('penyusunan.tor.aktivitas', $aktivitas->tor_id);
+        return redirect()->back();
     }
 
     // Delete Aktivitas
     public function destroyAktivitas(Aktivitas $aktivitas)
     {
         $aktivitas->delete();
-        return redirect()->route('penyusunan.tor.aktivitas', $aktivitas->tor_id);
+        return redirect()->back();
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CoaController;
 use App\Http\Controllers\dashboardController;
+use App\Http\Controllers\KegiatanBulananController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\loginController;
@@ -147,6 +148,13 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Actions Pendanaan
     Route::get('/data-pengajuan-pendanaan-kegiatan', [KegiatanController::class, 'pendanaan_kegiatan_index'])->name('pengajuan.pendanaanKegiatan.view');
+    Route::get('/data-pengajuan-pendanaan-kegiatan/{kegiatan}', [KegiatanBulananController::class, 'index'])->name('viewBulanan');
+    Route::get('/create-pengajuan-kegiatan-bulanan/{kegiatan}', [KegiatanBulananController::class, 'create'])->name('createBulanan');
+    Route::get('/edit-pengajuan-kegiatan-bulanan/{tor}', [KegiatanBulananController::class, 'edit'])->name('editBulanan');
+    Route::post('/update-pengajuan-kegiatan-bulanan/{tor}', [KegiatanBulananController::class, 'update'])->name('updateBulanan');
+    Route::get('/penyusunan/pengajuan-kegiatan/{tor}/aktivitas-bulanan', [KegiatanBulananController::class, 'showAktivitasBulanan'])->name('aktivitasBulanan');
+    Route::post('/store-pengajuan-kegiatan-bulanan/{kegiatan}', [KegiatanBulananController::class, 'store'])->name('storeBulanan');
+    Route::delete('/delete-pengajuan-kegiatan-bulanan/{kegiatan}', [KegiatanBulananController::class, 'destroyBulanan'])->name('destroyBulanan');
     Route::get('/data-pengajuan/{kegiatan}/pendanaan-kegiatan', [KegiatanController::class, 'konfirmasiPendanaan'])->name('pengajuan.pendanaanKegiatan.detail');
     Route::post('/data-pengajuan/{kegiatan}/ajukan-pendanaan-kegiatan', [KegiatanController::class, 'pendanaan'])->name('pengajuan.pendanaanKegiatan.ajukan');
 
@@ -222,3 +230,4 @@ Route::group(['middleware' => 'auth'], function () {
     //SAW
     Route::post('/calculate-saw', [KegiatanController::class, 'triggerCalculateSAW'])->name('saw.calculate');
 });
+

@@ -1,5 +1,5 @@
 @extends('master.master')
-@section('title', 'Data Pengajuan Pendanaan Kegiatan')
+@section('title', 'Data Pengajuan Pendanaan Kegiatan '. $kegiatan)
 @section('content')
 
 <div class="page-heading">
@@ -21,6 +21,11 @@
     <section class="section">
         <div class="card">
             <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-md-12 order-md-2 order-last">
+                        <a class="btn btn-primary" href="{{ route('createBulanan', $kegiatan_id) }}">Create</a>
+                    </div>
+                </div>
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
@@ -32,7 +37,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($kegiatan as $item)
+                        @foreach ($kegiatanBulanan as $item)
                         <tr>
                             <td>{{ $item->tor->nama_kegiatan }}</td>
                             <td>{{ $item->tor->proker->nama }}</td>
@@ -48,8 +53,19 @@
                                     {{ $item->status }}
                                 </span>
                             </td>
-                            <td><a href="{{ route('viewBulanan', $item->id) }}"><i class="badge-circle font-small-1"
+                            <td>
+                                <a href="{{ route('editBulanan', $item->tor->id) }}"><i class="badge-circle font-medium-1"
+                                        data-feather="edit"></i></a>
+                                <a href="{{ route('pengajuan.pendanaanKegiatan.detail', $item->id) }}"><i class="badge-circle font-small-1"
                                         data-feather="dollar-sign"></i></a>
+                                <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $item->id }}').submit();">
+                                    <i class="badge-circle font-medium-1" data-feather="trash"></i>
+                                </a>
+                                <form id="delete-form-{{ $item->id }}" action="{{ route('destroyBulanan', $item->id) }}" method="POST" style="display:none;">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+                                <a href="{{ route('aktivitasBulanan', $item->tor->id) }}" class="btn btn-info">Lihat Aktivitas</a>
                             </td>
                         </tr>
                         @endforeach

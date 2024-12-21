@@ -28,7 +28,7 @@
                         <div class="card-body">
                             <form class="form">
                                 <div class="row">
-                                <div class="col-md-6 col-12">
+                                    <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label>Nama Kegiatan</label>
                                             <input type="text" id="nama_kegiatan" class="form-control @error('nama_kegiatan') is-invalid @enderror"
@@ -45,16 +45,15 @@
                                             @error ('besaran_transfer') is invalid
                                             @enderror"
                                                 placeholder="Nominal Transfer" name="besaran_transfer" value="{{ old('besaran_transfer')  ?? $pendanaan->besaran_transfer }}" disabled>
-                                                @error('besaran_transfer')
-                                                <div class="alert alert-danger">{{ $message }}</div>
-                                                @enderror
+                                            @error('besaran_transfer')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label>Bukti Transfer</label>
-                                            <a href="{{ asset('storage/' . $pendanaan->bukti_transfer) }}"
-                                                target="_blank">Download</a>
+                                            <iframe src="{{ asset('storage/' . $pendanaan->bukti_transfer) }}" width="100%" height="500px"></iframe>
                                         </div>
                                     </div>
                                     <div class="col-12 d-flex justify-content-end">

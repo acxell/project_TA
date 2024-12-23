@@ -44,8 +44,8 @@
                             <td>@currency($item->kegiatan->pendanaan->first()->besaran_transfer ?? 0)</td>
                             <td>@currency($item->total_belanja)</td>
                             <td>
-                                <a href="{{ route('penyusunan.lpjKegiatan.detail', $item->id) }}"><i class="badge-circle font-small-1"
-                                        data-feather="eye"></i></a>
+                                @if($item->status == 'Belum Dilaporkan' || $item->status == 'Ditolak')
+                                <a href="{{ route('penyusunan.lpjKegiatan.rincian', $item->id) }}" class="btn btn-info">Lihat Rincian</a>
                                 <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $item->id }}').submit();">
                                     <i class="badge-circle font-medium-1" data-feather="trash"></i>
                                 </a>
@@ -56,8 +56,9 @@
                                 <a href="{{ route('penyusunan.lpjKegiatan.edit', $item->id) }}"><i class="badge-circle font-medium-1"
                                         data-feather="edit"></i></a>
 
-                                <a href="{{ route('penyusunan.lpjKegiatan.rincian', $item->id) }}" class="btn btn-info">Lihat Rincian</a>
-
+                                @endif
+                                <a href="{{ route('penyusunan.lpjKegiatan.detail', $item->id) }}"><i class="badge-circle font-small-1"
+                                data-feather="eye"></i></a>
                             </td>
                         </tr>
                         @endforeach

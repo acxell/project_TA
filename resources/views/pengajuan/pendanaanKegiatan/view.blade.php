@@ -24,6 +24,7 @@
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Nama Kegiatan</th>
                             <th>Nama Program Kerja</th>
                             <th>Total Biaya</th>
@@ -34,6 +35,7 @@
                     <tbody>
                         @foreach ($kegiatan as $item)
                         <tr>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->tor->nama_kegiatan }}</td>
                             <td>{{ $item->tor->proker->nama }}</td>
                             <td>

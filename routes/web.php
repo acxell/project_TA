@@ -215,6 +215,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/validasi-data-retur', [ReturController::class, 'indexVal'])->name('pengajuan.retur.validasi');
     Route::patch('/retur/{retur}/accept', [ReturController::class, 'accept'])->name('retur.accept');
+    Route::patch('/retur/{retur}/decline', [ReturController::class, 'decline'])->name('retur.decline');
 
     //Kriteria Sub Kriteria
     Route::get('penyusunan/kriteria', [KriteriaController::class, 'showKriteria'])->name('penyusunan.kriteria');

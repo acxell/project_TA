@@ -14,10 +14,10 @@ class userUnitDataSeed extends Seeder
      */
     public function run(): void
     {
-        // Insert into the units table and capture the ID
-        $unitId = Str::uuid()->toString();  // Generate a UUID for the unit
+        $unitId = Str::uuid()->toString(); 
         $roleId = Str::uuid()->toString();
         $satkerId = Str::uuid()->toString();
+        $userId = Str::uuid()->toString();
         
         DB::table('satuan_kerjas')->insert([
             'id' => $satkerId,
@@ -41,14 +41,19 @@ class userUnitDataSeed extends Seeder
             'guard_name' => 'web',
         ]);
 
-        // Insert into the penggunas table using the same unit_id
         DB::table('penggunas')->insert([
-            'id' => Str::uuid()->toString(),
-            'nama' => Str::random(10),
+            'id' => $userId,
+            'nama' => 'Agung',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('admin123'),
             'status' => '1',
-            'unit_id' => $unitId,  // Use the ID from the previous insert
+            'unit_id' => $unitId,
+        ]);
+
+        DB::table('model_has_roles')->insert([
+            'role_id' => $roleId,
+            'model_type' => 'App\Models\pengguna',
+            'model_uuid' => $userId,
         ]);
 
     }

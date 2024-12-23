@@ -23,6 +23,11 @@ class ProgramKerja extends Model
         return $this->hasMany(Tor::class, 'proker_id', 'id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(Pengguna::class, 'user_id', 'id');
+    }
+
     public function getIncrementing()
     {
         return false;

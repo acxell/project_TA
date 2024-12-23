@@ -56,6 +56,11 @@
                                     @method('PATCH')
                                     <button type="submit" class="btn btn-success btn-sm">Accept</button>
                                 </form>
+                                <form action="{{ route('retur.decline', $item->id) }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="danger" class="btn btn-success btn-sm">Decline</button>
+                                </form>
                             </td>
                         </tr>
                         @endforeach

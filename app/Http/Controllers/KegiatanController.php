@@ -190,8 +190,12 @@ class KegiatanController extends Controller
 
     public function pengajuanIndex()
     {
-        $kegiatan = Kegiatan::all();
-
+        $kegiatan = Kegiatan::whereNotNull('rab_id')
+        ->whereHas('rab', function ($query) {
+            $query->where('total_biaya', '>', 0);
+        })
+        ->where('jenis', 'Tahunan')
+        ->get();
         //$kegiatan = Kegiatan::whereIn('status', ['Belum Diajukan'])->get();
 
         return view('pengajuan.anggaranTahunan.view', ['kegiatan' => $kegiatan]);
@@ -218,7 +222,9 @@ class KegiatanController extends Controller
 
     public function validasi_index()
     {
-        $kegiatan = Kegiatan::whereIn('status', ['Telah Diajukan', 'Diterima'])->get();
+        $kegiatan = Kegiatan::whereIn('status', ['Telah Diajukan', 'Diterima', 'Proses Finalisasi Pengajuan', 'Diterima Atasan Unit'])
+        ->where('jenis', 'Tahunan')
+        ->get();
 
         $proker = ProgramKerja::all();
 
@@ -285,6 +291,7 @@ class KegiatanController extends Controller
             ->join('kegiatans', 'kriteria_kegiatan.kegiatan_id', '=', 'kegiatans.id')
             ->join('kriterias', 'kriteria_kegiatan.kriteria_id', '=', 'kriterias.id')
             ->leftJoin('subkriterias', 'kriteria_kegiatan.subkriteria_id', '=', 'subkriterias.id')
+            ->where('kegiatans.status', 'Proses Finalisasi Pengajuan')
             ->select(
                 'kriteria_kegiatan.kegiatan_id',
                 'kriteria_kegiatan.kriteria_id',

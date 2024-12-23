@@ -21,6 +21,11 @@ class Rab extends Model
         return $this->belongsTo(Tor::class, 'tor_id', 'id');
     }
 
+    public function kegiatan()
+    {
+        return $this->belongsTo(Kegiatan::class, 'rab_id', 'id');
+    }
+
     public function getIncrementing()
     {
         return false;

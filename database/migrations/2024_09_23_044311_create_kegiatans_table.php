@@ -19,8 +19,8 @@ return new class extends Migration
             $table->uuid('user_id');
             $table->uuid('unit_id');
             $table->uuid('satuan_id');
-            $table->string('jenis');
-            $table->uuid('tahunan_id');
+            $table->string('jenis')->nullable();
+            $table->uuid('tahunan_id')->nullable();
             $table->timestamps();
 
             $table->foreign('tor_id')->references('id')->on('tors')->onDelete('cascade');

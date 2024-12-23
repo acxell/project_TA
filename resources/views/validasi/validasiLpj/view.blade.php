@@ -46,8 +46,11 @@
                                     {{ $item->status }}
                                 </span>
                             </td>
-                            <td><a href="{{ route('validasi.validasiLpj.validasi', $item->id) }}"><i class="badge-circle font-small-1"
+                            <td>
+                            @if($item->status == 'Proses Pelaporan')    
+                            <a href="{{ route('validasi.validasiLpj.validasi', $item->id) }}"><i class="badge-circle font-small-1"
                             data-feather="check"></i></a>
+                            @endif
                             </td>
                         </tr>
                         @endforeach

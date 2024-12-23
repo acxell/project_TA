@@ -42,8 +42,11 @@
                                     {{ $item->status }}
                                 </span>
                             </td>
-                            <td><a href="{{ route('pendanaan.givePendanaan.detail', $item->id) }}"><i class="badge-circle font-small-1"
+                            <td>
+                            @if($item->status != 'Telah Didanai')     
+                            <a href="{{ route('pendanaan.givePendanaan.detail', $item->id) }}"><i class="badge-circle font-small-1"
                                         data-feather="dollar-sign"></i></a>
+                                        @endif
                             </td>
                         </tr>
                         @endforeach

@@ -29,6 +29,7 @@
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Nama Kegiatan</th>
                             <th>Nama Program Kerja</th>
                             <th>Total Biaya</th>
@@ -38,6 +39,7 @@
                     <tbody>
                         @foreach ($kegiatan as $item)
                         <tr>
+                        <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->tor->nama_kegiatan }}</td>
                             <td>{{ $item->tor->proker->nama }}</td>
                             <td>
@@ -47,8 +49,10 @@
                                 N/A
                                 @endunless
                             </td>
-                            <td><a href="{{ route('penyusunan.kegiatan.detail', $item->id) }}"><i class="badge-circle font-small-1"
-                                        data-feather="eye"></i></a>
+                            <td> @if($item->status == 'Belum Diajukan' || $item->status == 'Ditolak')
+                            <a href="{{ route('penyusunan.kegiatan.detail', $item->id) }}">
+                                    <i class="badge-circle font-small-1" data-feather="eye"></i>
+                                </a>
                                 <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $item->id }}').submit();">
                                     <i class="badge-circle font-medium-1" data-feather="trash"></i>
                                 </a>
@@ -56,11 +60,15 @@
                                     @csrf
                                     @method('DELETE')
                                 </form>
-                                <a href="{{ route('penyusunan.tor.edit', $item->tor->id) }}"><i class="badge-circle font-medium-1"
-                                        data-feather="edit"></i></a>
-
+                                <a href="{{ route('penyusunan.tor.edit', $item->tor->id) }}">
+                                    <i class="badge-circle font-medium-1" data-feather="edit"></i>
+                                </a>
                                 <a href="{{ route('penyusunan.tor.aktivitas', $item->tor->id) }}" class="btn btn-info">Lihat Aktivitas</a>
-
+                                @else
+                                <a href="{{ route('penyusunan.kegiatan.detail', $item->id) }}">
+                                    <i class="badge-circle font-small-1" data-feather="eye"></i>
+                                </a>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

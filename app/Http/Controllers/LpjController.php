@@ -157,7 +157,7 @@ class LpjController extends Controller
     //Validasi Pengajuan
     public function validasi_lpj_index()
     {
-        $lpj = Lpj::whereIn('status', ['Proses Pelaporan', 'Selesai', 'Perlu Retur'])->get();
+        $lpj = Lpj::whereIn('status', ['Proses Pelaporan', 'Selesai', 'Perlu Retur', 'Ditolak'])->get();
 
         $kegiatan = Kegiatan::all();
 

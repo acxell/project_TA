@@ -29,6 +29,7 @@
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Nama Program Kerja</th>
                             <th>Status</th>
                             <th>Actions</th>
@@ -37,6 +38,7 @@
                     <tbody>
                         @foreach ($programKerja as $item)
                         <tr>
+                        <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->nama }}</td>
                             <td>
                                 <span class="badge {{ $item->status == 1 ? 'bg-success' : 'bg-danger' }}">
@@ -83,18 +85,11 @@
                                 <i class="bx bx-x d-block d-sm-none"></i>
                                 <span class="d-none d-sm-block">Close</span>
                             </button>
-                            <button type="button" class="btn btn-primary ms-1" data-bs-dismiss="modal">
-                                <i class="bx bx-check d-block d-sm-none"></i>
-                                <span class="d-none d-sm-block">Accept</span>
-                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
-
     </section>
 </div>
 

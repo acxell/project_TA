@@ -44,16 +44,48 @@
                                     {{ $item->status }}
                                 </span>
                             </td>
-                            <td><a href="{{ route('pengajuan.lpj.detail', $item->id) }}"><i class="badge-circle font-small-1"
+                            <td>
+                            @if($item->status == 'Belum Dilaporkan')    
+                            <a href="{{ route('pengajuan.lpj.detail', $item->id) }}"><i class="badge-circle font-small-1"
                                         data-feather="folder-plus"></i></a>
+                                @endif
                                 @if($item->status == 'Ditolak')
-                                <a data-bs-toggle="modal" href="{{ route('pesanPerbaikan.lpj.view', $item->id) }}"
-                                    data-bs-target="#primary"><i class="badge-circle font-small-1"
-                                        data-feather="mail"></i></a>
+                                <a href="{{ route('pengajuan.lpj.detail', $item->id) }}"><i class="badge-circle font-small-1"
+                                        data-feather="folder-plus"></i></a>
+                                        <a data-bs-toggle="modal" href="#modal-{{ $item->id }}">
+                                    <i class="badge-circle font-small-1" data-feather="mail"></i>
+                                </a>
                                 @endif
 
                             </td>
                         </tr>
+                        <div class="modal fade text-left" id="modal-{{ $item->id }}" tabindex="-1" role="dialog"
+                            aria-labelledby="myModalLabel{{ $item->id }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-primary">
+                                        <h5 class="modal-title white" id="myModalLabel{{ $item->id }}">{{ $item->kegiatan->tor->nama_kegiatan }}</h5>
+                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                            <i data-feather="x"></i>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {{ $item->pesan_perbaikan->last()->pesan ?? 'No message available' }}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                                            <i class="bx bx-x d-block d-sm-none"></i>
+                                            <span class="d-none d-sm-block">Close</span>
+                                        </button>
+                                        <button type="button" class="btn btn-primary ms-1" data-bs-dismiss="modal">
+                                            <i class="bx bx-check d-block d-sm-none"></i>
+                                            <span class="d-none d-sm-block">Accept</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Modal -->
                         @endforeach
                     </tbody>
                 </table>
@@ -61,43 +93,6 @@
         </div>
 
         <div class="modal-primary me-1 mb-1 d-inline-block">
-            <!-- Button trigger for primary themes modal -->
-
-
-            <!--primary theme Modal -->
-            <div class="modal fade text-left" id="primary" tabindex="-1" role="dialog"
-                aria-labelledby="myModalLabel160" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-                    role="document">
-                    <div class="modal-content">
-                        <div class="modal-header bg-primary">
-                            @foreach ($lpj as $item)
-                            <h5 class="modal-title white" id="myModalLabel160">{{ $item->kegiatan->tor->nama_kegiatan }}
-                            </h5>
-                            <button type="button" class="close" data-bs-dismiss="modal"
-                                aria-label="Close">
-                                <i data-feather="x"></i>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            {{ $item->pesan_perbaikan->last()->pesan ?? 'No message available' }}
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-light-secondary"
-                                data-bs-dismiss="modal">
-                                <i class="bx bx-x d-block d-sm-none"></i>
-                                <span class="d-none d-sm-block">Close</span>
-                            </button>
-                            <button type="button" class="btn btn-primary ms-1"
-                                data-bs-dismiss="modal">
-                                <i class="bx bx-check d-block d-sm-none"></i>
-                                <span class="d-none d-sm-block">Accept</span>
-                            </button>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
         </div>
 
     </section>

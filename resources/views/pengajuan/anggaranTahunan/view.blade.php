@@ -1,18 +1,18 @@
 @extends('master.master')
-@section('title', 'Data Pengajuan Kegiatan Program Kerja')
+@section('title', 'Data Pengajuan Anggaran Tahunan Kegiatan')
 @section('content')
 
 <div class="page-heading">
     <div class="page-title">
         <div class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
-                <p class="text-subtitle text-muted">Seluruh Data Pengajuan Kegiatan Program Kerja</p>
+                <p class="text-subtitle text-muted">Seluruh Data Pengajuan Anggaran Tahunan Kegiatan Program Kerja</p>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Data Pengajuan Kegiatan</li>
+                        <li class="breadcrumb-item active" aria-current="page">Data Pengajuan Anggaran Tahunan</li>
                     </ol>
                 </nav>
             </div>
@@ -24,6 +24,7 @@
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Nama Kegiatan</th>
                             <th>Nama Program Kerja</th>
                             <th>Total Biaya</th>
@@ -34,6 +35,7 @@
                     <tbody>
                         @foreach ($kegiatan as $item)
                         <tr>
+                        <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->tor->nama_kegiatan }}</td>
                             <td>{{ $item->tor->proker->nama }}</td>
                             <td>
@@ -50,12 +52,14 @@
                                 </span>
                             </td>
                             <td>
+                                @if($item->status == 'Belum Diajukan' || $item->status == 'Ditolak')
                                 <a href="{{ route('pengajuan.anggaranTahunan.detail', $item->id) }}"><i class="badge-circle font-small-1"
                                         data-feather="folder-plus"></i></a>
                                 @if($item->status == 'Ditolak')
                                 <a data-bs-toggle="modal" href="#modal-{{ $item->id }}">
                                     <i class="badge-circle font-small-1" data-feather="mail"></i>
                                 </a>
+                                @endif
                                 @endif
                             </td>
                         </tr>

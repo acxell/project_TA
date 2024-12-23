@@ -26,6 +26,7 @@
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Nama Kegiatan</th>
                             <th>Nama Program Kerja</th>
                             <th>Total Biaya</th>
@@ -36,6 +37,7 @@
                     <tbody>
                             @foreach ($kegiatan as $item)
                         <tr>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->tor->nama_kegiatan }}</td>
                             <td>{{ $item->tor->proker->nama }}</td>
                             <td>
@@ -50,8 +52,10 @@
                                     {{ $item->status }}
                                 </span>
                             </td>
-                            <td><a href="{{ route('validasi.validasiAnggaran.validasi', $item->id) }}"><i class="badge-circle font-small-1"
+                            <td>@if($item->status == 'Telah Diajukan')
+                                <a href="{{ route('validasi.validasiAnggaran.validasi', $item->id) }}"><i class="badge-circle font-small-1"
                                         data-feather="check"></i></a>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

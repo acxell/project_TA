@@ -26,6 +26,11 @@ class Kegiatan extends Model
         return $this->belongsTo(Tor::class, 'tor_id', 'id');
     }
 
+    public function rab()
+    {
+        return $this->hasMany(Rab::class, 'id', 'rab_id');
+    }
+
     public function pesan_perbaikan()
     {
         return $this->hasMany(PesanPerbaikan::class, 'kegiatan_id', 'id');

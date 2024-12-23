@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tors', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('proker_id');
-            $table->string('nama_kegiatan')->unique();
+            $table->string('nama_kegiatan');
             $table->string('waktu', 7);
             $table->string('pic');
             $table->string('kepesertaan');

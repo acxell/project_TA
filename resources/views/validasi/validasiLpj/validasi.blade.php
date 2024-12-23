@@ -88,7 +88,7 @@
                                                     <td>{{ $rincian->waktu_belanja }}</td>
                                                     <td>@currency($rincian->harga)</td>
                                                     <td>{{ $rincian->keterangan }}</td>
-                                                    <td><a href="{{ asset('storage/' . $rincian->bukti) }}" target="_blank">View Bukti</a></td>
+                                                    <td><iframe src="{{ asset('storage/' . $rincian->bukti) }}" width="50%" height="400px">View Bukti</iframe></td>
                                                 </tr>
                                                 @empty
                                                 <tr>

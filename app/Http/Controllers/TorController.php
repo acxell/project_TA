@@ -33,8 +33,14 @@ class TorController extends Controller
      */
     public function create()
     {
+        $user = auth()->user();
+        $unitId = auth()->user()->unit_id;
         $tor = Tor::all();
-        $proker = ProgramKerja::all();
+        $proker = ProgramKerja::where('status', 1)
+        ->whereHas('user', function ($query) use ($user) {
+            $query->where('unit_id', $user->unit_id);
+        })
+        ->get();
         $coa = coa::all();
         $kriterias = Kriteria::with('subkriteria')
             ->where('status_kriteria', 1)

@@ -20,8 +20,8 @@ class KegiatanBulananController extends Controller
 {
     public function index(Kegiatan $kegiatan)
     {
+        
         $kegiatanBulanan = Kegiatan::where('tahunan_id', $kegiatan->id)->get();
-
         $proker = ProgramKerja::all();
 
         return view('pengajuan.pendanaanKegiatan.viewBulanan', [
@@ -61,7 +61,7 @@ class KegiatanBulananController extends Controller
         // Validate input
         $validateData = $request->validate([
             'proker_id' => 'string|required|exists:program_kerjas,id',
-            'nama_kegiatan' => 'string|required|unique:tors',
+            'nama_kegiatan' => 'string|required',
             'waktu' => 'required|date_format:Y-m',
             'pic' => 'string|required',
             'kepesertaan' => 'string|required',
@@ -170,7 +170,7 @@ class KegiatanBulananController extends Controller
             return redirect()->back()->with('error', 'Kegiatan tidak ditemukan.');
         }
 
-        return view('pengajuan.pendanaanKegiatan.edit', compact('tor', 'aktivitas', 'proker', 'coa', 'outcomes', 'indikators',));
+        return view('pengajuan.pendanaanKegiatan.edit', compact('tor', 'aktivitas', 'proker', 'coa', 'outcomes', 'indikators', 'kegiatan'));
     }
 
     public function update(Request $request, $id)

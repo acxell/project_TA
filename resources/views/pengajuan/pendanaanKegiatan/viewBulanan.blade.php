@@ -12,7 +12,8 @@
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Data Pengajuan Pendanaan Kegiatan</li>
+                        <li class="breadcrumb-item"><a href="{{ route('pengajuan.pendanaanKegiatan.view') }}">Data Pengajuan Pendanaan Kegiatan</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Kegiatan Bulanan</li>
                     </ol>
                 </nav>
             </div>
@@ -54,6 +55,7 @@
                                 </span>
                             </td>
                             <td>
+                                @if($item->status == 'Belum Diajukan')
                                 <a href="{{ route('editBulanan', $item->tor->id) }}"><i class="badge-circle font-medium-1"
                                         data-feather="edit"></i></a>
                                 <a href="{{ route('pengajuan.pendanaanKegiatan.detail', $item->id) }}"><i class="badge-circle font-small-1"
@@ -66,6 +68,7 @@
                                     @method('DELETE')
                                 </form>
                                 <a href="{{ route('aktivitasBulanan', $item->tor->id) }}" class="btn btn-info">Lihat Aktivitas</a>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

@@ -6,13 +6,13 @@
     <div class="page-title">
         <div class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
-                <p class="text-subtitle text-muted">Seluruh Data Pengajuan Anggaran</p>
+                <p class="text-subtitle text-muted">Seluruh Data Finalisasi Pengajuan Anggaran</p>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Data Pengajuan</li>
+                        <li class="breadcrumb-item active" aria-current="page">Data Perangkingan Finalisasi Kegiatan Tahunan</li>
                     </ol>
                 </nav>
             </div>
@@ -24,7 +24,7 @@
                 <!-- Tombol Trigger SAW -->
                 <div class="row mb-3">
                     <div class="col">
-                        <button id="trigger-saw" class="btn btn-primary">Hitung Ulang SAW</button>
+                        <button id="trigger-saw" class="btn btn-primary">Lakukan Perangkingan</button>
                     </div>
                 </div>
 
@@ -37,9 +37,11 @@
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Nama Kegiatan</th>
                             <th>Nama Program Kerja</th>
                             <th>Total Biaya</th>
+                            <th>Skor</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -47,6 +49,7 @@
                     <tbody>
                         @foreach ($kegiatan as $item)
                         <tr>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->kegiatan->tor->nama_kegiatan }}</td>
                             <td>{{ $item->kegiatan->tor->proker->nama }}</td>
                             <td>
@@ -56,13 +59,17 @@
                                 N/A <!-- Atau pesan lain -->
                                 @endunless
                             </td>
+                            <td>{{ $item->hasil_akhir }}</td>
                             <td>
                                 <span class="badge {{ $item->kegiatan->status == 'Aktif' ? 'bg-success' : 'bg-danger' }}">
                                     {{ $item->kegiatan->status }}
                                 </span>
                             </td>
-                            <td><a href="{{ route('finalisasi.finalisasiKegiatan.finalisasi', $item->kegiatan->id) }}"><i class="badge-circle font-small-1"
+                            <td>
+                                @if($item->status == 'Proses Finalisasi Pengajuan')
+                                <a href="{{ route('finalisasi.finalisasiKegiatan.finalisasi', $item->kegiatan->id) }}"><i class="badge-circle font-small-1"
                                         data-feather="check"></i></a>
+                                        @endif
                             </td>
                         </tr>
                         @endforeach
@@ -75,7 +82,6 @@
 
 <script>
    document.getElementById('trigger-saw').addEventListener('click', function () {
-    if (confirm('Apakah Anda yakin ingin menghitung ulang SAW?')) {
         fetch('{{ route('saw.calculate') }}', {
             method: 'POST',
             headers: {
@@ -97,6 +103,7 @@
                         ${data.message}
                     </div>`;
             }
+            setTimeout(() => location.reload(), 2000);
         })
         .catch(error => {
             console.error('Error:', error);
@@ -104,8 +111,8 @@
                 <div class="alert alert-danger">
                     Terjadi kesalahan saat memproses perhitungan SAW.
                 </div>`;
+                setTimeout(() => location.reload(), 2000);
         });
-    }
 });
 </script>
 

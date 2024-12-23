@@ -26,19 +26,24 @@ class ReturController extends Controller
 
     public function accept(Retur $retur)
     {
-        // Update the Retur status to 'Diterima'
         $retur->status = 'Diterima';
         $retur->save();
 
-        // Update the associated LPJ status to 'Selesai'
         $retur->lpj->status = 'Selesai';
         $retur->lpj->save();
 
-        // Update the associated Kegiatan status to 'Selesai'
         $retur->lpj->kegiatan->status = 'Selesai';
         $retur->lpj->kegiatan->save();
 
         return redirect()->route('pengajuan.retur.validasi')->with('success', 'Retur accepted and LPJ and Kegiatan statuses updated to Selesai.');
+    }
+
+    public function decline(Retur $retur)
+    {
+        $retur->status = 'Ditolak';
+        $retur->save();
+
+        return redirect()->route('pengajuan.retur.validasi')->with('success', 'Retur Declined');
     }
 
 

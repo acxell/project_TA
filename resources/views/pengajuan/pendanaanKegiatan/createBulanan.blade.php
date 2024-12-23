@@ -12,7 +12,8 @@
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('penyusunan.kegiatan.view') }}">Data Kegiatan</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('pengajuan.pendanaanKegiatan.view') }}">Data Pengajuan Pendanaan Kegiatan</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('viewBulanan', $kegiatan) }}">Kegiatan Bulanan</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Insert TOR</li>
                     </ol>
                 </nav>

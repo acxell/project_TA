@@ -18,6 +18,8 @@
 
         @include('include.sidebar')
 
+        @include('include.notification')
+
         <div id="main">
             <header class="mb-3">
                 <a href="#" class="burger-btn d-block d-xl-none">

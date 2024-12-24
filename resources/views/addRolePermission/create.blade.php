@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">Form Tambah Permission pada Role</h4>
+                        <h4 class="mb-sm-0">Form Tambah Permission pada Role {{ $role->name }}</h4>
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
@@ -20,20 +20,13 @@
                 </div>
             </div>
             <!-- end page title -->
-
             <form class="form" method="POST" action="{{ route('addRolePermission.store', $role->id) }}">
                 @csrf
-                <div class="row">
-                    <div class="col-md-6">
-                        <h3>{{ $role->name }}</h3>
-                    </div>
-                </div>
-
                 <!-- Permission Categories Start -->
                 <div class="row">
                     @php
                     $categories = [
-                    'Badan Penyelenggara' => ['Create Badan Penyelenggara', 'Edit Badan Penyelenggara', 'Delete Badan Penyelenggara', 'View Badan Penyelenggara', 'Import Badan Penyelenggara', 'Detail Badan Penyelenggara'],
+                    'Badan Penyelenggara' => ['Insert Role', 'Edit Badan Penyelenggara', 'Delete Badan Penyelenggara', 'View Badan Penyelenggara', 'Import Badan Penyelenggara', 'Detail Badan Penyelenggara'],
                     'Pimpinan Badan Penyelenggara' => ['Create Pimpinan Badan Penyelenggara', 'Edit Pimpinan Badan Penyelenggara', 'Delete Pimpinan Badan Penyelenggara', 'View Pimpinan Badan Penyelenggara', 'Detail Pimpinan Badan Penyelenggara', 'View PDF Pimpinan Badan Penyelenggara'],
                     'Akta' => ['Create Akta Badan Penyelenggara', 'Edit Akta Badan Penyelenggara', 'Delete Akta Badan Penyelenggara', 'View Akta Badan Penyelenggara', 'Detail Akta Badan Penyelenggara', 'View PDF Akta Badan Penyelenggara'],
                     'SK Kumham' => ['Create SK Kumham Badan Penyelenggara', 'Edit SK Kumham Badan Penyelenggara', 'Delete SK Kumham Badan Penyelenggara', 'View SK Kumham Badan Penyelenggara', 'Detail SK Kumham Badan Penyelenggara', 'View PDF SK Kumham Badan Penyelenggara'],
@@ -78,7 +71,10 @@
                 </div>
                 <!-- Permission Categories End -->
 
-                <button type="submit" class="btn btn-primary mt-4">Submit</button>
+                <div class="col-12 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary mt-6">Submit</button>
+                </div>
+
             </form>
         </div>
     </div>

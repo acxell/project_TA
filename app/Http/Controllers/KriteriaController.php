@@ -90,7 +90,7 @@ class KriteriaController extends Controller
             'status_kriteria' => $request->status_kriteria,
          ]);
  
-         return redirect()->route('penyusunan.kriteria');
+         return redirect()->route('penyusunan.kriteria')->with('success', 'Kriteria berhasil dibuat');
      }
  
      // Update Aktivitas
@@ -99,21 +99,20 @@ class KriteriaController extends Controller
          $request->validate([
             'nama_kriteria' => 'required|string|max:50',
              'jenis_kriteria' => 'required|string',
-             'tipe_kriteria' => 'required|string',
              'bobot_kriteria' => 'required|numeric|between:0,1',
              'status_kriteria' => 'required',
          ]);
  
          $kriteria->update($request->all());
  
-         return redirect()->route('penyusunan.kriteria');
+         return redirect()->route('penyusunan.kriteria')->with('success', 'Kriteria berhasil diperbarui');
      }
  
      // Delete Aktivitas
      public function destroyKriteria(Kriteria $kriteria)
      {
          $kriteria->delete();
-         return redirect()->route('penyusunan.kriteria');
+         return redirect()->route('penyusunan.kriteria')->with('success', 'Kriteria berhasil dihapus');
      }
 
 

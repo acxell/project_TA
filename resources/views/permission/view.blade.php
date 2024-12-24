@@ -29,6 +29,7 @@
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Nama</th>
                             <th>Action</th>
                         </tr>
@@ -36,16 +37,17 @@
                     <tbody>
                         @foreach ($permissions as $permission)
                         <tr>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $permission->name }}</td>
                             <td>
-                                <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $permission->id }}').submit();">
+                                <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $permission->id }}').submit();" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
                                     <i class="badge-circle font-medium-1" data-feather="trash"></i>
                                 </a>
                                 <form id="delete-form-{{ $permission->id }}" action="{{ route('permission.destroy', $permission->id) }}" method="POST" style="display:none;">
                                     @csrf
                                     @method('DELETE')
                                 </form>
-                                <a href="{{ route('permission.edit', $permission->id) }}"><i class="badge-circle font-medium-1"
+                                <a href="{{ route('permission.edit', $permission->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="badge-circle font-medium-1"
                                         data-feather="edit"></i></a>
                             </td>
                         </tr>

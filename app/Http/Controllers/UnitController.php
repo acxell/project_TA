@@ -6,6 +6,7 @@ use App\Models\satuanKerja;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Unit;
+use Illuminate\Validation\Rule;
 
 class UnitController extends Controller
 {
@@ -27,7 +28,7 @@ class UnitController extends Controller
     public function create()
     {
         $unit = DB::table('units')->get();
-        $satuan = satuanKerja::all();
+        $satuan = satuanKerja::where('status', true)->get();
 
         return view('unit.create', ['units' => $unit, 'satuan' => $satuan]);
     }
@@ -38,19 +39,19 @@ class UnitController extends Controller
     public function store(Request $request)
     {
         $validateData = $request->validate([
-            'nama' => 'string|required|unique:units',
-            'description' => 'string|required',
-            'status' => 'boolean|required',
-            'nomor_rekening' => 'string|required',
-            'satuan_id' => 'string|required|exists:satuan_kerjas,id',
+            'nama' => 'required|string|unique:units',
+            'description' => 'required|string',
+            'status' => 'required|boolean',
+            'nomor_rekening' => 'required|string',
+            'satuan_id' => 'required|string|exists:satuan_kerjas,id',
         ]);
 
         $unit = unit::create($validateData);
 
         if ($unit) {
-            return to_route('unit.view')->with('success', 'Data Telah Ditambahkan');
+            return to_route('unit.view')->with('success', 'Unit Telah Ditambahkan');
         } else {
-            return to_route('unit.view')->with('failed', 'Data Gagal Ditambahkan');
+            return to_route('unit.view')->with('failed', 'Unit Gagal Ditambahkan');
         }
     }
 
@@ -69,7 +70,7 @@ class UnitController extends Controller
     public function edit(unit $unit)
     {
         //$unit = DB::table('units')->get();
-        $satuan = satuanKerja::all();
+        $satuan = satuanKerja::where('status', true)->get();
 
         return view('unit.edit', ['unit' => $unit, 'satuan' => $satuan]);
     }
@@ -80,19 +81,23 @@ class UnitController extends Controller
     public function update(Request $request, unit $unit)
     {
         $validateData = $request->validate([
-            'nama' => 'string|required',
-            'description' => 'string|required',
-            'status' => 'boolean|required',
-            'nomor_rekening' => 'string|required',
-            'satuan_id' => 'string|required|exists:satuan_kerjas,id',
+            'nama' => [
+                'required',
+                'string',
+                Rule::unique('units')->ignore($unit->id),
+            ],
+            'description' => 'required|string',
+            'status' => 'required|boolean',
+            'nomor_rekening' => 'required|string',
+            'satuan_id' => 'required|string|exists:satuan_kerjas,id',
         ]);
 
         $unit->update($validateData);
 
         if ($unit) {
-            return to_route('unit.view')->with('success', 'Data Berhasil Diubah');
+            return to_route('unit.view')->with('success', 'Unit Berhasil Diubah');
         } else {
-            return to_route('unit.view')->with('failed', 'Data Gagal Diubah');
+            return to_route('unit.view')->with('failed', 'Unit Gagal Diubah');
         }
     }
 
@@ -104,9 +109,9 @@ class UnitController extends Controller
         $unit->delete();
 
         if ($unit) {
-            return to_route('unit.view')->with('success', 'Data Telah Dihapus');
+            return to_route('unit.view')->with('success', 'Unit Telah Dihapus');
         } else {
-            return to_route('unit.view')->with('failed', 'Data Gagal Dihapus');
+            return to_route('unit.view')->with('failed', 'Unit Gagal Dihapus');
         }
     }
 }

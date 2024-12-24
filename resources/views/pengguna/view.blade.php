@@ -29,6 +29,7 @@
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Nama</th>
                             <th>Email</th>
                             <th>Role</th>
@@ -40,6 +41,7 @@
                     <tbody>
                         @foreach ($penggunas as $pengguna)
                         <tr>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $pengguna->nama }}</td>
                             <td>{{ $pengguna->email }}</td>
                             <td>
@@ -56,16 +58,16 @@
                                 </span>
                             </td>
 
-                            <td><a href="{{ route('pengguna.detail', $pengguna->id) }}"><i class="badge-circle font-small-1"
+                            <td><a href="{{ route('pengguna.detail', $pengguna->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail"><i class="badge-circle font-small-1"
                                         data-feather="eye"></i></a>
-                                <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $pengguna->id }}').submit();">
+                                <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $pengguna->id }}').submit();" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
                                     <i class="badge-circle font-medium-1" data-feather="trash"></i>
                                 </a>
                                 <form id="delete-form-{{ $pengguna->id }}" action="{{ route('pengguna.destroy', $pengguna->id) }}" method="POST" style="display:none;">
                                     @csrf
                                     @method('DELETE')
                                 </form>
-                                <a href="{{ route('pengguna.edit', $pengguna->id) }}"><i class="badge-circle font-medium-1"
+                                <a href="{{ route('pengguna.edit', $pengguna->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="badge-circle font-medium-1"
                                         data-feather="edit"></i></a>
                             </td>
                         </tr>

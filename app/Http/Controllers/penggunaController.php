@@ -9,6 +9,7 @@ use App\Models\Role;
 
 use App\Models\pengguna;
 use App\Models\Unit;
+use Illuminate\Validation\Rule;
 
 class penggunaController extends Controller
 {
@@ -42,12 +43,12 @@ class penggunaController extends Controller
     public function store(Request $request)
     {
         $validateData = $request->validate([
-            'nama' => 'string|required',
-            'email' => 'string|required|unique:penggunas',
-            'password' => 'string|required|min:10',
-            'status' => 'boolean|required',
+            'nama' => 'required|string',
+            'email' => 'required|email|unique:penggunas',
+            'password' => 'required|string|min:8',
+            'status' => 'required|boolean',
             'roles' => 'required',
-            'unit_id' => 'string|required|exists:units,id',
+            'unit_id' => 'required|string|exists:units,id',
         ]);
 
         $validateData['password'] = Hash::make($validateData['password']);
@@ -57,9 +58,9 @@ class penggunaController extends Controller
         $pengguna->assignRole($request->input('roles'));
 
         if ($pengguna) {
-            return to_route('pengguna.view')->with('success', 'Data Telah Ditambahkan');
+            return to_route('pengguna.view')->with('success', 'Pengguna Telah Ditambahkan');
         } else {
-            return to_route('pengguna.view')->with('failed', 'Data Gagal Ditambahkan');
+            return to_route('pengguna.view')->with('failed', 'Pengguna Gagal Ditambahkan');
         }
     }
 
@@ -91,12 +92,16 @@ class penggunaController extends Controller
     public function update(Request $request, Pengguna $pengguna)
     {
         $validateData = $request->validate([
-            'nama' => 'string|required',
-            'email' => 'string|required|unique:penggunas,email,' . $pengguna->id,
-            'password' => 'nullable|string|min:10',
-            'status' => 'boolean|required',
+            'nama' => 'required|string',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('penggunas')->ignore($pengguna->id),
+            ],
+            'password' => 'nullable|string|min:8',
+            'status' => 'required|boolean',
             'roles' => 'required',
-            'unit_id' => 'string|required|exists:units,id',
+            'unit_id' => 'required|string|exists:units,id',
         ]);
 
         // Only hash the password if it was provided
@@ -112,8 +117,8 @@ class penggunaController extends Controller
         $pengguna->syncRoles($request->input('roles'));
 
         return $pengguna
-            ? to_route('pengguna.view')->with('success', 'Data Berhasil Diubah')
-            : to_route('pengguna.view')->with('failed', 'Data Gagal Diubah');
+            ? to_route('pengguna.view')->with('success', 'Pengguna Berhasil Diubah')
+            : to_route('pengguna.view')->with('failed', 'Pengguna Gagal Diubah');
     }
 
     /**
@@ -124,9 +129,9 @@ class penggunaController extends Controller
         $pengguna->delete();
 
         if ($pengguna) {
-            return to_route('pengguna.view')->with('success', 'Data Telah Dihapus');
+            return to_route('pengguna.view')->with('success', 'Pengguna Telah Dihapus');
         } else {
-            return to_route('pengguna.view')->with('failed', 'Data Gagal Dihapus');
+            return to_route('pengguna.view')->with('failed', 'Pengguna Gagal Dihapus');
         }
     }
 }

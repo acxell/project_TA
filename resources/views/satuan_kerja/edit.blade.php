@@ -12,7 +12,7 @@
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('satuan_kerja.view') }}">Data Satuan</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('satuan_kerja.view') }}">Data Satuan Kerja</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Edit</li>
                     </ol>
                 </nav>
@@ -69,7 +69,7 @@
                                     </div>
                                     <div class="col-12 d-flex justify-content-end">
                                         <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
-                                        <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                        <button type="button" class="btn btn-light-secondary me-1 mb-1" onclick="window.history.back();">Back</button>
                                     </div>
                                 </div>
                             </form>

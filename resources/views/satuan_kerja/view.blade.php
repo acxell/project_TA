@@ -12,7 +12,7 @@
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Data Satuan</li>
+                        <li class="breadcrumb-item active" aria-current="page">Data Satuan Kerja</li>
                     </ol>
                 </nav>
             </div>
@@ -29,6 +29,7 @@
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Kode</th>
                             <th>Nama</th>
                             <th>Status</th>
@@ -38,6 +39,7 @@
                     <tbody>
                         @foreach ($satuan as $satuans)
                         <tr>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $satuans->kode }}</td>
                             <td>{{ $satuans->nama }}</td>
                             <td>
@@ -45,9 +47,8 @@
                                     {{ $satuans->status == 1 ? 'Aktif' : 'Tidak Aktif' }}
                                 </span>
                             </td>
-                            <td><a href="{{ route('satuan_kerja.detail', $satuans->id) }}"><i class="badge-circle font-small-1"
-                                        data-feather="eye"></i></a>
-                                <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $satuans->id }}').submit();">
+                            <td>
+                                <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $satuans->id }}').submit();" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
                                     <i class="badge-circle font-medium-1" data-feather="trash"></i>
                                 </a>
                                 <form id="delete-form-{{ $satuans->id }}" action="{{ route('satuan_kerja.destroy', $satuans->id) }}" method="POST" style="display:none;">
@@ -55,7 +56,7 @@
                                     @method('DELETE')
                                 </form>
                                 <a href="{{ route('satuan_kerja.edit', $satuans->id) }}"><i class="badge-circle font-medium-1"
-                                        data-feather="edit"></i></a>
+                                        data-feather="edit" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a>
                             </td>
                         </tr>
                         @endforeach

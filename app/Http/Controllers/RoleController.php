@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 use App\Models\Role;
+use Illuminate\Validation\Rule;
 
 class RoleController extends Controller
 {
@@ -36,16 +37,16 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $validateData = $request->validate([
-            'name' => 'string|required|unique:roles,name',
+            'name' => 'required|string|unique:roles,name',
         ]);
         $validateData['guard_name'] = $validateData['guard_name'] ?? 'web';
 
         $role = Role::create($validateData);
 
         if ($role) {
-            return to_route('role.view')->with('success', 'Data Telah Ditambahkan');
+            return to_route('role.view')->with('success', 'Role Telah Ditambahkan');
         } else {
-            return to_route('role.view')->with('failed', 'Data Gagal Ditambahkan');
+            return to_route('role.view')->with('failed', 'Role Gagal Ditambahkan');
         }
     }
 
@@ -69,16 +70,20 @@ class RoleController extends Controller
     public function update(Request $request, Role $role)
     {
         $validateData = $request->validate([
-            'name' => 'string|required|unique:roles,name',
+           'name' => [
+                'required',
+                'string',
+                Rule::unique('roles')->ignore($role->id),
+            ],
         ]);
 
         $validateData['guard_name'] = $validateData['guard_name'] ?? 'web';
         $role->update($validateData);
 
         if ($role) {
-            return to_route('role.view')->with('success', 'Data Berhasil Diubah');
+            return to_route('role.view')->with('success', 'Role Berhasil Diubah');
         } else {
-            return to_route('role.view')->with('failed', 'Data Gagal Diubah');
+            return to_route('role.view')->with('failed', 'Role Gagal Diubah');
         }
     }
 
@@ -90,9 +95,9 @@ class RoleController extends Controller
         $role->delete();
 
         if ($role) {
-            return to_route('role.view')->with('success', 'Data Telah Dihapus');
+            return to_route('role.view')->with('success', 'Role Telah Dihapus');
         } else {
-            return to_route('role.view')->with('failed', 'Data Gagal Dihapus');
+            return to_route('role.view')->with('failed', 'Role Gagal Dihapus');
         }
     }
 
@@ -115,7 +120,7 @@ class RoleController extends Controller
 
         $role->syncPermissions($request->input('permission', []));
     
-        return redirect()->route('role.view')->with('success', 'Permissions successfully updated.');
+        return redirect()->route('role.view')->with('success', 'Permission Berhasil Diperbarui');
     }
     
 }

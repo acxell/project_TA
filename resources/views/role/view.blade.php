@@ -29,6 +29,7 @@
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Nama</th>
                             <th>Action</th>
                         </tr>
@@ -36,19 +37,20 @@
                     <tbody>
                         @foreach ($roles as $role)
                         <tr>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $role->name }}</td>
                             <td>
-                            <a href="{{ route('addRolePermission.create', $role->id) }}"><i class="badge-circle font-medium-1"
-                            data-feather="settings"></i></a>
-                                <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $role->id }}').submit();">
+                            <a href="{{ route('addRolePermission.create', $role->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Permissions">
+                            <i data-feather="settings"></i></a>
+                                <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $role->id }}').submit();" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
                                     <i class="badge-circle font-medium-1" data-feather="trash"></i>
                                 </a>
                                 <form id="delete-form-{{ $role->id }}" action="{{ route('role.destroy', $role->id) }}" method="POST" style="display:none;">
                                     @csrf
                                     @method('DELETE')
                                 </form>
-                                <a href="{{ route('role.edit', $role->id) }}"><i class="badge-circle font-medium-1"
-                                        data-feather="edit"></i></a>
+                                <a href="{{ route('role.edit', $role->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                                     <i data-feather="edit"></i></a>
                             </td>
                         </tr>
                         @endforeach

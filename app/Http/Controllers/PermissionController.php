@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 use App\Models\Permission;
+use Illuminate\Validation\Rule;
 
 class PermissionController extends Controller
 {
@@ -35,17 +36,17 @@ class PermissionController extends Controller
     public function store(Request $request)
     {
         $validateData = $request->validate([
-        'name' => 'string|required|unique:permissions,name',
+        'name' => 'required|string|unique:permissions,name',
         ]);
         $validateData['guard_name'] = $validateData['guard_name'] ?? 'web';
 
         $permission = Permission::create($validateData);
 
         if ($permission) {
-            return to_route('permission.view')->with('success', 'Data Telah Ditambahkan');
+            return to_route('permission.view')->with('success', 'Permission Telah Ditambahkan');
         }
         else {
-            return to_route('permission.view')->with('failed', 'Data Gagal Ditambahkan');
+            return to_route('permission.view')->with('failed', 'Permission Gagal Ditambahkan');
         }
         
     }
@@ -73,17 +74,21 @@ class PermissionController extends Controller
     public function update(Request $request, Permission $permission)
     {
         $validateData = $request->validate([
-            'name' => 'string|required|unique:permissions,name',
+            'name' => [
+                'required',
+                'string',
+                Rule::unique('permissions')->ignore($permission->id),
+            ],
             ]);
     
             $validateData['guard_name'] = $validateData['guard_name'] ?? 'web';
             $permission->update($validateData);
     
             if ($permission) {
-                return to_route('permission.view')->with('success', 'Data Berhasil Diubah');
+                return to_route('permission.view')->with('success', 'Permission Berhasil Diubah');
             }
             else {
-                return to_route('permission.view')->with('failed', 'Data Gagal Diubah');
+                return to_route('permission.view')->with('failed', 'Permission Gagal Diubah');
             }
     }
 
@@ -95,10 +100,10 @@ class PermissionController extends Controller
         $permission->delete();
     
             if ($permission) {
-                return to_route('permission.view')->with('success', 'Data Telah Dihapus');
+                return to_route('permission.view')->with('success', 'Permission Telah Dihapus');
             }
             else {
-                return to_route('permission.view')->with('failed', 'Data Gagal Dihapus');
+                return to_route('permission.view')->with('failed', 'Permission Gagal Dihapus');
             }
     }
 }

@@ -26,10 +26,10 @@
                 <div class="card">
                     <div class="card-content">
                         <div class="card-body">
-                            <form class="form" method="POST" action="{{ route('role.update', $role->uuid) }}">
+                            <form class="form" method="POST" action="{{ route('role.update', $role) }}">
                                 @csrf
                                 <div class="row">
-                                    <div class="col-md-6 col-12">
+                                    <div class="col-12">
                                         <div class="form-group">
                                             <label>Nama</label>
                                             <input type="text" id="name" class="form-control 
@@ -43,7 +43,7 @@
                                     </div>
                                     <div class="col-12 d-flex justify-content-end">
                                         <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
-                                        <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                        <button type="button" class="btn btn-light-secondary me-1 mb-1" onclick="window.history.back();">Back</button>
                                     </div>
                                 </div>
                             </form>

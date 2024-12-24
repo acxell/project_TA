@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\satuanKerja;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class SatuanKerjaController extends Controller
 {
@@ -36,17 +37,17 @@ class SatuanKerjaController extends Controller
     public function store(Request $request)
     {
         $validateData = $request->validate([
-            'kode' => 'string|required|unique:satuan_kerjas',
-            'nama' => 'string|required|unique:satuan_kerjas',
-            'status' => 'boolean|required',
+            'nama' => 'required|string|unique:satuan_kerjas',
+            'kode' => 'required|string|unique:satuan_kerjas',
+            'status' => 'required|boolean',
         ]);
 
         $satuan = satuanKerja::create($validateData);
 
         if ($satuan) {
-            return to_route('satuan_kerja.view')->with('success', 'Data Telah Ditambahkan');
+            return to_route('satuan_kerja.view')->with('success', 'Satuan Kerja Telah Ditambahkan');
         } else {
-            return to_route('satuan_kerja.view')->with('failed', 'Data Gagal Ditambahkan');
+            return to_route('satuan_kerja.view')->with('failed', 'Satuan Kerja Gagal Ditambahkan');
         }
     }
 
@@ -74,17 +75,25 @@ class SatuanKerjaController extends Controller
     public function update(Request $request, satuanKerja $satuan)
     {
         $validateData = $request->validate([
-            'kode' => 'string|required|unique:satuan_kerjas',
-            'nama' => 'string|required|unique:satuan_kerjas',
-            'status' => 'string|required',
+            'nama' => [
+                'required',
+                'string',
+                Rule::unique('satuan_kerjas')->ignore($satuan->id),
+            ],
+            'kode' => [
+                'required',
+                'string',
+                Rule::unique('satuan_kerjas')->ignore($satuan->id),
+            ],
+            'status' => 'required|boolean',
         ]);
 
         $satuan->update($validateData);
 
         if ($satuan) {
-            return to_route('satuan_kerja.view')->with('success', 'Data Berhasil Diubah');
+            return to_route('satuan_kerja.view')->with('success', 'Satuan Kerja Berhasil Diubah');
         } else {
-            return to_route('satuan_kerja.view')->with('failed', 'Data Gagal Diubah');
+            return to_route('satuan_kerja.view')->with('failed', 'Satuan Kerja Gagal Diubah');
         }
     }
 
@@ -96,9 +105,9 @@ class SatuanKerjaController extends Controller
         $satuan->delete();
 
         if ($satuan) {
-            return to_route('satuan_kerja.view')->with('success', 'Data Telah Dihapus');
+            return to_route('satuan_kerja.view')->with('success', 'Satuan Kerja Telah Dihapus');
         } else {
-            return to_route('satuan_kerja.view')->with('failed', 'Data Gagal Dihapus');
+            return to_route('satuan_kerja.view')->with('failed', 'Satuan Kerja Gagal Dihapus');
         }
     }
 }

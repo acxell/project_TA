@@ -57,6 +57,18 @@
     }, false);
 </script>
 
+{{-- Notifications --}}
+
+<script>
+    setTimeout(() => {
+        const floatingAlerts = document.querySelectorAll('.floating-notification'); // Target only floating notifications
+        floatingAlerts.forEach(alert => {
+            alert.classList.add('fade'); // Add fade-out class
+            setTimeout(() => alert.remove(), 500); // Remove element after fade-out
+        });
+    }, 5000); // Auto-close after 5 seconds
+</script>
+
 <script>
     //paging Form
     /*

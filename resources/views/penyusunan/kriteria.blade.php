@@ -97,9 +97,9 @@
                         <td>{{ $item->tipe_kriteria }}</td>
                         <td>{{ $item->bobot_kriteria }}</td>
                         <td>
-                        <span class="badge {{ $item->status_kriteria == 1 ? 'bg-success' : 'bg-danger' }}">
-                                    {{ $item->status_kriteria == 1 ? 'Aktif' : 'Tidak Aktif' }}
-                                </span>
+                            <span class="badge {{ $item->status_kriteria == 1 ? 'bg-success' : 'bg-danger' }}">
+                                {{ $item->status_kriteria == 1 ? 'Aktif' : 'Tidak Aktif' }}
+                            </span>
                         </td>
                         <td>
                             <!-- Tombol Edit Aktivitas -->
@@ -178,11 +178,10 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="jenis_kriteria">Jenis Kriteria</label>
-                                            <input type="text" name="jenis_kriteria" class="form-control" value="{{ $item->jenis_kriteria }}" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="tipe_kriteria">Tipe Kriteria</label>
-                                            <input type="text" name="tipe_kriteria" class="form-control" value="{{ $item->tipe_kriteria }}" required>
+                                            <select class="form-select" name="jenis_kriteria" id="jenis_kriteria" type="text" aria-placeholder="jenis">
+                                                <option value="Cost" {{ (old('jenis_kriteria') ?? $item->jenis_kriteria) == 'Cost' ? 'selected' : '' }}>Cost</option>
+                                                <option value="Benefit" {{ (old('jenis_kriteria') ?? $item->jenis_kriteria) == 'Benefit' ? 'selected' : '' }}>Benefit</option>
+                                            </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="bobot_kriteria">Bobot Kriteria</label>

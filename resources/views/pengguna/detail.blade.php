@@ -54,36 +54,12 @@
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label>Password</label>
-                                            <input type="password" id="password" class="form-control 
-                                            @error ('password') is invalid
-                                            @enderror"
-                                                placeholder="Password" name="password" value="{{ old('password') ?? $pengguna->password }}" disabled>
-                                            @error('password')
-                                            <div class="alert alert-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
                                             <label>Status</label>
                                             <input type="text" id="status" class="form-control 
                                             @error ('status') is invalid
                                             @enderror"
                                                 placeholder="Status" name="status" value="{{ old('status') ?? $pengguna->status == 1 ? 'Aktif' : 'Tidak Aktif'}}" disabled>
                                             @error('status')
-                                            <div class="alert alert-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label>Role</label>
-                                            <input type="text" id="role" class="form-control 
-                                            @error ('role') is invalid
-                                            @enderror"
-                                                placeholder="Role" name="role" value="{{ old('role') ?? $pengguna->role }}" disabled>
-                                            @error('role')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
                                         </div>

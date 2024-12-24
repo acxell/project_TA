@@ -47,9 +47,9 @@ class ProgramKerjaController extends Controller
         $programKerja = ProgramKerja::create($validateData);
 
         if ($programKerja) {
-            return to_route('penyusunan.programKerja.view')->with('success', 'Data Telah Ditambahkan');
+            return to_route('penyusunan.programKerja.view')->with('success', 'Program Kerja Telah Ditambahkan');
         } else {
-            return to_route('penyusunan.programKerja.view')->with('failed', 'Data Gagal Ditambahkan');
+            return to_route('penyusunan.programKerja.view')->with('failed', 'Program Kerja Gagal Ditambahkan');
         }
     }
 
@@ -76,8 +76,8 @@ class ProgramKerjaController extends Controller
     {
         $validateData = $request->validate([
             'nama' => [
-                'string',
                 'required',
+                'string',
                 Rule::unique('program_kerjas')->ignore($programKerja->id),
             ],
             'deskripsi' => 'required|string',
@@ -89,9 +89,9 @@ class ProgramKerjaController extends Controller
         $programKerja->update($validateData);
     
         if ($programKerja) {
-            return to_route('penyusunan.programKerja.view')->with('success', 'Data Telah Diperbarui');
+            return to_route('penyusunan.programKerja.view')->with('success', 'Program Kerja Telah Diperbarui');
         } else {
-            return to_route('penyusunan.programKerja.view')->with('failed', 'Data Gagal Diperbarui');
+            return to_route('penyusunan.programKerja.view')->with('failed', 'Program Kerja Gagal Diperbarui');
         }
     }
 
@@ -103,9 +103,9 @@ class ProgramKerjaController extends Controller
         $programKerja->delete();
 
         if ($programKerja) {
-            return to_route('penyusunan.programKerja.view')->with('success', 'Data Telah Dihapus');
+            return to_route('penyusunan.programKerja.view')->with('success', 'Program Kerja Telah Dihapus');
         } else {
-            return to_route('penyusunan.programKerja.view')->with('failed', 'Data Gagal Dihapus');
+            return to_route('penyusunan.programKerja.view')->with('failed', 'Program Kerja Gagal Dihapus');
         }
     }
 }

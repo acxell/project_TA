@@ -56,7 +56,7 @@
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <label for="waktu">Tanggal Pelaksanaan</label>
-                                        <input type="month" name="waktu" class="form-control" name="waktu" value="{{ old('waktu') ?? $tor->waktu }}">
+                                        <input type="month" name="waktu" class="form-control" name="waktu" value="{{ old('waktu') ?? $tor->waktu }}" min="{{ now()->format('Y-m') }}">
                                     </div>
                                     <div class="card">
                                         <div class="card-content">
@@ -66,11 +66,21 @@
                                                     <div class="col-md-12">
                                                         <label for="outcome">Outcome</label>
                                                         <div id="outcome-wrapper">
-                                                            @foreach($outcomes as $index => $outcome)
+                                                            @php
+                                                            $oldOutcomes = old('outcomes', $kegiatan->tor->outcomeKegiatan->pluck('outcome')->toArray());
+                                                            @endphp
+                                                            @foreach($oldOutcomes as $index => $outcome)
                                                             <div class="form-group d-flex" id="outcome-group-{{ $index + 1 }}">
-                                                                <input type="text" name="outcomes[]" class="form-control" placeholder="Outcome" value="{{ $outcome->outcome }}">
+                                                                <input type="text"
+                                                                    name="outcomes[]"
+                                                                    class="form-control @error('outcomes.' . $index) is-invalid @enderror"
+                                                                    placeholder="Outcome"
+                                                                    value="{{ $outcome }}">
                                                                 <button type="button" class="btn btn-danger ms-2 remove-outcome">Delete</button>
                                                             </div>
+                                                            @error('outcomes.')
+                                                            <div class="alert alert-danger">{{ $message }}</div>
+                                                            @enderror
                                                             @endforeach
                                                         </div>
                                                         <button type="button" class="btn btn-primary me-1 mb-1" id="add-outcome">Add More Outcome</button>
@@ -80,10 +90,20 @@
                                                     <div class="col-md-12 mt-3">
                                                         <label for="indikator">Indikator</label>
                                                         <div id="indikator-wrapper">
-                                                            @foreach($indikators as $index => $indikator)
+                                                        @php
+                                                            $oldIndikators = old('indikators', $kegiatan->tor->indikatorKegiatan->pluck('indikator')->toArray());
+                                                            @endphp
+                                                            @foreach($oldIndikators as $index => $indikator)
                                                             <div class="form-group d-flex" id="indikator-group-{{ $index + 1 }}">
-                                                                <input type="text" name="indikators[]" class="form-control" placeholder="Indikator" value="{{ $indikator->indikator }}">
+                                                                <input type="text"
+                                                                    name="indikators[]"
+                                                                    class="form-control @error('indikators.' . $index) is-invalid @enderror"
+                                                                    placeholder="Indikator"
+                                                                    value="{{ $indikator }}">
                                                                 <button type="button" class="btn btn-danger ms-2 remove-indikator">Delete</button>
+                                                                @error('indikators.')
+                                                                <div class="alert alert-danger">{{ $message }}</div>
+                                                                @enderror
                                                             </div>
                                                             @endforeach
                                                         </div>
@@ -216,7 +236,7 @@
                                     </div>
                                     <div class="col-12 d-flex justify-content-end">
                                         <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
-                                        <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                        <button type="button" class="btn btn-light-secondary me-1 mb-1" onclick="window.history.back();">Back</button>
                                     </div>
                                 </div>
                             </form>

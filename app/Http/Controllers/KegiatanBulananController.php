@@ -178,7 +178,7 @@ class KegiatanBulananController extends Controller
         // Validate input
         $validateData = $request->validate([
             'proker_id' => 'string|required|exists:program_kerjas,id',
-            'nama_kegiatan' => 'string|required|unique:tors,nama_kegiatan,' . $id,
+            'nama_kegiatan' => 'string|required',
             'waktu' => 'required|date_format:Y-m',
             'pic' => 'string|required',
             'kepesertaan' => 'string|required',

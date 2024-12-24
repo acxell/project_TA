@@ -24,18 +24,24 @@
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Nama Kegiatan</th>
-                            <th>Total Biaya</th>
+                            <th>Bulan Pelaksanaan</th>
+                            <th>Total Pengajuan</th>
+                            <th>Total Pencairan</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($pendanaan as $item)
                         <tr>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->kegiatan->tor->nama_kegiatan }}</td>
+                            <td>{{ $item->kegiatan->tor->waktu }}</td>
                             <td>@currency($item->kegiatan->tor->rab->total_biaya)</td>
+                            <td>@currency($item->besaran_transfer)</td>
                             <td><a href="{{ route('pendanaan.dataPendanaan.detail', $item->id) }}"><i class="badge-circle font-small-1"
-                                        data-feather="eye"></i></a>
+                                        data-feather="eye" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail"></i></a>
                             </td>
                         </tr>
                         @endforeach

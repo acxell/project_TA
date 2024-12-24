@@ -27,6 +27,7 @@
                             <th>No</th>
                             <th>Nama Kegiatan</th>
                             <th>Nama Program Kerja</th>
+                            <th>Bulan Pelaksanaan</th>
                             <th>Total Biaya</th>
                             <th>Status</th>
                             <th>Actions</th>
@@ -35,9 +36,10 @@
                     <tbody>
                         @foreach ($kegiatan as $item)
                         <tr>
-                        <td>{{ $loop->iteration }}</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->tor->nama_kegiatan }}</td>
                             <td>{{ $item->tor->proker->nama }}</td>
+                            <td>{{ $item->tor->waktu }}</td>
                             <td>
                                 @unless(empty($item->tor->rab->total_biaya))
                                 @currency($item->tor->rab->total_biaya)
@@ -54,10 +56,10 @@
                             <td>
                                 @if($item->status == 'Belum Diajukan' || $item->status == 'Ditolak')
                                 <a href="{{ route('pengajuan.anggaranTahunan.detail', $item->id) }}"><i class="badge-circle font-small-1"
-                                        data-feather="folder-plus"></i></a>
+                                        data-feather="folder-plus" data-bs-toggle="tooltip" data-bs-placement="top" title="Ajukan"></i></a>
                                 @if($item->status == 'Ditolak')
                                 <a data-bs-toggle="modal" href="#modal-{{ $item->id }}">
-                                    <i class="badge-circle font-small-1" data-feather="mail"></i>
+                                    <i class="badge-circle font-small-1" data-feather="mail" data-bs-toggle="tooltip" data-bs-placement="top" title="Pesan Perbaikan"></i>
                                 </a>
                                 @endif
                                 @endif

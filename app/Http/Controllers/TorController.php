@@ -156,10 +156,10 @@ class TorController extends Controller
             }
 
 
-            return redirect()->route('penyusunan.kegiatan.view')->with('success', 'Data telah ditambahkan.');
+            return redirect()->route('penyusunan.kegiatan.view')->with('success', 'Kegiatan telah ditambahkan.');
         }
 
-        return redirect()->route('penyusunan.kegiatan.view')->with('failed', 'Data gagal ditambahkan.');
+        return redirect()->route('penyusunan.kegiatan.view')->with('failed', 'Kegiatan gagal ditambahkan.');
     }
 
     /**
@@ -302,7 +302,7 @@ class TorController extends Controller
             ->whereNotIn('id', $indikatorIdsToKeep)
             ->delete();
 
-        return redirect()->route('penyusunan.kegiatan.view')->with('success', 'Data telah diperbarui.');
+        return redirect()->route('penyusunan.kegiatan.view')->with('success', 'Kegiatan telah diperbarui.');
     }
 
 
@@ -435,7 +435,7 @@ class TorController extends Controller
             'tor_id' => $tor->id,
         ]);
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Aktivitas Berhasil Dibuat');
     }
 
     // Update Aktivitas
@@ -446,16 +446,16 @@ class TorController extends Controller
             'waktu_aktivitas' => 'required|date',
             'kategori' => 'required',
         ]);
-
+        
         $aktivitas->update($request->all());
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Aktivitas Berhasil Diperbarui');
     }
 
     // Delete Aktivitas
     public function destroyAktivitas(Aktivitas $aktivitas)
     {
         $aktivitas->delete();
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Aktivitas Berhasil Dihapus');
     }
 }

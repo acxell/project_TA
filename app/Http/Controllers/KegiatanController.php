@@ -65,11 +65,11 @@ class KegiatanController extends Controller
     public function pengajuanIndex()
     {
         $kegiatan = Kegiatan::whereNotNull('rab_id')
-        ->whereHas('rab', function ($query) {
-            $query->where('total_biaya', '>', 0);
-        })
-        ->where('jenis', 'Tahunan')
-        ->get();
+            ->whereHas('rab', function ($query) {
+                $query->where('total_biaya', '>', 0);
+            })
+            ->where('jenis', 'Tahunan')
+            ->get();
         //$kegiatan = Kegiatan::whereIn('status', ['Belum Diajukan'])->get();
 
         return view('pengajuan.anggaranTahunan.view', ['kegiatan' => $kegiatan]);
@@ -97,8 +97,8 @@ class KegiatanController extends Controller
     public function validasi_index()
     {
         $kegiatan = Kegiatan::whereIn('status', ['Telah Diajukan', 'Diterima', 'Proses Finalisasi Pengajuan', 'Diterima Atasan Unit'])
-        ->where('jenis', 'Tahunan')
-        ->get();
+            ->where('jenis', 'Tahunan')
+            ->get();
 
         $proker = ProgramKerja::all();
 
@@ -160,6 +160,15 @@ class KegiatanController extends Controller
         $kriteria = DB::table('kriterias')
             ->where('status_kriteria', true)
             ->get();
+
+        $totalBobot = $kriteria->sum('bobot_kriteria');
+        if ($totalBobot != 1) {
+            logger("Total bobot kriteria: {$totalBobot}. Perangkingan tidak dapat dilakukan.");
+            return response()->json([
+                'success' => false,
+                'message' => 'Perangkingan tidak dapat dilakukan. Pastikan total bobot kriteria sama dengan 1.'
+            ]);
+        }
 
         $kegiatanKriteria = DB::table('kriteria_kegiatan')
             ->join('kegiatans', 'kriteria_kegiatan.kegiatan_id', '=', 'kegiatans.id')
@@ -239,15 +248,31 @@ class KegiatanController extends Controller
     public function triggerCalculateSAW()
     {
         try {
+            // Truncate tabel perangkingan terlebih dahulu
             DB::table('perangkingan')->truncate();
-
-            $this->calculateSAW();
-
-            return response()->json(['success' => true, 'message' => 'Perhitungan SAW berhasil dilakukan dan disimpan.']);
+    
+            // Panggil fungsi calculateSAW dan tangkap responsnya
+            $response = $this->calculateSAW();
+    
+            // Jika respons dari calculateSAW success: false, kembalikan respons gagal
+            if (!$response->getData()->success) {
+                return $response;
+            }
+    
+            // Jika semua berjalan lancar, kembalikan respons sukses
+            return response()->json([
+                'success' => true,
+                'message' => 'Perhitungan SAW berhasil dilakukan dan disimpan.'
+            ]);
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan: ' . $e->getMessage()]);
+            // Tangani kesalahan jika terjadi exception
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ]);
         }
     }
+    
 
 
     // Pengajuan Pendanaan Kegiatan

@@ -49,7 +49,7 @@
                             <td>
                             @if($item->status == 'Proses Pelaporan')    
                             <a href="{{ route('validasi.validasiLpj.validasi', $item->id) }}"><i class="badge-circle font-small-1"
-                            data-feather="check"></i></a>
+                            data-feather="check" data-bs-toggle="tooltip" data-bs-placement="top" title="Validasi"></i></a>
                             @endif
                             </td>
                         </tr>

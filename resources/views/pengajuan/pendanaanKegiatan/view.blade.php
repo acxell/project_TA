@@ -51,7 +51,7 @@
                                 </span>
                             </td>
                             <td><a href="{{ route('viewBulanan', $item->id) }}"><i class="badge-circle font-small-1"
-                                        data-feather="dollar-sign"></i></a>
+                                        data-feather="dollar-sign" data-bs-toggle="tooltip" data-bs-placement="top" title="Pendanaan"></i></a>
                             </td>
                         </tr>
                         @endforeach

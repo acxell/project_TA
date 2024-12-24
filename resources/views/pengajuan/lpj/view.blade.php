@@ -24,10 +24,14 @@
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Nama Kegiatan</th>
                             <th>Nama Program Kerja</th>
+                            <th>Bulan Pelaksanaan</th>
                             <th>Total Biaya</th>
                             <th>Total Belanja</th>
+                            <th>Unit</th>
+                            <th>Satuan Kerja</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -35,10 +39,14 @@
                     <tbody>
                         @foreach ($lpj as $item)
                         <tr>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->kegiatan->tor->nama_kegiatan }}</td>
                             <td>{{ $item->kegiatan->tor->proker->nama }}</td>
+                            <td>{{ $item->kegiatan->tor->waktu }}</td>
                             <td>@currency($item->kegiatan->pendanaan->first()->besaran_transfer ?? 0)</td>
                             <td>@currency($item->total_belanja)</td>
+                            <td>{{ $item->kegiatan->user->unit->nama }}</td>
+                            <td>{{ $item->kegiatan->user->unit->satuan->nama }}</td>
                             <td>
                                 <span class="badge {{ $item->status == 'Aktif' ? 'bg-success' : 'bg-danger' }}">
                                     {{ $item->status }}
@@ -47,13 +55,13 @@
                             <td>
                             @if($item->status == 'Belum Dilaporkan')    
                             <a href="{{ route('pengajuan.lpj.detail', $item->id) }}"><i class="badge-circle font-small-1"
-                                        data-feather="folder-plus"></i></a>
+                                        data-feather="folder-plus" data-bs-toggle="tooltip" data-bs-placement="top" title="Ajukan"></i></a>
                                 @endif
                                 @if($item->status == 'Ditolak')
                                 <a href="{{ route('pengajuan.lpj.detail', $item->id) }}"><i class="badge-circle font-small-1"
-                                        data-feather="folder-plus"></i></a>
+                                        data-feather="folder-plus" data-bs-toggle="tooltip" data-bs-placement="top" title="Ajukan"></i></a>
                                         <a data-bs-toggle="modal" href="#modal-{{ $item->id }}">
-                                    <i class="badge-circle font-small-1" data-feather="mail"></i>
+                                    <i class="badge-circle font-small-1" data-feather="mail" data-bs-toggle="tooltip" data-bs-placement="top" title="Pesan Perbaikan"></i>
                                 </a>
                                 @endif
 

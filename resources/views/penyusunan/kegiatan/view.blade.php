@@ -32,6 +32,7 @@
                             <th>No</th>
                             <th>Nama Kegiatan</th>
                             <th>Nama Program Kerja</th>
+                            <th>Bulan Pelaksanaan</th>
                             <th>Total Biaya</th>
                             <th>Actions</th>
                         </tr>
@@ -42,6 +43,7 @@
                         <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->tor->nama_kegiatan }}</td>
                             <td>{{ $item->tor->proker->nama }}</td>
+                            <td>{{ $item->tor->waktu }}</td>
                             <td>
                                 @unless(empty($item->tor->rab->total_biaya))
                                 @currency($item->tor->rab->total_biaya)
@@ -50,22 +52,22 @@
                                 @endunless
                             </td>
                             <td> @if($item->status == 'Belum Diajukan' || $item->status == 'Ditolak')
-                            <a href="{{ route('penyusunan.kegiatan.detail', $item->id) }}">
+                            <a href="{{ route('penyusunan.kegiatan.detail', $item->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail">
                                     <i class="badge-circle font-small-1" data-feather="eye"></i>
                                 </a>
-                                <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $item->id }}').submit();">
+                                <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $item->id }}').submit();" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
                                     <i class="badge-circle font-medium-1" data-feather="trash"></i>
                                 </a>
                                 <form id="delete-form-{{ $item->id }}" action="{{ route('penyusunan.kegiatan.destroy', $item->id) }}" method="POST" style="display:none;">
                                     @csrf
                                     @method('DELETE')
                                 </form>
-                                <a href="{{ route('penyusunan.tor.edit', $item->tor->id) }}">
+                                <a href="{{ route('penyusunan.tor.edit', $item->tor->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
                                     <i class="badge-circle font-medium-1" data-feather="edit"></i>
                                 </a>
                                 <a href="{{ route('penyusunan.tor.aktivitas', $item->tor->id) }}" class="btn btn-info">Lihat Aktivitas</a>
                                 @else
-                                <a href="{{ route('penyusunan.kegiatan.detail', $item->id) }}">
+                                <a href="{{ route('penyusunan.kegiatan.detail', $item->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail">
                                     <i class="badge-circle font-small-1" data-feather="eye"></i>
                                 </a>
                                 @endif

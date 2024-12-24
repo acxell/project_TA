@@ -24,8 +24,10 @@
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Nama Kegiatan</th>
                             <th>Nama Program Kerja</th>
+                            <th>Unit</th>
                             <th>Total Retur</th>
                             <th>Bukti Retur</th>
                             <th>Status</th>
@@ -35,8 +37,10 @@
                     <tbody>
                         @foreach ($retur as $item)
                         <tr>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->lpj->kegiatan->tor->nama_kegiatan }}</td>
                             <td>{{ $item->lpj->kegiatan->tor->proker->nama }}</td>
+                            <td>{{ $item->lpj->kegiatan->user->unit->nama }}</td>
                             <td>
                                 @currency($item->total_retur)
                             </td>
@@ -52,7 +56,7 @@
                                     data-bukti="{{ asset('storage/' . $item->bukti_retur) }}"
                                     data-bs-toggle="modal"
                                     data-bs-target="#updateReturModal">
-                                    Isi Retur
+                                    Buat Retur
                                 </button>
                             </td>
                         </tr>
@@ -81,9 +85,6 @@
                             <div class="form-group">
                                 <label for="bukti_retur">Bukti Retur</label>
                                 <input type="file" name="bukti_retur" id="bukti_retur" class="form-control">
-                                <div class="mt-2">
-                                    <a href="#" id="current_bukti_retur" target="_blank">View Current Bukti Retur</a>
-                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">

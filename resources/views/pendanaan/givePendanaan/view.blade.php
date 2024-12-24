@@ -24,6 +24,7 @@
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Nama Kegiatan</th>
                             <th>Nama Program Kerja</th>
                             <th>Total Biaya</th>
@@ -34,6 +35,7 @@
                     <tbody>
                         @foreach ($kegiatan as $item)
                         <tr>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->tor->nama_kegiatan }}</td>
                             <td>{{ $item->tor->proker->nama }}</td>
                             <td>@currency($item->tor->rab->total_biaya)</td>
@@ -45,7 +47,7 @@
                             <td>
                             @if($item->status != 'Telah Didanai')     
                             <a href="{{ route('pendanaan.givePendanaan.detail', $item->id) }}"><i class="badge-circle font-small-1"
-                                        data-feather="dollar-sign"></i></a>
+                                        data-feather="dollar-sign" data-bs-toggle="tooltip" data-bs-placement="top" title="Berikan Pendanaan"></i></a>
                                         @endif
                             </td>
                         </tr>

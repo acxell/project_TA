@@ -42,7 +42,7 @@
                         </div>
                         <div class="form-group">
                             <label for="waktu_aktivitas">Waktu Aktivitas</label>
-                            <input type="date" name="waktu_aktivitas" class="form-control" required>
+                            <input type="date" name="waktu_aktivitas" class="form-control" min="{{ now()->format('Y-m-d') }}" required>
                         </div>
                         <div class="form-group">
                             <label for="kategori">Kategori</label>
@@ -158,11 +158,15 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="waktu_aktivitas">Waktu Aktivitas</label>
-                                            <input type="date" name="waktu_aktivitas" class="form-control" value="{{ $item->waktu_aktivitas }}" required>
+                                            <input type="date" name="waktu_aktivitas" class="form-control" value="{{ $item->waktu_aktivitas }}"  min="{{ now()->format('Y-m-d') }}" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="kategori">Kategori</label>
-                                            <input type="text" name="kategori" class="form-control" value="{{ $item->kategori }}" required>
+                                            <select type="select" name="kategori" class="form-control">
+                                                <option value="Persiapan" {{ (old('kategori') ?? $item->kategori) == 'Persiapan' ? 'selected' : '' }}>Persiapan</option>
+                                                <option value="Pelaksanaan" {{ (old('kategori') ?? $item->kategori) == 'Pelaksanaan' ? 'selected' : '' }}>Pelaksanaan</option>
+                                                <option value="Pelaporan" {{ (old('kategori') ?? $item->kategori) == 'Pelaporan' ? 'selected' : '' }}>Pelaporan</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="modal-footer">

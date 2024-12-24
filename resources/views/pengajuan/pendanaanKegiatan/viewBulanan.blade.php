@@ -30,8 +30,10 @@
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Nama Kegiatan</th>
                             <th>Nama Program Kerja</th>
+                            <th>Bulan Pelaksanaan</th>
                             <th>Total Biaya</th>
                             <th>Status</th>
                             <th>Actions</th>
@@ -40,8 +42,10 @@
                     <tbody>
                         @foreach ($kegiatanBulanan as $item)
                         <tr>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->tor->nama_kegiatan }}</td>
                             <td>{{ $item->tor->proker->nama }}</td>
+                            <td>{{ $item->tor->waktu }}</td>
                             <td>
                                 @unless(empty($item->tor->rab->total_biaya))
                                 @currency($item->tor->rab->total_biaya)
@@ -56,12 +60,12 @@
                             </td>
                             <td>
                                 @if($item->status == 'Belum Diajukan')
-                                <a href="{{ route('editBulanan', $item->tor->id) }}"><i class="badge-circle font-medium-1"
-                                        data-feather="edit"></i></a>
                                 <a href="{{ route('pengajuan.pendanaanKegiatan.detail', $item->id) }}"><i class="badge-circle font-small-1"
-                                        data-feather="dollar-sign"></i></a>
+                                data-feather="dollar-sign" data-bs-toggle="tooltip" data-bs-placement="top" title="Ajukan Pendanaan"></i></a>
+                                <a href="{{ route('editBulanan', $item->tor->id) }}"><i class="badge-circle font-medium-1"
+                                        data-feather="edit" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a>
                                 <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $item->id }}').submit();">
-                                    <i class="badge-circle font-medium-1" data-feather="trash"></i>
+                                    <i class="badge-circle font-medium-1" data-feather="trash" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"></i>
                                 </a>
                                 <form id="delete-form-{{ $item->id }}" action="{{ route('destroyBulanan', $item->id) }}" method="POST" style="display:none;">
                                     @csrf

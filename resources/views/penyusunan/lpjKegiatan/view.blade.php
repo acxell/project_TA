@@ -29,8 +29,10 @@
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Nama Kegiatan</th>
                             <th>Nama Program Kerja</th>
+                            <th>Bulan Pelaksanaan</th>
                             <th>Total Biaya</th>
                             <th>Total Belanja</th>
                             <th>Actions</th>
@@ -39,7 +41,9 @@
                     <tbody>
                         @foreach ($lpj as $item)
                         <tr>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->kegiatan->tor->nama_kegiatan }}</td>
+                            <td>{{ $item->kegiatan->tor->waktu }}</td>
                             <td>{{ $item->kegiatan->tor->proker->nama }}</td>
                             <td>@currency($item->kegiatan->pendanaan->first()->besaran_transfer ?? 0)</td>
                             <td>@currency($item->total_belanja)</td>
@@ -47,18 +51,18 @@
                                 @if($item->status == 'Belum Dilaporkan' || $item->status == 'Ditolak')
                                 <a href="{{ route('penyusunan.lpjKegiatan.rincian', $item->id) }}" class="btn btn-info">Lihat Rincian</a>
                                 <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $item->id }}').submit();">
-                                    <i class="badge-circle font-medium-1" data-feather="trash"></i>
+                                    <i class="badge-circle font-medium-1" data-feather="trash" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"></i>
                                 </a>
                                 <form id="delete-form-{{ $item->id }}" action="{{ route('penyusunan.lpjKegiatan.destroy', $item->id) }}" method="POST" style="display:none;">
                                     @csrf
                                     @method('DELETE')
                                 </form>
                                 <a href="{{ route('penyusunan.lpjKegiatan.edit', $item->id) }}"><i class="badge-circle font-medium-1"
-                                        data-feather="edit"></i></a>
+                                        data-feather="edit" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a>
 
                                 @endif
                                 <a href="{{ route('penyusunan.lpjKegiatan.detail', $item->id) }}"><i class="badge-circle font-small-1"
-                                data-feather="eye"></i></a>
+                                data-feather="eye" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail"></i></a>
                             </td>
                         </tr>
                         @endforeach

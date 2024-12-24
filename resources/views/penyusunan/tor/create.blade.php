@@ -53,7 +53,7 @@
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <label for="waktu">Tanggal Pelaksanaan</label>
-                                        <input type="month" name="waktu" class="form-control">
+                                        <input type="month" name="waktu" class="form-control" value="{{ old('waktu', now()->format('Y-m')) }}" min="{{ now()->format('Y-m') }}">
                                     </div>
                                     <div class="card">
                                         <div class="card-content">
@@ -63,10 +63,21 @@
                                                     <div class="col-md-12">
                                                         <label for="outcome">Outcome</label>
                                                         <div id="outcome-wrapper">
-                                                            <div class="form-group d-flex" id="outcome-group-1">
-                                                                <input type="text" name="outcomes[]" class="form-control" placeholder="Outcome">
+                                                            <!-- Dynamically display old input values if available -->
+                                                            @foreach(old('outcomes', []) as $index => $outcome)
+                                                            <div class="form-group d-flex" id="outcome-group-{{ $index + 1 }}">
+                                                                <input type="text" name="outcomes[]" class="form-control" placeholder="Outcome" value="{{ $outcome }}" required>
                                                                 <button type="button" class="btn btn-danger ms-2 remove-outcome">Delete</button>
                                                             </div>
+                                                            @endforeach
+
+                                                            <!-- Default input if no old data -->
+                                                            @if(empty(old('outcomes')))
+                                                            <div class="form-group d-flex" id="outcome-group-1">
+                                                                <input type="text" name="outcomes[]" class="form-control" placeholder="Outcome" required>
+                                                                <button type="button" class="btn btn-danger ms-2 remove-outcome">Delete</button>
+                                                            </div>
+                                                            @endif
                                                         </div>
                                                         <button type="button" class="btn btn-primary me-1 mb-1" id="add-outcome">Add More Outcome</button>
                                                     </div>
@@ -77,10 +88,24 @@
                                                     <div class="col-md-12">
                                                         <label for="indikator">Indikator</label>
                                                         <div id="indikator-wrapper">
-                                                            <div class="form-group d-flex" id="indikator-group-1">
-                                                                <input type="text" name="indikators[]" class="form-control" placeholder="Indikator">
+                                                            <!-- Dynamically display old input values if available -->
+                                                            @foreach(old('indikators', []) as $index => $indikator)
+                                                            <div class="form-group d-flex" id="indikator-group-{{ $index + 1 }}">
+                                                                <input type="text" name="indikators[]" class="form-control" placeholder="Indikator" value="{{ $indikator }}" required>
                                                                 <button type="button" class="btn btn-danger ms-2 remove-indikator">Delete</button>
                                                             </div>
+                                                            @endforeach
+
+                                                            <!-- Default input if no old data -->
+                                                            @if(empty(old('indikators')))
+                                                            <div class="form-group d-flex" id="indikator-group-1">
+                                                                <input type="text" name="indikators[]" class="form-control" placeholder="Indikator" required>
+                                                                <button type="button" class="btn btn-danger ms-2 remove-indikator">Delete</button>
+                                                            </div>
+                                                            @error('indikators')
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                            @enderror
+                                                            @endif
                                                         </div>
                                                         <button type="button" class="btn btn-primary me-1 mb-1" id="add-indikator">Add More Indikator</button>
                                                     </div>
@@ -88,7 +113,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label>Orang yang Bertanggung Jawab (PIC)</label>
@@ -207,31 +231,42 @@
                                             @enderror
                                         </div>
                                     </div>
-
                                     <div class="row">
                                         @foreach($kriterias as $kriteria)
                                         <div class="col-md-6 col-12">
                                             <div class="form-group">
                                                 <label>{{ $kriteria->nama_kriteria }}</label>
+
                                                 @if($kriteria->tipe_kriteria === 'Select')
                                                 @if($kriteria->subkriteria && $kriteria->subkriteria->isNotEmpty())
-                                                <select name="kriteria[{{ $kriteria->id }}][subkriteria_id]" class="form-select">
-                                                    <option value="">-- Pilih --</option>
+                                                <select name="kriteria[{{ $kriteria->id }}][subkriteria_id]" class="form-select" required>
                                                     @foreach($kriteria->subkriteria as $subkriteria)
-                                                    <option value="{{ $subkriteria->id }}">{{ $subkriteria->bobot_text_subkriteria }}</option>
+                                                    <option value="{{ $subkriteria->id }}"
+                                                        {{ old("kriteria.{$kriteria->id}.subkriteria_id") == $subkriteria->id ? 'selected' : '' }}>
+                                                        {{ $subkriteria->bobot_text_subkriteria }}
+                                                    </option>
                                                     @endforeach
                                                 </select>
+                                                <!-- Display error for subkriteria -->
+                                                @if($errors->has("kriteria.{$kriteria->id}.subkriteria_id"))
+                                                <small class="text-danger">{{ $errors->first("kriteria.{$kriteria->id}.subkriteria_id") }}</small>
+                                                @endif
                                                 @else
                                                 <p class="text-danger">Tidak ada subkriteria tersedia.</p>
                                                 @endif
+
                                                 @elseif($kriteria->tipe_kriteria === 'Interval')
-                                                <input type="number" name="kriteria[{{ $kriteria->id }}][nilai]" class="form-control" placeholder="Masukkan nilai">
+                                                <input type="number" name="kriteria[{{ $kriteria->id }}][nilai]" class="form-control" placeholder="Masukkan nilai"
+                                                    value="{{ old("kriteria.{$kriteria->id}.nilai") }}" required>
+                                                <!-- Display error for nilai -->
+                                                @if($errors->has("kriteria.{$kriteria->id}.nilai"))
+                                                <small class="text-danger">{{ $errors->first("kriteria.{$kriteria->id}.nilai") }}</small>
+                                                @endif
                                                 @endif
                                             </div>
                                         </div>
                                         @endforeach
                                     </div>
-
 
                                     <div class="card">
                                         <div class="card-content">
@@ -242,21 +277,58 @@
                                                         <div class="form-group">
                                                             <label>Aktivitas</label>
                                                             <div id="aktivitas-wrapper">
-                                                                <!-- Aktivitas pertama -->
-                                                                <div class="row align-items-center" id="aktivitas-group-1">
+                                                                <!-- Dynamically display old input values if available -->
+                                                                @if(old('waktu_aktivitas'))
+                                                                @foreach(old('waktu_aktivitas') as $index => $waktu_aktivitas)
+                                                                <div class="row align-items-center" id="aktivitas-group-{{ $index + 1 }}">
                                                                     <div class="col-md-2 col-12">
                                                                         <label for="waktu_aktivitas">Waktu Aktivitas</label>
-                                                                        <input type="date" name="waktu_aktivitas[]" class="form-control" placeholder="mm/dd/yyyy">
+                                                                        <input type="date" name="waktu_aktivitas[]" class="form-control" placeholder="mm/dd/yyyy" value="{{ $waktu_aktivitas }}" min="{{ now()->format('Y-m-d') }}" required>
                                                                     </div>
-
+                                                                    @error('waktu_aktivitas')
+                                                                    <small class="text-danger">{{ $message }}</small>
+                                                                    @enderror
                                                                     <div class="col-md-6 col-12">
                                                                         <label for="penjelasan">Penjelasan</label>
-                                                                        <textarea name="penjelasan[]" class="form-control" placeholder="Penjelasan" rows="1"></textarea>
+                                                                        <textarea name="penjelasan[]" class="form-control" placeholder="Penjelasan" rows="1" required>{{ old('penjelasan')[$index] }}</textarea>
                                                                     </div>
 
                                                                     <div class="col-md-3 col-12">
                                                                         <label for="kategori">Kategori</label>
-                                                                        <select class="choices form-select" name="kategori[]">
+                                                                        <select class="choices form-select" name="kategori[]" required>
+                                                                            <option value="Persiapan" {{ old('kategori')[$index] == 'Persiapan' ? 'selected' : '' }}>Persiapan</option>
+                                                                            <option value="Pelaksanaan" {{ old('kategori')[$index] == 'Pelaksanaan' ? 'selected' : '' }}>Pelaksanaan</option>
+                                                                            <option value="Pelaporan" {{ old('kategori')[$index] == 'Pelaporan' ? 'selected' : '' }}>Pelaporan</option>
+                                                                        </select>
+                                                                    </div>
+
+                                                                    <div class="col-md-1 col-12">
+                                                                        <button type="button" class="btn btn-danger remove-aktivitas">Delete</button>
+                                                                    </div>
+                                                                </div>
+                                                                @endforeach
+                                                                @else
+                                                                <!-- Default input if no old data -->
+                                                                <div class="row align-items-center" id="aktivitas-group-1">
+                                                                    <div class="col-md-2 col-12">
+                                                                        <label for="waktu_aktivitas">Waktu Aktivitas</label>
+                                                                        <input type="date" name="waktu_aktivitas[]" class="form-control" placeholder="mm/dd/yyyy" min="{{ now()->format('Y-m-d') }}" required>
+                                                                        @error('waktu_aktivitas')
+                                                                        <small class="text-danger">{{ $message }}</small>
+                                                                        @enderror
+                                                                    </div>
+
+                                                                    <div class="col-md-6 col-12">
+                                                                        <label for="penjelasan">Penjelasan</label>
+                                                                        <textarea name="penjelasan[]" class="form-control" placeholder="Penjelasan" rows="1" required></textarea>
+                                                                        @error('penjelasan')
+                                                                        <small class="text-danger">{{ $message }}</small>
+                                                                        @enderror
+                                                                    </div>
+
+                                                                    <div class="col-md-3 col-12">
+                                                                        <label for="kategori">Kategori</label>
+                                                                        <select class="choices form-select" name="kategori[]" required>
                                                                             <option value="Persiapan">Persiapan</option>
                                                                             <option value="Pelaksanaan">Pelaksanaan</option>
                                                                             <option value="Pelaporan">Pelaporan</option>
@@ -267,20 +339,21 @@
                                                                         <button type="button" class="btn btn-danger remove-aktivitas">Delete</button>
                                                                     </div>
                                                                 </div>
+                                                                @endif
                                                             </div>
                                                             <button type="button" class="btn btn-primary" id="add-aktivitas">Add More Aktivitas</button>
+
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="col-12 d-flex justify-content-end">
+                                            <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                                            <button type="button" class="btn btn-light-secondary me-1 mb-1" onclick="window.history.back();">Back</button>
+                                        </div>
                                     </div>
-                                    <div class="col-12 d-flex justify-content-end">
-                                        <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
-                                        <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
-                                    </div>
-                                </div>
                             </form>
                         </div>
                     </div>

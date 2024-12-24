@@ -19,7 +19,7 @@ class ReturController extends Controller
 
     public function indexVal()
     {
-        $retur = Retur::whereIn('status', ['Proses Validasi', 'Diterima'])->get();
+        $retur = Retur::whereIn('status', ['Proses Validasi', 'Diterima', 'Ditolak'])->get();
 
         return view('pengajuan.retur.validasi', ['retur' => $retur]);
     }

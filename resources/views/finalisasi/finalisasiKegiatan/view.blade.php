@@ -40,6 +40,7 @@
                             <th>No</th>
                             <th>Nama Kegiatan</th>
                             <th>Nama Program Kerja</th>
+                            <th>Bulan Pelaksanaan</th>
                             <th>Total Biaya</th>
                             <th>Skor</th>
                             <th>Status</th>
@@ -52,6 +53,7 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->kegiatan->tor->nama_kegiatan }}</td>
                             <td>{{ $item->kegiatan->tor->proker->nama }}</td>
+                            <td>{{ $item->kegiatan->tor->waktu }}</td>
                             <td>
                                 @unless(empty($item->kegiatan->tor->rab->total_biaya))
                                 @currency($item->kegiatan->tor->rab->total_biaya)
@@ -66,9 +68,9 @@
                                 </span>
                             </td>
                             <td>
-                                @if($item->status == 'Proses Finalisasi Pengajuan')
+                                @if($item->kegiatan->status == 'Proses Finalisasi Pengajuan')
                                 <a href="{{ route('finalisasi.finalisasiKegiatan.finalisasi', $item->kegiatan->id) }}"><i class="badge-circle font-small-1"
-                                        data-feather="check"></i></a>
+                                        data-feather="check" data-bs-toggle="tooltip" data-bs-placement="top" title="Finalisasi Pengajuan"></i></a>
                                         @endif
                             </td>
                         </tr>
@@ -103,7 +105,7 @@
                         ${data.message}
                     </div>`;
             }
-            setTimeout(() => location.reload(), 2000);
+            setTimeout(() => location.reload(), 5000);
         })
         .catch(error => {
             console.error('Error:', error);
@@ -111,7 +113,7 @@
                 <div class="alert alert-danger">
                     Terjadi kesalahan saat memproses perhitungan SAW.
                 </div>`;
-                setTimeout(() => location.reload(), 2000);
+                setTimeout(() => location.reload(), 5000);
         });
 });
 </script>

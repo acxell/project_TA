@@ -78,7 +78,7 @@
                                     </div>
                                     <div class="col-12 d-flex justify-content-end">
                                         <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
-                                        <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                        <a type="button" class="btn btn-light-secondary me-1 mb-1" href="{{ route('penyusunan.lpjKegiatan.view') }}">Back</a>
                                     </div>
                                 </div>
                             </form>

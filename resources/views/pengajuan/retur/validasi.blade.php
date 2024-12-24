@@ -24,10 +24,12 @@
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Nama Kegiatan</th>
                             <th>Nama Program Kerja</th>
                             <th>Total Retur</th>
                             <th>Nominal Retur</th>
+                            <th>Unit</th>
                             <th>Bukti Retur</th>
                             <th>Status</th>
                             <th>Actions</th>
@@ -36,6 +38,7 @@
                     <tbody>
                         @foreach ($retur as $item)
                         <tr>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->lpj->kegiatan->tor->nama_kegiatan }}</td>
                             <td>{{ $item->lpj->kegiatan->tor->proker->nama }}</td>
                             <td>
@@ -44,13 +47,14 @@
                             <td>
                                 @currency($item->nominal_retur)
                             </td>
+                            <td>{{ $item->lpj->kegiatan->user->unit->nama }}</td>
                             <td><a href="{{ asset('storage/' . $item->bukti_retur) }}" target="_blank">View Bukti Retur</a>
                             <td>
                                 <span class="badge {{ $item->status == 'Aktif' ? 'bg-success' : 'bg-danger' }}">
                                     {{ $item->status }}
                                 </span>
                             </td>
-                            <td>
+                            <td>@if($item->status == 'Proses Validasi')
                                 <form action="{{ route('retur.accept', $item->id) }}" method="POST" style="display: inline;">
                                     @csrf
                                     @method('PATCH')
@@ -59,8 +63,9 @@
                                 <form action="{{ route('retur.decline', $item->id) }}" method="POST" style="display: inline;">
                                     @csrf
                                     @method('PATCH')
-                                    <button type="danger" class="btn btn-success btn-sm">Decline</button>
+                                    <button type="danger" class="btn btn-danger btn-sm">Decline</button>
                                 </form>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

@@ -102,7 +102,7 @@
 
                             <!-- Button Back to Kegiatan List -->
                             <div class="col-12 d-flex justify-content-end mt-3">
-                                <button type="button" class="btn btn-primary me-1 mb-1" onclick="window.history.back();">Done</button>
+                                <a type="button" class="btn btn-primary me-1 mb-1"  href="{{ route('penyusunan.lpjKegiatan.view') }}">Done</a>
                             </div>
 
                         </div>

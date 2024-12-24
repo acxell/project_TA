@@ -31,6 +31,8 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Program Kerja</th>
+                            <th>Unit</th>
+                            <th>Satuan Kerja</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -40,22 +42,24 @@
                         <tr>
                         <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->nama }}</td>
+                            <td>{{ $item->user->unit->nama }}</td>
+                            <td>{{ $item->user->unit->satuan->nama }}</td>
                             <td>
                                 <span class="badge {{ $item->status == 1 ? 'bg-success' : 'bg-danger' }}">
                                     {{ $item->status == 1 ? 'Aktif' : 'Tidak Aktif' }}
                                 </span>
                             </td>
-                            <td> <a onclick="showModal({ nama: '{{ $item->nama }}', deskripsi: '{{ $item->deskripsi }}' })" href="javascript:void(0)">
+                            <td> <a onclick="showModal({ nama: '{{ $item->nama }}', deskripsi: '{{ $item->deskripsi }}' })" href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail">
                                     <i class="badge-circle font-small-1" data-feather="eye"></i>
                                 </a>
-                                <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $item->id }}').submit();">
+                                <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $item->id }}').submit();" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
                                     <i class="badge-circle font-medium-1" data-feather="trash"></i>
                                 </a>
                                 <form id="delete-form-{{ $item->id }}" action="{{ route('penyusunan.programKerja.destroy', $item->id) }}" method="POST" style="display:none;">
                                     @csrf;
                                     @method('DELETE')
                                 </form>
-                                <a href="{{ route('penyusunan.programKerja.edit', $item->id) }}"><i class="badge-circle font-medium-1"
+                                <a href="{{ route('penyusunan.programKerja.edit', $item->id) }}"><i class="badge-circle font-medium-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"
                                         data-feather="edit"></i></a>
                             </td>
                         </tr>

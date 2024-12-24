@@ -32,89 +32,6 @@ class KegiatanController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        $kegiatan = Kegiatan::all();
-        $proker = ProgramKerja::all();
-        $coa = coa::all();
-
-        return view('penyusunan.kegiatan.create', ['kegiatan' => $kegiatan, 'proker' => $proker, 'coa' => $coa]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        // Validate input
-        //dd($request->all());
-        $validateData = $request->validate([
-            'proker_id' => 'string|required|exists:program_kerjas,id',
-            'nama_kegiatan' => 'string|required|unique:tors',
-            'pic' => 'string|required',
-            'kepesertaan' => 'string|required',
-            'nomor_standar_akreditasi' => 'string|required',
-            'penjelasan_standar_akreditasi' => 'string|required',
-            'coa_id' => 'string|required|exists:coas,id',
-            'latar_belakang' => 'string|required',
-            'tujuan' => 'string|required',
-            'manfaat_internal' => 'string|required',
-            'manfaat_eksternal' => 'string|required',
-            'metode_pelaksanaan' => 'string|required',
-            'biaya_keperluan' => 'numeric|required',
-            'persen_dana' => 'numeric|required',
-            'dana_bulan_berjalan' => 'numeric|required',
-            'outcomes.*' => 'string|required',
-            'indikators.*' => 'string|required',
-            'waktu_aktivitas.*' => 'date|required',
-            'penjelasan.*' => 'string|required',
-            'kategori.*' => 'string|required',
-        ]);
-
-        $validateData['user_id'] = Auth::id();
-        $validateData['unit_id'] = Auth::user()->unit_id;
-        $validateData['satuan_id'] = Auth::user()->unit->satuan_id;
-
-        // Create Kegiatan
-        $kegiatan = Kegiatan::create($validateData);
-
-        if ($kegiatan) {
-            // Store outcomes
-            foreach ($request->outcomes as $outcome) {
-                OutcomeKegiatan::create([
-                    'kegiatan_id' => $kegiatan->id,
-                    'outcome' => $outcome,
-                ]);
-            }
-
-            // Store indicators
-            foreach ($request->indikators as $indikator) {
-                IndikatorKegiatan::create([
-                    'kegiatan_id' => $kegiatan->id,
-                    'indikator' => $indikator,
-                ]);
-            }
-
-            // Store aktivitas details and budget needs
-            foreach ($request->waktu_aktivitas as $index => $waktu) {
-                // Create aktivitas and link with kegiatan_id
-                $aktivitas = Aktivitas::create([
-                    'kegiatan_id' => $kegiatan->id, // Automatically add kegiatan_id
-                    'waktu_aktivitas' => $waktu,
-                    'penjelasan' => $request->penjelasan[$index],
-                    'kategori' => $request->kategori[$index],
-                ]);
-            }
-
-            return redirect()->route('penyusunan.kegiatan.view')->with('success', 'Data telah ditambahkan.');
-        }
-
-        return redirect()->route('penyusunan.kegiatan.view')->with('failed', 'Data gagal ditambahkan.');
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(Kegiatan $kegiatan)
@@ -127,49 +44,6 @@ class KegiatanController extends Controller
             'kegiatan' => $kegiatan,
             'proker' => $proker
         ]);
-    }
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Kegiatan $kegiatan)
-    {
-        $proker = ProgramKerja::all();
-
-        return view('penyusunan.kegiatan.edit', ['kegiatan' => $kegiatan, 'proker' => $proker]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Kegiatan $kegiatan)
-    {
-        $validateData = $request->validate([
-            'nama_kegiatan' => [
-                'string',
-                'required',
-                Rule::unique('kegiatans')->ignore($kegiatan->id),
-            ],
-            'total_biaya' => 'integer|required',
-            'proker_id' => 'string|required|exists:program_kerjas,id',
-        ]);
-
-        $validateData['user_id'] = Auth::id();
-
-        $user = Auth::user();
-
-        $validateData['unit_id'] = $user->unit_id;
-
-        $validateData['satuan_id'] = $user->unit->satuan_id;
-
-        $kegiatan->update(['status' => 'Belum Diajukan']);
-
-        $kegiatan->update($validateData);
-
-        if ($kegiatan) {
-            return to_route('penyusunan.kegiatan.view')->with('success', 'Data Telah Ditambahkan');
-        } else {
-            return to_route('penyusunan.kegiatan.view')->with('failed', 'Data Gagal Ditambahkan');
-        }
     }
 
     /**

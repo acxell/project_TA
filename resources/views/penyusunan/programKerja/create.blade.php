@@ -58,7 +58,7 @@
                                             <textarea type="text" id="deskripsi" class="form-control
                                             @error ('deskripsi') is invalid
                                             @enderror"
-                                                placeholder="Deskripsi Program Kerja" rows="3" name="deskripsi" value="{{ old('deskripsi') }}"></textarea>
+                                                placeholder="Deskripsi Program Kerja" rows="3" name="deskripsi">{{ old('deskripsi') }}</textarea>
                                             @error('deskripsi')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror

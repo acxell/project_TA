@@ -37,9 +37,9 @@ class ProgramKerjaController extends Controller
     public function store(Request $request)
     {
         $validateData = $request->validate([
-            'nama' => 'string|required|unique:program_kerjas',
-            'deskripsi' => 'string|required',
-            'status' => 'boolean|required',
+            'nama' => 'required|string|unique:program_kerjas',
+            'deskripsi' => 'required|string',
+            'status' => 'required|boolean',
         ]);
 
         $validateData['user_id'] = Auth::id();
@@ -80,8 +80,8 @@ class ProgramKerjaController extends Controller
                 'required',
                 Rule::unique('program_kerjas')->ignore($programKerja->id),
             ],
-            'deskripsi' => 'string|required',
-            'status' => 'boolean|required',
+            'deskripsi' => 'required|string',
+            'status' => 'required|boolean',
         ]);
     
         $validateData['user_id'] = Auth::id();

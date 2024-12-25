@@ -25,7 +25,7 @@ class CoaController extends Controller
      */
     public function create()
     {
-        $coa = DB::table('coas')->get();
+        $coa = Coa::with('kategoriCoa')->get();
 
         return view('coa.create', ['coa' => $coa]);
     }
@@ -36,9 +36,9 @@ class CoaController extends Controller
     public function store(Request $request)
     {
         $validateData = $request->validate([
-            'kode' => 'string|required|unique:coas',
-            'nama' => 'string|required|unique:coas',
-            'status' => 'boolean|required',
+            'kode' => 'required|string|unique:coas',
+            'nama' => 'required|string|unique:coas',
+            'kategori_coa_id' => 'required|string',
         ]);
 
         $coa = coa::create($validateData);
@@ -74,9 +74,9 @@ class CoaController extends Controller
     public function update(Request $request, coa $coa)
     {
         $validateData = $request->validate([
-            'kode' => 'string|required|unique:coas',
-            'nama' => 'string|required|unique:coas',
-            'status' => 'boolean|required',
+            'kode' => 'required|string|unique:coas',
+            'nama' => 'required|string|unique:coas',
+            'kategori' => 'required|string',
         ]);
 
         $coa->update($validateData);

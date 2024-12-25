@@ -33,7 +33,9 @@
                             <th>Unit</th>
                             <th>Satuan Kerja</th>
                             <th>Status</th>
+                            @can('Pelaporan LPJ')
                             <th>Actions</th>
+                            @endCan
                         </tr>
                     </thead>
                     <tbody>
@@ -53,6 +55,7 @@
                                 </span>
                             </td>
                             <td>
+                                @can('Pelaporan LPJ')
                             @if($item->status == 'Belum Dilaporkan')    
                             <a href="{{ route('pengajuan.lpj.detail', $item->id) }}"><i class="badge-circle font-small-1"
                                         data-feather="folder-plus" data-bs-toggle="tooltip" data-bs-placement="top" title="Ajukan"></i></a>
@@ -64,7 +67,7 @@
                                     <i class="badge-circle font-small-1" data-feather="mail" data-bs-toggle="tooltip" data-bs-placement="top" title="Pesan Perbaikan"></i>
                                 </a>
                                 @endif
-
+                                @endCan
                             </td>
                         </tr>
                         <div class="modal fade text-left" id="modal-{{ $item->id }}" tabindex="-1" role="dialog"

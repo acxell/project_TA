@@ -22,9 +22,11 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
+                    @can('Create Unit')
                     <div class="col-12 col-md-12 order-md-2 order-last">
                         <a class="btn btn-primary" href="{{ route('unit.create') }}">Create</a>
                     </div>
+                    @endCan
                 </div>
                 <table class="table table-striped" id="table1">
                     <thead>
@@ -34,7 +36,13 @@
                             <th>Satuan Kerja</th>
                             <th>No Rekening</th>
                             <th>Status</th>
+                            @canany([
+                            'Detail Unit',
+                            'Edit Unit',
+                            'Delete Unit',
+                            ])
                             <th>Action</th>
+                            @endcanany
                         </tr>
                     </thead>
                     <tbody>
@@ -45,14 +53,17 @@
                             <td>{{ $unit->satuan->nama }}</td>
                             <td>{{ $unit->nomor_rekening }}</td>
                             <td>
-                            <span class="badge {{ $unit->status == 1 ? 'bg-success' : 'bg-danger' }}">
+                                <span class="badge {{ $unit->status == 1 ? 'bg-success' : 'bg-danger' }}">
                                     {{ $unit->status == 1 ? 'Aktif' : 'Tidak Aktif' }}
                                 </span>
                             </td>
                             <td>
+                                @can('Detail Unit')
                                 <a onclick="showModal({ nama: '{{ $unit->nama }}', deskripsi: '{{ $unit->description }}' })" href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail">
                                     <i class="badge-circle font-small-1" data-feather="eye"></i>
                                 </a>
+                                @endCan
+                                @can('Delete Unit')
                                 <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $unit->id }}').submit();" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
                                     <i class="badge-circle font-medium-1" data-feather="trash"></i>
                                 </a>
@@ -60,8 +71,11 @@
                                     @csrf
                                     @method('DELETE')
                                 </form>
+                                @endCan
+                                @can('Edit Unit')
                                 <a href="{{ route('unit.edit', $unit->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="badge-circle font-medium-1"
                                         data-feather="edit"></i></a>
+                                @endCan
                             </td>
                         </tr>
                         @endforeach

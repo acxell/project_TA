@@ -21,42 +21,22 @@
     <section class="section">
         <div class="card">
             <div class="card-body">
-                <div class="row">
-                    <div class="col-12 col-md-12 order-md-2 order-last">
-                        <a class="btn btn-primary" href="{{ route('coa.create') }}">Create</a>
-                    </div>
-                </div>
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Kode</th>
                             <th>Nama</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th>Kategori</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($coa as $item)
                         <tr>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->kode }}</td>
                             <td>{{ $item->nama }}</td>
-                            <td>
-                                 <span class="badge {{ $item->status == 1 ? 'bg-success' : 'bg-danger' }}">
-                                    {{ $item->status == 1 ? 'Aktif' : 'Tidak Aktif' }}
-                                </span>
-                            </td>
-                            <td><a href="{{ route('coa.detail', $item->id) }}"><i class="badge-circle font-small-1"
-                                        data-feather="eye"></i></a>
-                                <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $item->id }}').submit();">
-                                    <i class="badge-circle font-medium-1" data-feather="trash"></i>
-                                </a>
-                                <form id="delete-form-{{ $item->id }}" action="{{ route('coa.destroy', $item->id) }}" method="POST" style="display:none;">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                                <a href="{{ route('coa.edit', $item->id) }}"><i class="badge-circle font-medium-1"
-                                        data-feather="edit"></i></a>
-                            </td>
+                            <td>{{ $item->kategoriCoa->nama_kategori }}</td>
                         </tr>
                         @endforeach
                     </tbody>

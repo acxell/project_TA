@@ -22,9 +22,11 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
+                    @can('Create Program Kerja')
                     <div class="col-12 col-md-12 order-md-2 order-last">
                         <a class="btn btn-primary" href="{{ route('penyusunan.programKerja.create') }}">Create</a>
                     </div>
+                    @endCan
                 </div>
                 <table class="table table-striped" id="table1">
                     <thead>
@@ -34,13 +36,20 @@
                             <th>Unit</th>
                             <th>Satuan Kerja</th>
                             <th>Status</th>
+                            @canany([
+                            'Edit Program Kerja',
+                            'Delete Program Kerja',
+                            'View Program Kerja',
+                            'Detail Program Kerja',
+                            ])
                             <th>Actions</th>
+                            @endcanany
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($programKerja as $item)
                         <tr>
-                        <td>{{ $loop->iteration }}</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->nama }}</td>
                             <td>{{ $item->user->unit->nama }}</td>
                             <td>{{ $item->user->unit->satuan->nama }}</td>
@@ -49,9 +58,13 @@
                                     {{ $item->status == 1 ? 'Aktif' : 'Tidak Aktif' }}
                                 </span>
                             </td>
-                            <td> <a onclick="showModal({ nama: '{{ $item->nama }}', deskripsi: '{{ $item->deskripsi }}' })" href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail">
+                            <td>
+                                @can('Detail Program Kerja')
+                                <a onclick="showModal({ nama: '{{ $item->nama }}', deskripsi: '{{ $item->deskripsi }}' })" href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail">
                                     <i class="badge-circle font-small-1" data-feather="eye"></i>
                                 </a>
+                                @endCan
+                                @can('Delete Program Kerja')
                                 <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $item->id }}').submit();" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
                                     <i class="badge-circle font-medium-1" data-feather="trash"></i>
                                 </a>
@@ -59,8 +72,11 @@
                                     @csrf;
                                     @method('DELETE')
                                 </form>
+                                @endCan
+                                @can('Edit Program Kerja')
                                 <a href="{{ route('penyusunan.programKerja.edit', $item->id) }}"><i class="badge-circle font-medium-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"
                                         data-feather="edit"></i></a>
+                                @endCan
                             </td>
                         </tr>
                         @endforeach

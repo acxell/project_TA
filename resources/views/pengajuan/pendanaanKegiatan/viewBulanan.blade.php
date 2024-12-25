@@ -23,9 +23,11 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
+                    @can('Create Kegiatan Bulanan')
                     <div class="col-12 col-md-12 order-md-2 order-last">
                         <a class="btn btn-primary" href="{{ route('createBulanan', $kegiatan_id) }}">Create</a>
                     </div>
+                    @endCan
                 </div>
                 <table class="table table-striped" id="table1">
                     <thead>
@@ -36,7 +38,14 @@
                             <th>Bulan Pelaksanaan</th>
                             <th>Total Biaya</th>
                             <th>Status</th>
+                            @canany([
+                            'Pengajuan Kegiatan Bulanan',
+                            'Edit Kegiatan Bulanan',
+                            'Delete Kegiatan Bulanan',
+                            'View Aktivitas dan Anggaran Kegiatan',
+                            ])
                             <th>Actions</th>
+                            @endcanany
                         </tr>
                     </thead>
                     <tbody>
@@ -60,10 +69,15 @@
                             </td>
                             <td>
                                 @if($item->status == 'Belum Diajukan')
+                                @can('Pengajuan Kegiatan Bulanan')
                                 <a href="{{ route('pengajuan.pendanaanKegiatan.detail', $item->id) }}"><i class="badge-circle font-small-1"
-                                data-feather="dollar-sign" data-bs-toggle="tooltip" data-bs-placement="top" title="Ajukan Pendanaan"></i></a>
+                                        data-feather="dollar-sign" data-bs-toggle="tooltip" data-bs-placement="top" title="Ajukan Pendanaan"></i></a>
+                                @endCan
+                                @can('Edit Kegiatan Bulanan')
                                 <a href="{{ route('editBulanan', $item->tor->id) }}"><i class="badge-circle font-medium-1"
                                         data-feather="edit" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a>
+                                @endCan
+                                @can('Delete Kegiatan Bulanan')
                                 <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $item->id }}').submit();">
                                     <i class="badge-circle font-medium-1" data-feather="trash" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"></i>
                                 </a>
@@ -71,7 +85,10 @@
                                     @csrf
                                     @method('DELETE')
                                 </form>
+                                @endCan
+                                @can('View Aktivitas dan Anggaran Kegiatan')
                                 <a href="{{ route('aktivitasBulanan', $item->tor->id) }}" class="btn btn-info">Lihat Aktivitas</a>
+                                @endCan
                                 @endif
                             </td>
                         </tr>

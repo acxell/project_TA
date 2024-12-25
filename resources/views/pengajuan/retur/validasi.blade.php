@@ -54,7 +54,9 @@
                                     {{ $item->status }}
                                 </span>
                             </td>
-                            <td>@if($item->status == 'Proses Validasi')
+                            <td>
+                            @can('Validasi Retur')    
+                            @if($item->status == 'Proses Validasi')
                                 <form action="{{ route('retur.accept', $item->id) }}" method="POST" style="display: inline;">
                                     @csrf
                                     @method('PATCH')
@@ -66,6 +68,7 @@
                                     <button type="danger" class="btn btn-danger btn-sm">Decline</button>
                                 </form>
                                 @endif
+                                @endCan
                             </td>
                         </tr>
                         @endforeach

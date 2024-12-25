@@ -22,9 +22,11 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
+                    @can('Create LPJ')
                     <div class="col-12 col-md-12 order-md-2 order-last">
                         <a class="btn btn-primary" href="{{ route('penyusunan.lpjKegiatan.create') }}">Create</a>
                     </div>
+                    @endCan
                 </div>
                 <table class="table table-striped" id="table1">
                     <thead>
@@ -35,7 +37,14 @@
                             <th>Bulan Pelaksanaan</th>
                             <th>Total Biaya</th>
                             <th>Total Belanja</th>
+                            @canany([
+                            'Edit LPJ',
+                            'Delete LPJ',
+                            'Detail LPJ',
+                            'Data Rincian LPJ',
+                            ])
                             <th>Actions</th>
+                            @endcanany
                         </tr>
                     </thead>
                     <tbody>
@@ -49,7 +58,10 @@
                             <td>@currency($item->total_belanja)</td>
                             <td>
                                 @if($item->status == 'Belum Dilaporkan' || $item->status == 'Ditolak')
+                                @can('Data Rincian LPJ')
                                 <a href="{{ route('penyusunan.lpjKegiatan.rincian', $item->id) }}" class="btn btn-info">Lihat Rincian</a>
+                                @endCan
+                                @can('Delete LPJ')
                                 <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $item->id }}').submit();">
                                     <i class="badge-circle font-medium-1" data-feather="trash" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"></i>
                                 </a>
@@ -57,12 +69,16 @@
                                     @csrf
                                     @method('DELETE')
                                 </form>
+                                @endCan
+                                @can('Edit LPJ')
                                 <a href="{{ route('penyusunan.lpjKegiatan.edit', $item->id) }}"><i class="badge-circle font-medium-1"
                                         data-feather="edit" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a>
-
+                                @endCan
                                 @endif
+                                @can('Detail LPJ')
                                 <a href="{{ route('penyusunan.lpjKegiatan.detail', $item->id) }}"><i class="badge-circle font-small-1"
-                                data-feather="eye" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail"></i></a>
+                                        data-feather="eye" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail"></i></a>
+                                @endCan
                             </td>
                         </tr>
                         @endforeach

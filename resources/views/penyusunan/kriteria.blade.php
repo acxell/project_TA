@@ -19,7 +19,9 @@
         </div>
     </div>
     <!-- Tombol Create Aktivitas -->
+    @can('Create Kriteria')
     <a href="#" class="btn btn-success my-3" data-bs-toggle="modal" data-bs-target="#modalCreateKriteria">Create Kriteria</a>
+    @endCan
 </div>
 
 <section class="section">
@@ -86,7 +88,13 @@
                         <th>Tipe Pembobotan</th>
                         <th>Bobot Kriteria</th>
                         <th>Status</th>
+                        @canany([
+                        'Edit Kriteria',
+                        'Delete Kriteria',
+                        'Create Sub Kriteria',
+                        ])
                         <th>Aksi</th>
+                        @endcanany
                     </tr>
                 </thead>
                 <tbody>
@@ -103,15 +111,20 @@
                         </td>
                         <td>
                             <!-- Tombol Edit Aktivitas -->
+                            @can('Edit Kriteria')
                             <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalEditKriteria{{ $item->id }}">Edit</button>
-
+                            @endCan
                             <!-- Tombol Delete Aktivitas -->
+                            @can('Delete Kriteria')
                             <form action="{{ route('penyusunan.kriteria.destroy', $item->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
+                            @endCan
+                            @can('Create Sub Kriteria')
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSubkriteria{{ $item->id }}">Input Sub Kriteria</button>
+                            @endCan
                         </td>
                     </tr>
 
@@ -220,7 +233,12 @@
                                         <th>Text</th>
                                         @endif
                                         <th>Nilai</th>
+                                        @canany([
+                                        'Edit Sub Kriteria',
+                                        'Delete Sub Kriteria',
+                                        ])
                                         <th>Aksi</th>
+                                        @endcanany
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -235,14 +253,17 @@
                                         <td>{{ $subkriterias->nilai_bobot_subkriteria }}</td>
                                         <td>
                                             <!-- Button Edit -->
+                                            @can('Edit Sub Kriteria')
                                             <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalEditSubkriteria{{ $subkriterias->id }}">Edit</button>
-
+                                            @endCan
                                             <!-- Button Delete -->
+                                            @can('Delete Sub Kriteria')
                                             <form action="{{ route('penyusunan.subkriteria.destroy', $subkriterias->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger">Delete</button>
                                             </form>
+                                            @endCan
                                         </td>
                                     </tr>
 

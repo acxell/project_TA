@@ -30,7 +30,9 @@
                             <th>Bulan Pelaksanaan</th>
                             <th>Total Biaya</th>
                             <th>Status</th>
+                            @can('Pengajuan Anggaran Tahunan')
                             <th>Actions</th>
+                            @endCan
                         </tr>
                     </thead>
                     <tbody>
@@ -54,6 +56,7 @@
                                 </span>
                             </td>
                             <td>
+                                @can('Pengajuan Anggaran Tahunan')
                                 @if($item->status == 'Belum Diajukan' || $item->status == 'Ditolak')
                                 <a href="{{ route('pengajuan.anggaranTahunan.detail', $item->id) }}"><i class="badge-circle font-small-1"
                                         data-feather="folder-plus" data-bs-toggle="tooltip" data-bs-placement="top" title="Ajukan"></i></a>
@@ -63,6 +66,7 @@
                                 </a>
                                 @endif
                                 @endif
+                                @endCan
                             </td>
                         </tr>
 

@@ -22,16 +22,23 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
+                    @can('Create Permission')
                     <div class="col-12 col-md-12 order-md-2 order-last">
                         <a class="btn btn-primary" href="{{ route('permission.create') }}">Create</a>
                     </div>
+                    @endCan
                 </div>
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
+                            @canany([
+                            'Edit Permission',
+                            'Delete Permission',
+                            ])
                             <th>Action</th>
+                            @endcanany
                         </tr>
                     </thead>
                     <tbody>
@@ -40,6 +47,7 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $permission->name }}</td>
                             <td>
+                                @can('Delete Permission')
                                 <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $permission->id }}').submit();" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
                                     <i class="badge-circle font-medium-1" data-feather="trash"></i>
                                 </a>
@@ -47,8 +55,11 @@
                                     @csrf
                                     @method('DELETE')
                                 </form>
+                                @endCan
+                                @can('Edit Permission')
                                 <a href="{{ route('permission.edit', $permission->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="badge-circle font-medium-1"
                                         data-feather="edit"></i></a>
+                                @endCan
                             </td>
                         </tr>
                         @endforeach

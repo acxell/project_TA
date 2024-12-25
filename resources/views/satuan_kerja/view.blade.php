@@ -22,9 +22,11 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
+                    @can('Create Satuan Kerja')
                     <div class="col-12 col-md-12 order-md-2 order-last">
                         <a class="btn btn-primary" href="{{ route('satuan_kerja.create') }}">Create</a>
                     </div>
+                    @endCan
                 </div>
                 <table class="table table-striped" id="table1">
                     <thead>
@@ -33,7 +35,12 @@
                             <th>Kode</th>
                             <th>Nama</th>
                             <th>Status</th>
+                            @canany([
+                            'Edit Satuan Kerja',
+                            'Delete Satuan Kerja',
+                            ])
                             <th>Action</th>
+                            @endcanany
                         </tr>
                     </thead>
                     <tbody>
@@ -48,6 +55,7 @@
                                 </span>
                             </td>
                             <td>
+                                @can('Delete Satuan Kerja')
                                 <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $satuans->id }}').submit();" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
                                     <i class="badge-circle font-medium-1" data-feather="trash"></i>
                                 </a>
@@ -55,8 +63,11 @@
                                     @csrf
                                     @method('DELETE')
                                 </form>
+                                @endCan
+                                @can('Edit Satuan Kerja')
                                 <a href="{{ route('satuan_kerja.edit', $satuans->id) }}"><i class="badge-circle font-medium-1"
                                         data-feather="edit" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a>
+                                @endCan
                             </td>
                         </tr>
                         @endforeach

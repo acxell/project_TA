@@ -20,7 +20,9 @@
         </div>
     </div>
     <!-- Tombol Create Aktivitas -->
+    @can('Create Aktivitas Kegiatan')
     <a href="#" class="btn btn-success my-3" data-bs-toggle="modal" data-bs-target="#modalCreateAktivitas">Create Aktivitas</a>
+    @endCan
 </div>
 
 <section class="section">
@@ -71,7 +73,13 @@
                         <th>Aktivitas</th>
                         <th>Waktu</th>
                         <th>Kategori</th>
+                        @canany([
+                        'Edit Aktivitas Kegiatan',
+                        'Delete Aktivitas Kegiatan',
+                        'Create Kebutuhan Anggaran Kegiatan',
+                        ])
                         <th>Aksi</th>
+                        @endcanany
                     </tr>
                 </thead>
                 <tbody>
@@ -82,15 +90,20 @@
                         <td>{{ $item->kategori }}</td>
                         <td>
                             <!-- Tombol Edit Aktivitas -->
+                            @can('Edit Aktivitas Kegiatan')
                             <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalEditAktivitas{{ $item->id }}">Edit</button>
-
+                            @endCan
+                            @can('Delete Aktivitas Kegiatan')
                             <!-- Tombol Delete Aktivitas -->
                             <form action="{{ route('penyusunan.aktivitas.destroy', $item->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
+                            @endCan
+                            @can('Create Kebutuhan Anggaran Kegiatan')
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAnggaran{{ $item->id }}">Input Kebutuhan Anggaran</button>
+                            @endCan
                         </td>
                     </tr>
 
@@ -158,7 +171,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="waktu_aktivitas">Waktu Aktivitas</label>
-                                            <input type="date" name="waktu_aktivitas" class="form-control" value="{{ $item->waktu_aktivitas }}"  min="{{ now()->format('Y-m-d') }}" required>
+                                            <input type="date" name="waktu_aktivitas" class="form-control" value="{{ $item->waktu_aktivitas }}" min="{{ now()->format('Y-m-d') }}" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="kategori">Kategori</label>
@@ -192,7 +205,12 @@
                                         <th>Satuan Volume</th>
                                         <th>Harga</th>
                                         <th>Jumlah</th>
-                                        <th>Actions</th>
+                                        @canany([
+                                        'Edit Kebutuhan Anggaran Kegiatan',
+                                        'Delete Kebutuhan Anggaran Kegiatan',
+                                        ])
+                                        <th>Aksi</th>
+                                        @endcanany
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -206,14 +224,17 @@
                                         <td>@currency($anggaran->jumlah)</td>
                                         <td>
                                             <!-- Button Edit -->
+                                            @can('Edit Kebutuhan Anggaran Kegiatan')
                                             <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalEditAnggaran{{ $anggaran->id }}">Edit</button>
-
+                                            @endCan
                                             <!-- Button Delete -->
+                                            @can('Delete Kebutuhan Anggaran Kegiatan')
                                             <form action="{{ route('penyusunan.aktivitas.kebutuhan.destroy', $anggaran->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger">Delete</button>
                                             </form>
+                                            @endCan
                                         </td>
                                     </tr>
 

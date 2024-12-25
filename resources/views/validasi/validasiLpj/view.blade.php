@@ -31,7 +31,9 @@
                             <th>Total Biaya</th>
                             <th>Total Belanja</th>
                             <th>Status</th>
+                            @can('Validasi LPJ')
                             <th>Actions</th>
+                            @endCan
                         </tr>
                     </thead>
                     <tbody>
@@ -47,9 +49,11 @@
                                 </span>
                             </td>
                             <td>
-                            @if($item->status == 'Proses Pelaporan')    
+                            @if($item->status == 'Proses Pelaporan')
+                            @can('Validasi LPJ')
                             <a href="{{ route('validasi.validasiLpj.validasi', $item->id) }}"><i class="badge-circle font-small-1"
                             data-feather="check" data-bs-toggle="tooltip" data-bs-placement="top" title="Validasi"></i></a>
+                            @endCan
                             @endif
                             </td>
                         </tr>

@@ -44,7 +44,9 @@
                             <th>Total Biaya</th>
                             <th>Skor</th>
                             <th>Status</th>
+                            @can('Acc Finalisasi Anggaran Tahunan')
                             <th>Actions</th>
+                            @endCan
                         </tr>
                     </thead>
                     <tbody>
@@ -69,8 +71,10 @@
                             </td>
                             <td>
                                 @if($item->kegiatan->status == 'Proses Finalisasi Pengajuan')
+                                @can('Acc Finalisasi Anggaran Tahunan')
                                 <a href="{{ route('finalisasi.finalisasiKegiatan.finalisasi', $item->kegiatan->id) }}"><i class="badge-circle font-small-1"
                                         data-feather="check" data-bs-toggle="tooltip" data-bs-placement="top" title="Finalisasi Pengajuan"></i></a>
+                                        @endCan
                                         @endif
                             </td>
                         </tr>

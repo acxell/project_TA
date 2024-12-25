@@ -29,7 +29,9 @@
                             <th>Bulan Pelaksanaan</th>
                             <th>Total Pengajuan</th>
                             <th>Total Pencairan</th>
+                            @can('Detail Data Pendanaan')
                             <th>Actions</th>
+                            @endCan
                         </tr>
                     </thead>
                     <tbody>
@@ -40,8 +42,11 @@
                             <td>{{ $item->kegiatan->tor->waktu }}</td>
                             <td>@currency($item->kegiatan->tor->rab->total_biaya)</td>
                             <td>@currency($item->besaran_transfer)</td>
-                            <td><a href="{{ route('pendanaan.dataPendanaan.detail', $item->id) }}"><i class="badge-circle font-small-1"
+                            <td>
+                            @can('Detail Data Pendanaan')    
+                            <a href="{{ route('pendanaan.dataPendanaan.detail', $item->id) }}"><i class="badge-circle font-small-1"
                                         data-feather="eye" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail"></i></a>
+                                        @endCan
                             </td>
                         </tr>
                         @endforeach

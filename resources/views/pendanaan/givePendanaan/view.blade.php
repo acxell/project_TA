@@ -29,7 +29,9 @@
                             <th>Nama Program Kerja</th>
                             <th>Total Biaya</th>
                             <th>Status</th>
+                            @can('Pemberian Pendanaan')
                             <th>Actions</th>
+                            @endCan
                         </tr>
                     </thead>
                     <tbody>
@@ -45,9 +47,11 @@
                                 </span>
                             </td>
                             <td>
-                            @if($item->status != 'Telah Didanai')     
+                            @if($item->status != 'Telah Didanai')
+                            @can('Pemberian Pendanaan')
                             <a href="{{ route('pendanaan.givePendanaan.detail', $item->id) }}"><i class="badge-circle font-small-1"
                                         data-feather="dollar-sign" data-bs-toggle="tooltip" data-bs-placement="top" title="Berikan Pendanaan"></i></a>
+                                        @endCan
                                         @endif
                             </td>
                         </tr>

@@ -5,7 +5,7 @@
         <div class="sidebar-header position-relative">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="logo">
-               
+
                 </div>
 
                 <div class="theme-toggle d-flex gap-2  align-items-center mt-2">
@@ -35,15 +35,17 @@
         </div>
         <div class="sidebar-menu">
             <ul class="menu">
-                <li class="sidebar-title">Menu Pengguna</li>
-
+                <li class="sidebar-title">Menu Utama
                 <li class="sidebar-item ">
                     <a href="{{ route('dashboard') }}" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
-
+                @canany([
+                'View Program Kerja',
+                'View Kegiatan Tahunan',
+                ])
                 <li
                     class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
@@ -52,22 +54,25 @@
                     </a>
 
                     <ul class="submenu ">
-
+                        @can('View Program Kerja')
                         <li class="submenu-item  ">
                             <a href="{{ route('penyusunan.programKerja.view') }}" class="submenu-link">Program Kerja</a>
-
                         </li>
-
+                        @endCan
+                        @can('View Kegiatan Tahunan')
                         <li class="submenu-item  ">
                             <a href="{{ route('penyusunan.kegiatan.view') }}" class="submenu-link">Kegiatan (TOR & RAB)</a>
-
                         </li>
-
+                        @endCan
                     </ul>
-
-
                 </li>
+                @endcanany
 
+                @canany([
+                'Pengajuan Anggaran Tahunan',
+                'View Kegiatan Bulanan',
+                'View Retur',
+                ])
                 <li
                     class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
@@ -76,27 +81,29 @@
                     </a>
 
                     <ul class="submenu ">
-
+                        @can('Pengajuan Anggaran Tahunan')
                         <li class="submenu-item  ">
                             <a href="{{ route('pengajuan.anggaranTahunan.view') }}" class="submenu-link">Anggaran Tahunan</a>
-
                         </li>
-
+                        @endCan
+                        @can('View Kegiatan Bulanan')
                         <li class="submenu-item  ">
                             <a href="{{ route('pengajuan.pendanaanKegiatan.view') }}" class="submenu-link">Kegiatan</a>
-
                         </li>
-
+                        @endCan
+                        @can('View Retur')
                         <li class="submenu-item  ">
                             <a href="{{ route('pengajuan.retur.view') }}" class="submenu-link">Retur</a>
-
                         </li>
-
+                        @endCan
                     </ul>
-
-
                 </li>
+                @endcanany
 
+                @canany([
+                'View LPJ',
+                'Pelaporan LPJ',
+                ])
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i class="bi bi-journal-check"></i>
@@ -104,24 +111,32 @@
                     </a>
 
                     <ul class="submenu ">
-
+                        @can('View LPJ')
                         <li class="submenu-item  ">
                             <a href="{{ route('penyusunan.lpjKegiatan.view') }}" class="submenu-link">Form Pelaporan</a>
-
                         </li>
-
+                        @endCan
+                        @can('Pelaporan LPJ')
                         <li class="submenu-item  ">
                             <a href="{{ route('pengajuan.lpj.view') }}" class="submenu-link">Pelaporan Pertanggung Jawaban</a>
-
                         </li>
-
+                        @endCan
                     </ul>
-
-
+                </li>
+                @endcanany
                 </li>
 
+                @canany([
+                'View Data Pendanaan',
+                'Pemberian Pendanaan',
+                'View Kriteria dan Sub Kriteria',
+                ])
                 <li class="sidebar-title">Akuntan
 
+                    @canany([
+                    'View Data Pendanaan',
+                    'Pemberian Pendanaan',
+                    ])
                 <li
                     class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
@@ -129,30 +144,43 @@
                         <span>Pendanaan</span>
                     </a>
                     <ul class="submenu ">
-
+                        @can('View Data Pendanaan')
                         <li class="submenu-item  ">
                             <a href="{{ route('pendanaan.dataPendanaan.view') }}" class="submenu-link">Data Pencairan Dana Kegiatan</a>
 
                         </li>
-
+                        @endCan
+                        @can('Pemberian Pendanaan')
                         <li class="submenu-item  ">
                             <a href="{{ route('pendanaan.givePendanaan.view') }}" class="submenu-link">Pencairan Dana Kegiatan</a>
 
                         </li>
-
+                        @endCan
                     </ul>
                 </li>
+                @endcanany
+                @can('View Kriteria dan Sub Kriteria')
                 <li class="sidebar-item  ">
                     <a href="{{ route('penyusunan.kriteria') }}" class='sidebar-link'>
                         <i class="bi bi-file-earmark-medical-fill"></i>
                         <span>Kriteria & Sub Kriteria</span>
                     </a>
                 </li>
-
+                @endCan
                 </li>
+                @endcanany
 
-                <li class="sidebar-title">Validasi</li>
+                @canany([
+                'View Validasi Anggaran Tahunan',
+                'Validasi Retur',
+                'Validasi LPJ',
+                ])
+                <li class="sidebar-title">Validasi
 
+                    @canany([
+                    'View Validasi Anggaran Tahunan',
+                    'Validasi Retur',
+                    ])
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i class="bi bi-hexagon-fill"></i>
@@ -160,22 +188,21 @@
                     </a>
 
                     <ul class="submenu ">
-
+                        @can('View Validasi Anggaran Tahunan')
                         <li class="submenu-item  ">
                             <a href="{{ route('validasi.validasiAnggaran.view') }}" class="submenu-link">Anggaran Tahunan</a>
 
                         </li>
-
+                        @endCan
+                        @can('Validasi Retur')
                         <li class="submenu-item  ">
                             <a href="{{ route('pengajuan.retur.validasi') }}" class="submenu-link">Retur</a>
-
                         </li>
-
+                        @endCan
                     </ul>
-
-
                 </li>
-
+                @endcanany
+                @can('Validasi LPJ')
                 <li class="sidebar-item  ">
                     <a href="{{ route('validasi.validasiLpj.view') }}" class='sidebar-link'>
                         <i class="bi bi-journal-check"></i>
@@ -183,8 +210,12 @@
                     </a>
 
                 </li>
+                @endCan
+                </li>
+                @endcanany
 
-                <li class="sidebar-title">Atasan Yayasan</li>
+                @can('View Finalisasi Anggaran Tahunan')
+                <li class="sidebar-title">Atasan Yayasan
 
                 <li class="sidebar-item  ">
                     <a href="{{ route('finalisasi.finalisasiKegiatan.view') }}" class='sidebar-link'>
@@ -193,59 +224,74 @@
                     </a>
 
                 </li>
+                </li>
+                @endCan
 
-                <li class="sidebar-title">Admin</li>
+                @canany([
+                'View Pengguna',
+                'View Roles',
+                'View Permission',
+                'View Unit',
+                'View Satuan Kerja',
+                'View Data Coa'
+                ])
+                <li class="sidebar-title">Admin
 
                 <li class="sidebar-item  has-sub">
+                    @canany([
+                    'View Pengguna',
+                    'View Roles',
+                    'View Permission',
+                    ])
                     <a href="#" class='sidebar-link'>
                         <i class="bi bi-pentagon-fill"></i>
                         <span>Pengguna</span>
                     </a>
 
                     <ul class="submenu ">
-
+                        @can('View Pengguna')
                         <li class="submenu-item  ">
                             <a href="{{ route('pengguna.view') }}" class="submenu-link">Data Pengguna</a>
-
                         </li>
-
+                        @endCan
+                        @can('View Roles')
                         <li class="submenu-item  ">
                             <a href="{{ route('role.view') }}" class="submenu-link">Role Pengguna</a>
-
                         </li>
-
+                        @endCan
+                        @can('View Permission')
                         <li class="submenu-item  ">
                             <a href="{{ route('permission.view') }}" class="submenu-link">Permission Pengguna</a>
-
                         </li>
-
-
-
+                        @endCan
                     </ul>
-
+                    @endcanany
+                    @can('View Unit')
                 <li class="sidebar-item  ">
                     <a href="{{ route('unit.view') }}" class='sidebar-link'>
                         <i class="bi bi-file-earmark-medical-fill"></i>
                         <span>Unit</span>
                     </a>
                 </li>
-
+                @endCan
+                @can('View Satuan Kerja')
                 <li class="sidebar-item  ">
                     <a href="{{ route('satuan_kerja.view') }}" class='sidebar-link'>
                         <i class="bi bi-building-fill"></i>
                         <span>Satuan Kerja</span>
                     </a>
-
-
                 </li>
+                @endCan
+                @can('View Data Coa')
                 <li class="sidebar-item  ">
                     <a href="{{ route('coa.view') }}" class='sidebar-link'>
                         <i class="bi bi-file-binary-fill"></i>
                         <span>COA</span>
                     </a>
-
-
                 </li>
+                @endCan
+                </li>
+                @endcanany
                 <br>
                 <li class="sidebar-item  ">
                     @auth

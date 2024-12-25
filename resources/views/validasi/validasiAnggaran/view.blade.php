@@ -32,11 +32,13 @@
                             <th>Bulan Pelaksanaan</th>
                             <th>Total Biaya</th>
                             <th>Status</th>
+                            @can('Validasi Anggaran Tahunan')
                             <th>Actions</th>
+                            @endCan
                         </tr>
                     </thead>
                     <tbody>
-                            @foreach ($kegiatan as $item)
+                        @foreach ($kegiatan as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->tor->nama_kegiatan }}</td>
@@ -55,8 +57,10 @@
                                 </span>
                             </td>
                             <td>@if($item->status == 'Telah Diajukan')
+                                @can('Validasi Anggaran Tahunan')
                                 <a href="{{ route('validasi.validasiAnggaran.validasi', $item->id) }}"><i class="badge-circle font-small-1"
-                                        data-feather="check"  data-bs-toggle="tooltip" data-bs-placement="top" title="Validasi"></i></a>
+                                        data-feather="check" data-bs-toggle="tooltip" data-bs-placement="top" title="Validasi"></i></a>
+                                @endCan
                                 @endif
                             </td>
                         </tr>

@@ -51,6 +51,7 @@
                                 </span>
                             </td>
                             <td>
+                                @can('Pengajuan Retur')
                                 <button type="button" class="btn btn-primary btn-sm updateReturBtn" data-id="{{ $item->id }}"
                                     data-nominal="{{ $item->nominal_retur }}"
                                     data-bukti="{{ asset('storage/' . $item->bukti_retur) }}"
@@ -58,6 +59,7 @@
                                     data-bs-target="#updateReturModal">
                                     Buat Retur
                                 </button>
+                                @endCan
                             </td>
                         </tr>
                         @endforeach

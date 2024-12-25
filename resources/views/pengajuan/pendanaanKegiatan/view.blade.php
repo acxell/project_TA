@@ -29,7 +29,9 @@
                             <th>Nama Program Kerja</th>
                             <th>Total Biaya</th>
                             <th>Status</th>
+                            @can('Pengajuan Kegiatan Bulanan')
                             <th>Actions</th>
+                            @endCan
                         </tr>
                     </thead>
                     <tbody>
@@ -50,8 +52,11 @@
                                     {{ $item->status }}
                                 </span>
                             </td>
-                            <td><a href="{{ route('viewBulanan', $item->id) }}"><i class="badge-circle font-small-1"
+                            <td>
+                                @can('Pengajuan Kegiatan Bulanan')
+                                <a href="{{ route('viewBulanan', $item->id) }}"><i class="badge-circle font-small-1"
                                         data-feather="dollar-sign" data-bs-toggle="tooltip" data-bs-placement="top" title="Pendanaan"></i></a>
+                                @endCan
                             </td>
                         </tr>
                         @endforeach

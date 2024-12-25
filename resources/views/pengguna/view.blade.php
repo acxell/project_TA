@@ -22,9 +22,11 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
+                    @can('Create Pengguna')
                     <div class="col-12 col-md-12 order-md-2 order-last">
                         <a class="btn btn-primary" href="{{ route('pengguna.create') }}">Create</a>
                     </div>
+                    @endCan
                 </div>
                 <table class="table table-striped" id="table1">
                     <thead>
@@ -35,7 +37,13 @@
                             <th>Role</th>
                             <th>Unit</th>
                             <th>Status</th>
+                            @canany([
+                            'Detail Pengguna',
+                            'Delete Pengguna',
+                            'Edit Pengguna',
+                            ])
                             <th>Action</th>
+                            @endcanany
                         </tr>
                     </thead>
                     <tbody>
@@ -58,8 +66,12 @@
                                 </span>
                             </td>
 
-                            <td><a href="{{ route('pengguna.detail', $pengguna->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail"><i class="badge-circle font-small-1"
+                            <td>
+                                @can('Detail Pengguna')
+                                <a href="{{ route('pengguna.detail', $pengguna->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail"><i class="badge-circle font-small-1"
                                         data-feather="eye"></i></a>
+                                @endCan
+                                @can('Delete Pengguna')
                                 <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $pengguna->id }}').submit();" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
                                     <i class="badge-circle font-medium-1" data-feather="trash"></i>
                                 </a>
@@ -67,8 +79,11 @@
                                     @csrf
                                     @method('DELETE')
                                 </form>
+                                @endCan
+                                @can('Edit Pengguna')
                                 <a href="{{ route('pengguna.edit', $pengguna->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="badge-circle font-medium-1"
                                         data-feather="edit"></i></a>
+                                @endCan
                             </td>
                         </tr>
                         @endforeach

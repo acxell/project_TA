@@ -36,11 +36,14 @@ class TorController extends Controller
         $user = auth()->user();
         $unitId = auth()->user()->unit_id;
         $tor = Tor::all();
-        $proker = ProgramKerja::where('status', 1)
-        ->whereHas('user', function ($query) use ($user) {
-            $query->where('unit_id', $user->unit_id);
-        })
-        ->get();
+        $isAtasanUnit = $user->hasRole('Atasan Unit');
+        $isPenggunaAnggaran = $user->hasRole('Pengguna Anggaran');
+
+        if ($isAtasanUnit || $isPenggunaAnggaran) {
+            $proker = ProgramKerja::where('unit_id', $unitId)->get();
+        } else {
+            $proker = ProgramKerja::all();
+        }
         $coa = coa::all();
         $kriterias = Kriteria::with('subkriteria')
             ->where('status_kriteria', 1)
@@ -175,7 +178,16 @@ class TorController extends Controller
      */
     public function edit(Tor $tor)
     {
-        $proker = ProgramKerja::all();
+        $user = auth()->user();
+        $unitId = auth()->user()->unit_id;
+        $isAtasanUnit = $user->hasRole('Atasan Unit');
+        $isPenggunaAnggaran = $user->hasRole('Pengguna Anggaran');
+
+        if ($isAtasanUnit || $isPenggunaAnggaran) {
+            $proker = ProgramKerja::where('unit_id', $unitId)->get();
+        } else {
+            $proker = ProgramKerja::all();
+        }
         $coa = Coa::all();
 
         $aktivitas = Aktivitas::where('tor_id', $tor->id)->get();
@@ -446,7 +458,7 @@ class TorController extends Controller
             'waktu_aktivitas' => 'required|date',
             'kategori' => 'required',
         ]);
-        
+
         $aktivitas->update($request->all());
 
         return redirect()->back()->with('success', 'Aktivitas Berhasil Diperbarui');

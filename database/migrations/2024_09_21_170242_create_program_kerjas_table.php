@@ -17,6 +17,8 @@ return new class extends Migration
             $table->longText('deskripsi');
             $table->boolean('status');
             $table->uuid('user_id');
+            $table->uuid('unit_id');
+            $table->uuid('satuan_id');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('penggunas')->onDelete('cascade');

@@ -28,6 +28,16 @@ class ProgramKerja extends Model
         return $this->belongsTo(Pengguna::class, 'user_id', 'id');
     }
 
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class, 'unit_id', 'id');
+    }
+
+    public function satuan()
+    {
+        return $this->belongsTo(SatuanKerja::class, 'satuan_id', 'id');
+    }
+
     public function getIncrementing()
     {
         return false;

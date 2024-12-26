@@ -12,7 +12,18 @@ class ReturController extends Controller
      */
     public function index()
     {
-        $retur = Retur::all();
+        $user = auth()->user();
+        $unitId = $user->unit_id;
+
+        if ($user->hasRole('Pengguna Anggaran')) {
+            // Filter returs based on the unit_id of the authenticated user
+            $retur = Retur::whereHas('lpj', function ($query) use ($unitId) {
+                $query->where('unit_id', $unitId);
+            })->get();
+        } else {
+            // If not Pengguna Anggaran, retrieve all returs
+            $retur = Retur::all();
+        }
 
         return view('pengajuan.retur.view', ['retur' => $retur]);
     }

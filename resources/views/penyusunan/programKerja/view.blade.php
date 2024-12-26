@@ -51,8 +51,8 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->nama }}</td>
-                            <td>{{ $item->user->unit->nama }}</td>
-                            <td>{{ $item->user->unit->satuan->nama }}</td>
+                            <td>{{ $item->unit->nama }}</td>
+                            <td>{{ $item->satuan->nama }}</td>
                             <td>
                                 <span class="badge {{ $item->status == 1 ? 'bg-success' : 'bg-danger' }}">
                                     {{ $item->status == 1 ? 'Aktif' : 'Tidak Aktif' }}

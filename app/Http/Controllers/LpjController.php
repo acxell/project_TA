@@ -15,7 +15,16 @@ class LpjController extends Controller
      */
     public function index()
     {
-        $lpj = Lpj::all();
+        $user = auth()->user();
+        $unitId = $user->unit_id;
+        $isAtasanUnit = $user->hasRole('Atasan Unit');
+        $isPenggunaAnggaran = $user->hasRole('Pengguna Anggaran');
+
+        if ($isAtasanUnit || $isPenggunaAnggaran) {
+            $lpj = Lpj::where('unit_id', $unitId)->get();
+        } else {
+            $lpj = Lpj::all();
+        }
 
         return view('penyusunan.lpjKegiatan.view', ['lpj' => $lpj]);
     }
@@ -26,7 +35,16 @@ class LpjController extends Controller
     public function create()
     {
         $lpj = Lpj::all();
-        $kegiatan = Kegiatan::where('status', 'Telah Didanai')->get();
+        $user = auth()->user();
+        $unitId = $user->unit_id;
+        $isAtasanUnit = $user->hasRole('Atasan Unit');
+        $isPenggunaAnggaran = $user->hasRole('Pengguna Anggaran');
+
+        if ($isAtasanUnit || $isPenggunaAnggaran) {
+            $kegiatan = Kegiatan::where('status', 'Telah Didanai')->where('unit_id', $unitId)->get();
+        } else {
+            $kegiatan = Kegiatan::where('status', 'Telah Didanai')->get();
+        }
 
         return view('penyusunan.lpjKegiatan.create', ['lpj' => $lpj, 'kegiatan' => $kegiatan]);
     }
@@ -37,10 +55,12 @@ class LpjController extends Controller
     public function store(Request $request)
     {
         $validateData = $request->validate([
-            'penjelasan_kegiatan' => 'string|required',
-            'jumlah_peserta_undangan' => 'integer|required',
-            'jumlah_peserta_hadir' => 'integer|required',
-            'kegiatan_id' => 'string|required|exists:kegiatans,id',
+            'penjelasan_kegiatan' => 'required|string',
+            'jumlah_peserta_undangan' => 'required|integer',
+            'jumlah_peserta_hadir' => 'required|integer',
+            'kegiatan_id' => 'required|string|exists:kegiatans,id',
+            'hasil_kegiatan' => 'required|string',
+            'perbaikan_kegiatan' => 'required|string',
         ]);
 
         $validateData['user_id'] = Auth::id();
@@ -48,6 +68,7 @@ class LpjController extends Controller
         $user = Auth::user();
 
         $validateData['unit_id'] = $user->unit_id;
+        $validateData['satuan_id'] = $user->unit->satuan_id;
 
         $kegiatan = Kegiatan::findOrFail($validateData['kegiatan_id']);
         $validateData['proker_id'] = $kegiatan->tor->proker_id;
@@ -78,7 +99,16 @@ class LpjController extends Controller
      */
     public function edit(Lpj $lpj)
     {
-        $kegiatan = Kegiatan::all();
+        $user = auth()->user();
+        $unitId = $user->unit_id;
+        $isAtasanUnit = $user->hasRole('Atasan Unit');
+        $isPenggunaAnggaran = $user->hasRole('Pengguna Anggaran');
+
+        if ($isAtasanUnit || $isPenggunaAnggaran) {
+            $kegiatan = Kegiatan::where('status', 'Telah Didanai')->where('unit_id', $unitId)->get();
+        } else {
+            $kegiatan = Kegiatan::where('status', 'Telah Didanai')->get();
+        }
 
         return view('penyusunan.lpjKegiatan.edit', ['lpj' => $lpj, 'kegiatan' => $kegiatan]);
     }
@@ -89,10 +119,12 @@ class LpjController extends Controller
     public function update(Request $request, Lpj $lpj)
     {
         $validateData = $request->validate([
-            'penjelasan_kegiatan' => 'string|required',
-            'jumlah_peserta_undangan' => 'integer|required',
-            'jumlah_peserta_hadir' => 'integer|required',
-            'kegiatan_id' => 'string|required|exists:kegiatans,id',
+            'penjelasan_kegiatan' => 'required|string',
+            'jumlah_peserta_undangan' => 'required|integer',
+            'jumlah_peserta_hadir' => 'required|integer',
+            'kegiatan_id' => 'required|string|exists:kegiatans,id',
+            'hasil_kegiatan' => 'required|string',
+            'perbaikan_kegiatan' => 'required|string',
         ]);
 
         $validateData['user_id'] = Auth::id();
@@ -100,11 +132,11 @@ class LpjController extends Controller
         $user = Auth::user();
 
         $validateData['unit_id'] = $user->unit_id;
+        $validateData['satuan_id'] = $user->unit->satuan_id;
 
         $kegiatan = Kegiatan::findOrFail($validateData['kegiatan_id']);
         $validateData['proker_id'] = $kegiatan->tor->proker_id;
 
-        $lpj->update(['status' => 'Belum Diajukan']);
         $lpj->update($validateData);
 
         if ($lpj) {
@@ -132,7 +164,16 @@ class LpjController extends Controller
 
     public function pengajuanLpjIndex()
     {
-        $lpj = Lpj::all();
+        $user = auth()->user();
+        $unitId = $user->unit_id;
+        $isAtasanUnit = $user->hasRole('Atasan Unit');
+        $isPenggunaAnggaran = $user->hasRole('Pengguna Anggaran');
+
+        if ($isAtasanUnit || $isPenggunaAnggaran) {
+            $lpj = Lpj::where('unit_id', $unitId)->get();
+        } else {
+            $lpj = Lpj::all();
+        }
 
         //$kegiatan = Kegiatan::whereIn('status', ['Belum Diajukan'])->get();
 
@@ -157,7 +198,16 @@ class LpjController extends Controller
     //Validasi Pengajuan
     public function validasi_lpj_index()
     {
-        $lpj = Lpj::whereIn('status', ['Proses Pelaporan', 'Selesai', 'Perlu Retur', 'Ditolak'])->get();
+        $user = auth()->user();
+        $unitId = $user->unit_id;
+        $isAtasanUnit = $user->hasRole('Atasan Unit');
+        $isPenggunaAnggaran = $user->hasRole('Pengguna Anggaran');
+
+        if ($isAtasanUnit || $isPenggunaAnggaran) {
+            $lpj = Lpj::whereIn('status', ['Proses Pelaporan', 'Selesai', 'Perlu Retur', 'Ditolak'])->where('unit_id', $unitId)->get();
+        } else {
+            $lpj = Lpj::whereIn('status', ['Proses Pelaporan', 'Selesai', 'Perlu Retur', 'Ditolak'])->get();
+        }
 
         $kegiatan = Kegiatan::all();
 
@@ -202,6 +252,9 @@ class LpjController extends Controller
                     ->with('success', 'Pengajuan diterima, tetapi terdapat sisa dana yang perlu dikembalikan.');
             } else {
                 $lpj->update(['status' => 'Selesai']);
+        
+                $lpj->kegiatan->status = 'Selesai';
+                $lpj->kegiatan->save();
                 return redirect()->route('validasi.validasiLpj.view')
                     ->with('success', 'Pengajuan diterima dan status telah selesai.');
             }

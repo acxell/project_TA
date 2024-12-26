@@ -29,6 +29,7 @@
                             <th>No</th>
                             <th>Nama Kegiatan</th>
                             <th>Nama Program Kerja</th>
+                            <th>Unit</th>
                             <th>Bulan Pelaksanaan</th>
                             <th>Total Biaya</th>
                             <th>Status</th>
@@ -43,6 +44,7 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->tor->nama_kegiatan }}</td>
                             <td>{{ $item->tor->proker->nama }}</td>
+                            <td>{{ $item->unit->nama }}</td>
                             <td>{{ $item->tor->waktu }}</td>
                             <td>
                                 @unless(empty($item->tor->rab->total_biaya))

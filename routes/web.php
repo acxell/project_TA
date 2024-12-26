@@ -46,6 +46,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/dashboard', [dashboardController::class, 'getView'])->name('dashboard');
 
+    Route::get('/dashboard-data', [dashboardController::class, 'getDashboardData'])->name('data');
+
     //Actions Manajemen Data Pengguna
     Route::get('/data-pengguna', [penggunaController::class, 'index'])->name('pengguna.view')->middleware('role.access:View Pengguna');
     Route::get('/pengguna/{pengguna}/detail', [penggunaController::class, 'show'])->name('pengguna.detail')->middleware('role.access:Detail Pengguna');

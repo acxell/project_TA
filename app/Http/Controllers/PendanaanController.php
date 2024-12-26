@@ -51,7 +51,16 @@ class PendanaanController extends Controller
 
         // Add additional data
         $validateData['user_id'] = Auth::id();
-        $validateData['unit_id'] = Auth::user()->unit_id;
+
+        // Retrieve the related Kegiatan
+        $kegiatan = Kegiatan::find($validateData['kegiatan_id']);
+        if (!$kegiatan) {
+            return back()->with('failed', 'Kegiatan tidak ditemukan.');
+        }
+
+        // Copy `unit_id` and `satuan_id` from Kegiatan
+        $validateData['unit_id'] = $kegiatan->unit_id;
+        $validateData['satuan_id'] = $kegiatan->satuan_id;
 
         // Generate unique filename and store bukti_transfer in public folder
         $filename = 'bukti_transfer_' . uniqid() . '.' . $request->file('bukti_transfer')->getClientOriginalExtension();
@@ -65,7 +74,6 @@ class PendanaanController extends Controller
 
         if ($pendanaan) {
             // Update Kegiatan status if Pendanaan is successfully created
-            $kegiatan = Kegiatan::find($validateData['kegiatan_id']);
             $kegiatan->status = 'Telah Didanai';
             $kegiatan->save();
 

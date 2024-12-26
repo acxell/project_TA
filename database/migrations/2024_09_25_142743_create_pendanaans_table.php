@@ -18,6 +18,7 @@ return new class extends Migration
             $table->bigInteger('besaran_transfer');
             $table->uuid('user_id');
             $table->uuid('unit_id');
+            $table->uuid('satuan_id');
             $table->timestamps();
 
             $table->foreign('kegiatan_id')->references('id')->on('kegiatans')->onDelete('cascade');

@@ -24,6 +24,11 @@ class pengguna extends Authenticatable
         return $this->belongsTo(Unit::class, 'unit_id', 'id');
     }
 
+    public function programKerja()
+    {
+        return $this->hasMany(ProgramKerja::class, 'user_id', 'id');
+    }
+
     public function getIncrementing()
     {
         return false;

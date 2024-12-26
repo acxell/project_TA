@@ -27,6 +27,7 @@
                             <th>No</th>
                             <th>Nama Kegiatan</th>
                             <th>Bulan Pelaksanaan</th>
+                            <th>Unit</th>
                             <th>Total Pengajuan</th>
                             <th>Total Pencairan</th>
                             @can('Detail Data Pendanaan')
@@ -40,6 +41,7 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->kegiatan->tor->nama_kegiatan }}</td>
                             <td>{{ $item->kegiatan->tor->waktu }}</td>
+                            <td>{{ $item->kegiatan->unit->nama }}</td>
                             <td>@currency($item->kegiatan->tor->rab->total_biaya)</td>
                             <td>@currency($item->besaran_transfer)</td>
                             <td>

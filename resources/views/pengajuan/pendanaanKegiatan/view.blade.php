@@ -27,6 +27,7 @@
                             <th>No</th>
                             <th>Nama Kegiatan</th>
                             <th>Nama Program Kerja</th>
+                            <th>Unit</th>
                             <th>Total Biaya</th>
                             <th>Status</th>
                             @can('Pengajuan Kegiatan Bulanan')
@@ -40,6 +41,7 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->tor->nama_kegiatan }}</td>
                             <td>{{ $item->tor->proker->nama }}</td>
+                            <td>{{ $item->unit->nama }}</td>
                             <td>
                                 @unless(empty($item->tor->rab->total_biaya))
                                 @currency($item->tor->rab->total_biaya)

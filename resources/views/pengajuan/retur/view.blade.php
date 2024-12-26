@@ -40,7 +40,7 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->lpj->kegiatan->tor->nama_kegiatan }}</td>
                             <td>{{ $item->lpj->kegiatan->tor->proker->nama }}</td>
-                            <td>{{ $item->lpj->kegiatan->user->unit->nama }}</td>
+                            <td>{{ $item->lpj->kegiatan->unit->nama }}</td>
                             <td>
                                 @currency($item->total_retur)
                             </td>

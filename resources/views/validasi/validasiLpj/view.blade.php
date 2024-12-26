@@ -26,8 +26,10 @@
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Nama Kegiatan</th>
                             <th>Nama Program Kerja</th>
+                            <th>Unit</th>
                             <th>Total Biaya</th>
                             <th>Total Belanja</th>
                             <th>Status</th>
@@ -39,8 +41,10 @@
                     <tbody>
                         @foreach ($lpj as $item)
                         <tr>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->kegiatan->tor->nama_kegiatan }}</td>
                             <td>{{ $item->kegiatan->tor->proker->nama }}</td>
+                            <td>{{ $item->kegiatan->unit->nama }}</td>
                             <td>@currency($item->kegiatan->pendanaan->first()->besaran_transfer ?? 0)</td>
                             <td>@currency($item->total_belanja)</td>
                             <td>

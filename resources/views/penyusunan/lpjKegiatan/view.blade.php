@@ -34,6 +34,7 @@
                             <th>No</th>
                             <th>Nama Kegiatan</th>
                             <th>Nama Program Kerja</th>
+                            <th>Unit</th>
                             <th>Bulan Pelaksanaan</th>
                             <th>Total Biaya</th>
                             <th>Total Belanja</th>
@@ -52,8 +53,9 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->kegiatan->tor->nama_kegiatan }}</td>
-                            <td>{{ $item->kegiatan->tor->waktu }}</td>
                             <td>{{ $item->kegiatan->tor->proker->nama }}</td>
+                            <td>{{ $item->unit->nama }}</td>
+                            <td>{{ $item->kegiatan->tor->waktu }}</td>
                             <td>@currency($item->kegiatan->pendanaan->first()->besaran_transfer ?? 0)</td>
                             <td>@currency($item->total_belanja)</td>
                             <td>

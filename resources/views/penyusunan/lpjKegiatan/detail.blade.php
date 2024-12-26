@@ -26,7 +26,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="col d-flex justify-content-center">
-                            <h4 class="card-title">Term Of Reference (TOR)</h4>
+                            <h4 class="card-title">Laporan Pertanggung Jawaban (LPJ)</h4>
                         </div>
                     </div>
                     <div class="card-content">
@@ -53,19 +53,38 @@
                                     <td colspan="5">{{ $lpj->kegiatan->tor->nama_kegiatan }}</td>
                                 </tr>
                                 <tr>
+                                    <th>PIC</th>
+                                    <td colspan="5">{{ $lpj->kegiatan->tor->pic }}</td>
+                                </tr>
+                                <tr>
                                     <th>Penjelasan Kegiatan</th>
                                     <td colspan="5">{{ $lpj->penjelasan_kegiatan }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Nama Kegiatan</th>
+                                    <th>Target Peserta</th>
                                     <td colspan="5">{{ $lpj->jumlah_peserta_undangan }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Nama Kegiatan</th>
+                                    <th>Jumlah Peserta Hadir</th>
                                     <td colspan="5">{{ $lpj->jumlah_peserta_hadir }}</td>
                                 </tr>
+                                <tr>
+                                    <th>Hasil Kegiatan</th>
+                                    <td colspan="5">{{ $lpj->hasil_kegiatan }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Rencana Perbaikan</th>
+                                    <td colspan="5">{{ $lpj->perbaikan_kegiatan }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Pengajuan Dana</th>
+                                    <td colspan="5">@currency($lpj->kegiatan->tor->rab->total_biaya)</td>
+                                </tr>
+                                <tr>
+                                    <th>Dana yang diberikan</th>
+                                    <td colspan="5">@currency($lpj->kegiatan->pendanaan->first()->besaran_transfer ?? 0)</td>
+                                </tr>
                             </table>
-
                             <section class="section mt-4">
                                 <div class="card">
                                     <div class="card-body">

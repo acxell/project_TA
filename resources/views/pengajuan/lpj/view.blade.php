@@ -31,7 +31,6 @@
                             <th>Total Biaya</th>
                             <th>Total Belanja</th>
                             <th>Unit</th>
-                            <th>Satuan Kerja</th>
                             <th>Status</th>
                             @can('Pelaporan LPJ')
                             <th>Actions</th>
@@ -47,8 +46,7 @@
                             <td>{{ $item->kegiatan->tor->waktu }}</td>
                             <td>@currency($item->kegiatan->pendanaan->first()->besaran_transfer ?? 0)</td>
                             <td>@currency($item->total_belanja)</td>
-                            <td>{{ $item->kegiatan->user->unit->nama }}</td>
-                            <td>{{ $item->kegiatan->user->unit->satuan->nama }}</td>
+                            <td>{{ $item->kegiatan->unit->nama }}</td>
                             <td>
                                 <span class="badge {{ $item->status == 'Aktif' ? 'bg-success' : 'bg-danger' }}">
                                     {{ $item->status }}

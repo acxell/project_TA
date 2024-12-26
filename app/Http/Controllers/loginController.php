@@ -22,7 +22,7 @@ class loginController extends Controller
         if (Auth::guard('web')->attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('dashboard');
+            return redirect()->route('dashboard');
         }
 
         return back()->with('loginError', 'login failed');

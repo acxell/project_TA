@@ -5,7 +5,7 @@
         <div class="sidebar-header position-relative">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="logo">
-
+                    <a href="{{ route('dashboard') }}"><img src="{{ asset('logo.png') }}" alt="Logo" style="width: 150px; height: auto;"></a>
                 </div>
 
                 <div class="theme-toggle d-flex gap-2  align-items-center mt-2">

@@ -1,12 +1,12 @@
 @extends('master.master')
-@section('title', 'Masukkan Data Kegiatan Program Kerja')
+@section('title', 'Masukkan Data Pendanaan Kegiatan')
 @section('content')
 
 <div class="page-heading">
     <div class="page-title">
         <div class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
-                <p class="text-subtitle text-muted">Input Detail Data Kegiatan Program Kerja</p>
+                <p class="text-subtitle text-muted">Input Detail Data Pendanaan Kegiatan</p>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
@@ -42,7 +42,9 @@
                                                     <input type="file" class="form-control" id="bukti_transfer" name="bukti_transfer" accept=".pdf">
                                                 </div>
                                             </div>
-
+                                            @error('bukti_transfer')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
                                         </fieldset>
                                     </div>
                                     <div class="col-md-6 col-12">
@@ -50,10 +52,10 @@
                                             <label>Nominal Transfer</label>
                                             <input type="number" id="besaran_transfer" class="form-control @error('besaran_transfer') is-invalid @enderror"
                                                 placeholder="Nominal Transfer" name="besaran_transfer" value="{{ old('besaran_transfer') }}">
-                                            @error('besaran_transfer')
+                                        </div>
+                                        @error('besaran_transfer')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
-                                        </div>
                                     </div>
                                     <div class="col-12 d-flex justify-content-end">
                                         <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>

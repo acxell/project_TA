@@ -15,13 +15,16 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('kegiatan_id');
             $table->uuid('proker_id');
-            $table->string('penjelasan_kegiatan');
+            $table->longText('penjelasan_kegiatan');
             $table->bigInteger('jumlah_peserta_undangan');
             $table->bigInteger('jumlah_peserta_hadir');
+            $table->longText('hasil_kegiatan');
+            $table->longText('perbaikan_kegiatan');
             $table->string('status');
             $table->bigInteger('total_belanja')->nullable();
             $table->uuid('user_id');
             $table->uuid('unit_id');
+            $table->uuid('satuan_id');
             $table->timestamps();
 
             $table->foreign('kegiatan_id')->references('id')->on('kegiatans')->onDelete('cascade');

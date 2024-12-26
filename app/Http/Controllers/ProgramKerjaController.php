@@ -16,7 +16,16 @@ class ProgramKerjaController extends Controller
      */
     public function index()
     {
-        $programKerja = ProgramKerja::all();
+        $user = auth()->user();
+        $unitId = $user->unit_id;
+        $isAtasanUnit = $user->hasRole('Atasan Unit');
+        $isPenggunaAnggaran = $user->hasRole('Pengguna Anggaran');
+
+        if ($isAtasanUnit || $isPenggunaAnggaran) {
+            $programKerja = ProgramKerja::where('unit_id', $unitId)->get();
+        } else {
+            $programKerja = ProgramKerja::all();
+        }
 
         return view('penyusunan.programKerja.view', ['programKerja' => $programKerja]);
     }
@@ -43,6 +52,8 @@ class ProgramKerjaController extends Controller
         ]);
 
         $validateData['user_id'] = Auth::id();
+        $validateData['unit_id'] = Auth::user()->unit_id;
+        $validateData['satuan_id'] = Auth::user()->unit->satuan_id;
 
         $programKerja = ProgramKerja::create($validateData);
 
@@ -83,11 +94,13 @@ class ProgramKerjaController extends Controller
             'deskripsi' => 'required|string',
             'status' => 'required|boolean',
         ]);
-    
+
         $validateData['user_id'] = Auth::id();
-    
+        $validateData['unit_id'] = Auth::user()->unit_id;
+        $validateData['satuan_id'] = Auth::user()->unit->satuan_id;
+
         $programKerja->update($validateData);
-    
+
         if ($programKerja) {
             return to_route('penyusunan.programKerja.view')->with('success', 'Program Kerja Telah Diperbarui');
         } else {

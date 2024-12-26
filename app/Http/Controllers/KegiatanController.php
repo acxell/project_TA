@@ -26,7 +26,16 @@ class KegiatanController extends Controller
      */
     public function index()
     {
-        $kegiatan = Kegiatan::where('jenis', 'Tahunan')->get();
+        $user = auth()->user();
+        $unitId = $user->unit_id;
+        $isAtasanUnit = $user->hasRole('Atasan Unit');
+        $isPenggunaAnggaran = $user->hasRole('Pengguna Anggaran');
+
+        if ($isAtasanUnit || $isPenggunaAnggaran) {
+            $kegiatan = Kegiatan::where('jenis', 'Tahunan')->where('unit_id', $unitId)->get();
+        } else {
+            $kegiatan = Kegiatan::where('jenis', 'Tahunan')->get();
+        }
 
         return view('penyusunan.kegiatan.view', ['kegiatan' => $kegiatan]);
     }
@@ -64,12 +73,27 @@ class KegiatanController extends Controller
 
     public function pengajuanIndex()
     {
-        $kegiatan = Kegiatan::whereNotNull('rab_id')
+        $user = auth()->user();
+        $unitId = $user->unit_id;
+        $isAtasanUnit = $user->hasRole('Atasan Unit');
+        $isPenggunaAnggaran = $user->hasRole('Pengguna Anggaran');
+
+        if ($isAtasanUnit || $isPenggunaAnggaran) {
+            $kegiatan = Kegiatan::whereNotNull('rab_id')
+            ->where('unit_id', $unitId)
             ->whereHas('rab', function ($query) {
                 $query->where('total_biaya', '>', 0);
             })
             ->where('jenis', 'Tahunan')
             ->get();
+        } else {
+            $kegiatan = Kegiatan::whereNotNull('rab_id')
+            ->whereHas('rab', function ($query) {
+                $query->where('total_biaya', '>', 0);
+            })
+            ->where('jenis', 'Tahunan')
+            ->get();
+        }
         //$kegiatan = Kegiatan::whereIn('status', ['Belum Diajukan'])->get();
 
         return view('pengajuan.anggaranTahunan.view', ['kegiatan' => $kegiatan]);
@@ -96,9 +120,21 @@ class KegiatanController extends Controller
 
     public function validasi_index()
     {
-        $kegiatan = Kegiatan::whereIn('status', ['Telah Diajukan', 'Diterima', 'Proses Finalisasi Pengajuan', 'Diterima Atasan Unit'])
+        $user = auth()->user();
+        $unitId = $user->unit_id;
+        $isAtasanUnit = $user->hasRole('Atasan Unit');
+
+        if ($isAtasanUnit) {
+            $kegiatan = Kegiatan::whereNotNull('rab_id')
+            ->where('unit_id', $unitId)
+            ->whereIn('status', ['Telah Diajukan', 'Diterima', 'Proses Finalisasi Pengajuan', 'Diterima Atasan Unit'])
             ->where('jenis', 'Tahunan')
             ->get();
+        } else {
+            $kegiatan = Kegiatan::whereIn('status', ['Telah Diajukan', 'Diterima', 'Proses Finalisasi Pengajuan', 'Diterima Atasan Unit'])
+            ->where('jenis', 'Tahunan')
+            ->get();
+        }
 
         $proker = ProgramKerja::all();
 
@@ -116,10 +152,20 @@ class KegiatanController extends Controller
 
     public function acc_validasi_pengajuan_tahunan(Request $request, Kegiatan $kegiatan)
     {
+        $user = auth()->user();
+        $isAtasanUnit = $user->hasRole('Atasan Unit');
+        $isAtasanYayasan = $user->hasRole('Atasan Yayasan');
+        $isAtasanSU = $user->hasRole('Super Admin');
+
         if ($request->input('action') == 'reject') {
             return redirect()->route('pesanPerbaikan.anggaranTahunan.create')->with('success', 'Pengajuan telah ditolak.');
         } elseif ($request->input('action') == 'accept') {
+            
+        if ($isAtasanUnit) {
+            $kegiatan->update(['status' => 'Diterima Atasan Unit']);
+        } elseif ($isAtasanYayasan || $isAtasanSU) {
             $kegiatan->update(['status' => 'Proses Finalisasi Pengajuan']);
+        }
             return redirect()->route('validasi.validasiAnggaran.view')->with('success', 'Pengajuan telah diterima.');
         }
     }
@@ -279,7 +325,17 @@ class KegiatanController extends Controller
 
     public function pendanaan_kegiatan_index()
     {
-        $kegiatan = Kegiatan::where('jenis', 'Tahunan')->whereIn('status', ['Diterima', 'Proses Pendanaan'])->get();
+        $user = auth()->user();
+        $unitId = $user->unit_id;
+        $isAtasanUnit = $user->hasRole('Atasan Unit');
+        $isPenggunaAnggaran = $user->hasRole('Pengguna Anggaran');
+
+        if ($isAtasanUnit || $isPenggunaAnggaran) {
+            $kegiatan = Kegiatan::where('jenis', 'Tahunan')->whereIn('status', ['Diterima', 'Proses Pendanaan'])->where('unit_id', $unitId)->get();
+        } else {
+            $kegiatan = Kegiatan::where('jenis', 'Tahunan')->whereIn('status', ['Diterima', 'Proses Pendanaan'])->get();
+        }
+        
 
         $proker = ProgramKerja::all();
 

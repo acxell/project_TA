@@ -20,8 +20,17 @@ class KegiatanBulananController extends Controller
 {
     public function index(Kegiatan $kegiatan)
     {
-        
-        $kegiatanBulanan = Kegiatan::where('tahunan_id', $kegiatan->id)->get();
+        $user = auth()->user();
+        $unitId = $user->unit_id;
+        $isAtasanUnit = $user->hasRole('Atasan Unit');
+        $isPenggunaAnggaran = $user->hasRole('Pengguna Anggaran');
+
+        if ($isAtasanUnit || $isPenggunaAnggaran) {
+            $kegiatanBulanan = Kegiatan::where('tahunan_id', $kegiatan->id)->where('unit_id', $unitId)->get();
+        } else {
+            $kegiatanBulanan = Kegiatan::where('tahunan_id', $kegiatan->id)->get();
+        }
+
         $proker = ProgramKerja::all();
 
         return view('pengajuan.pendanaanKegiatan.viewBulanan', [
@@ -38,7 +47,17 @@ class KegiatanBulananController extends Controller
             ->with(['tor.aktivitas', 'tor.outcomeKegiatan', 'tor.indikatorKegiatan', 'tor.aktivitas.kebutuhanAnggaran'])
             ->firstOrFail();
 
-        $proker = ProgramKerja::all();
+
+        $user = auth()->user();
+        $unitId = $user->unit_id;
+        $isAtasanUnit = $user->hasRole('Atasan Unit');
+        $isPenggunaAnggaran = $user->hasRole('Pengguna Anggaran');
+
+        if ($isAtasanUnit || $isPenggunaAnggaran) {
+            $proker = ProgramKerja::where('unit_id', $unitId)->get();
+        } else {
+            $proker = ProgramKerja::all();
+        }
         $coa = Coa::all();
 
         return view('pengajuan.pendanaanKegiatan.createBulanan', [
@@ -57,7 +76,7 @@ class KegiatanBulananController extends Controller
         $kegiatan = Kegiatan::where('id', $kegiatan->id)
             ->with(['tor.aktivitas.kebutuhanAnggaran'])
             ->firstOrFail();
-    
+
         // Validate input
         $validateData = $request->validate([
             'proker_id' => 'string|required|exists:program_kerjas,id',
@@ -76,13 +95,13 @@ class KegiatanBulananController extends Controller
             'outcomes.*' => 'string|required',
             'indikators.*' => 'string|required',
         ]);
-    
+
         $validateData['user_id'] = Auth::id();
         $validateData['unit_id'] = Auth::user()->unit_id;
         $validateData['satuan_id'] = Auth::user()->unit->satuan_id;
-    
+
         $tor = Tor::create($validateData);
-    
+
         if ($tor) {
             $newKegiatan = Kegiatan::create([
                 'tor_id' => $tor->id,
@@ -94,7 +113,7 @@ class KegiatanBulananController extends Controller
                 'jenis' => 'Bulanan',
                 'tahunan_id' => $request->tahunan_id,
             ]);
-    
+
             // Save outcomes and indicators
             foreach ($request->outcomes as $outcome) {
                 outcomeKegiatan::create([
@@ -102,18 +121,18 @@ class KegiatanBulananController extends Controller
                     'outcome' => $outcome,
                 ]);
             }
-    
+
             foreach ($request->indikators as $indikator) {
                 indikatorKegiatan::create([
                     'tor_id' => $tor->id,
                     'indikator' => $indikator,
                 ]);
             }
-    
+
             // Duplicate aktivitas and anggaran
             $totalBiaya = 0;
             $oldAktivitas = $kegiatan->tor->aktivitas ?? [];
-    
+
             foreach ($oldAktivitas as $aktivitas) {
                 // Create new aktivitas
                 $newAktivitas = Aktivitas::create([
@@ -122,7 +141,7 @@ class KegiatanBulananController extends Controller
                     'penjelasan' => $aktivitas->penjelasan,
                     'kategori' => $aktivitas->kategori,
                 ]);
-    
+
                 // Duplicate anggaran
                 foreach ($aktivitas->kebutuhanAnggaran as $anggaran) {
                     $newAnggaran = kebutuhanAnggaran::create([
@@ -134,30 +153,39 @@ class KegiatanBulananController extends Controller
                         'satuan_volume' => $anggaran->satuan_volume,
                         'harga' => $anggaran->harga,
                     ]);
-    
+
                     $totalBiaya += $newAnggaran->jumlah;
                 }
             }
-    
+
             // Create RAB
             $rab = Rab::create([
                 'tor_id' => $tor->id,
                 'kegiatan_id' => $newKegiatan->id,
                 'total_biaya' => $totalBiaya,
             ]);
-    
+
             // Update kegiatan with RAB
             $newKegiatan->update(['rab_id' => $rab->id]);
-    
+
             return redirect()->route('viewBulanan', $kegiatan->id)->with('success', 'Data telah ditambahkan.');
         }
-    
+
         return redirect()->route('viewBulanan', $kegiatan->id)->with('failed', 'Data gagal ditambahkan.');
     }
 
     public function edit(Tor $tor)
     {
-        $proker = ProgramKerja::all();
+        $user = auth()->user();
+        $unitId = $user->unit_id;
+        $isAtasanUnit = $user->hasRole('Atasan Unit');
+        $isPenggunaAnggaran = $user->hasRole('Pengguna Anggaran');
+
+        if ($isAtasanUnit || $isPenggunaAnggaran) {
+            $proker = ProgramKerja::where('unit_id', $unitId)->get();
+        } else {
+            $proker = ProgramKerja::all();
+        }
         $coa = Coa::all();
 
         $aktivitas = Aktivitas::where('tor_id', $tor->id)->get();
@@ -257,4 +285,4 @@ class KegiatanBulananController extends Controller
             return to_route('viewBulanan', $kegiatan->tahunan_id)->with('failed', 'Data Gagal Dihapus');
         }
     }
-}    
+}

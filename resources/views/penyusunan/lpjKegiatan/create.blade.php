@@ -29,7 +29,7 @@
                             <form class="form" method="POST" action=" {{ route('penyusunan.lpjKegiatan.store') }}">
                                 @csrf
                                 <div class="row">
-                                    <div class="col-md-6 col-12">
+                                    <div class="col-md-12 col-12">
                                         <div class="form-group">
                                             <label>Kegiatan</label>
                                                 <select class="choices form-select" name="kegiatan_id" id="kegiatan_id" type="text" aria-placeholder="Kegiatan">
@@ -39,13 +39,13 @@
                                                 </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 col-12">
+                                    <div class="col-md-12 col-12">
                                         <div class="form-group">
                                             <label>Penjelasan Kegiatan</label>
-                                            <input type="text" id="penjelasan_kegiatan" class="form-control 
+                                            <textarea id="penjelasan_kegiatan" class="form-control 
                                             @error ('penjelasan_kegiatan') is invalid
                                             @enderror"
-                                                placeholder="Penjelasan Kegiatan" name="penjelasan_kegiatan" value="{{ old('penjelasan_kegiatan') }}">
+                                                placeholder="Penjelasan Kegiatan" name="penjelasan_kegiatan" rows="3">{{ old('penjelasan_kegiatan') }}</textarea>
                                                 @error('penjelasan_kegiatan')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                                 @enderror
@@ -71,6 +71,30 @@
                                             @enderror"
                                                 placeholder="Jumlah Peserta Undangan" name="jumlah_peserta_hadir" value="{{ old('jumlah_peserta_hadir') }}">
                                                 @error('jumlah_peserta_hadir')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-12">
+                                        <div class="form-group">
+                                            <label>Hasil / Capaian Kegiatan</label>
+                                            <textarea id="hasil_kegiatan" class="form-control 
+                                            @error ('hasil_kegiatan') is invalid
+                                            @enderror"
+                                                placeholder="Penjelasan Kegiatan" name="hasil_kegiatan" rows="3">{{ old('hasil_kegiatan') }}</textarea>
+                                                @error('hasil_kegiatan')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-12">
+                                        <div class="form-group">
+                                            <label>Perbaikan Kegiatan</label>
+                                            <textarea id="perbaikan_kegiatan" class="form-control 
+                                            @error ('perbaikan_kegiatan') is invalid
+                                            @enderror"
+                                                placeholder="Penjelasan Kegiatan" name="perbaikan_kegiatan" rows="3">{{ old('perbaikan_kegiatan') }}</textarea>
+                                                @error('perbaikan_kegiatan')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                                 @enderror
                                         </div>

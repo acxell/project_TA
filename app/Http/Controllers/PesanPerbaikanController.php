@@ -43,6 +43,7 @@ class PesanPerbaikanController extends Controller
 
         $validateData['user_id'] = Auth::id();
         $validateData['unit_id'] = Auth::user()->unit_id;
+        $validateData['satuan_id'] = Auth::user()->unit->satuan_id;
 
         //dd($validateData);
 
@@ -95,6 +96,7 @@ class PesanPerbaikanController extends Controller
 
         $validateData['user_id'] = Auth::id();
         $validateData['unit_id'] = Auth::user()->unit_id;
+        $validateData['satuan_id'] = Auth::user()->unit->satuan_id;
 
         $pesanPerbaikan = PesanPerbaikan::create($validateData);
 

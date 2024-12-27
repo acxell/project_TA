@@ -77,7 +77,6 @@ class KegiatanBulananController extends Controller
             ->with(['tor.aktivitas.kebutuhanAnggaran'])
             ->firstOrFail();
 
-        // Validate input
         $validateData = $request->validate([
             'proker_id' => 'string|required|exists:program_kerjas,id',
             'nama_kegiatan' => 'string|required',
@@ -129,12 +128,10 @@ class KegiatanBulananController extends Controller
                 ]);
             }
 
-            // Duplicate aktivitas and anggaran
             $totalBiaya = 0;
             $oldAktivitas = $kegiatan->tor->aktivitas ?? [];
 
             foreach ($oldAktivitas as $aktivitas) {
-                // Create new aktivitas
                 $newAktivitas = Aktivitas::create([
                     'tor_id' => $tor->id,
                     'waktu_aktivitas' => $aktivitas->waktu_aktivitas,
@@ -142,7 +139,6 @@ class KegiatanBulananController extends Controller
                     'kategori' => $aktivitas->kategori,
                 ]);
 
-                // Duplicate anggaran
                 foreach ($aktivitas->kebutuhanAnggaran as $anggaran) {
                     $newAnggaran = kebutuhanAnggaran::create([
                         'aktivitas_id' => $newAktivitas->id,
@@ -158,14 +154,12 @@ class KegiatanBulananController extends Controller
                 }
             }
 
-            // Create RAB
             $rab = Rab::create([
                 'tor_id' => $tor->id,
                 'kegiatan_id' => $newKegiatan->id,
                 'total_biaya' => $totalBiaya,
             ]);
 
-            // Update kegiatan with RAB
             $newKegiatan->update(['rab_id' => $rab->id]);
 
             return redirect()->route('viewBulanan', $kegiatan->id)->with('success', 'Data telah ditambahkan.');
@@ -203,7 +197,6 @@ class KegiatanBulananController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validate input
         $validateData = $request->validate([
             'proker_id' => 'string|required|exists:program_kerjas,id',
             'nama_kegiatan' => 'string|required',
@@ -230,7 +223,6 @@ class KegiatanBulananController extends Controller
         }
         $tor->update($validateData);
 
-        // Retrieve current outcomes, indikator, and aktivitas IDs
         $existingOutcomeIds = $request->outcome_ids ?? [];
         $existingIndikatorIds = $request->indikator_ids ?? [];
 
@@ -238,18 +230,16 @@ class KegiatanBulananController extends Controller
         $outcomeIdsToKeep = [];
         foreach ($request->outcomes as $index => $outcome) {
             $outcomeModel = outcomeKegiatan::updateOrCreate(
-                ['tor_id' => $id, 'id' => $existingOutcomeIds[$index] ?? null], // If ID exists, update, otherwise create new
+                ['tor_id' => $id, 'id' => $existingOutcomeIds[$index] ?? null],
                 ['outcome' => $outcome]
             );
-            $outcomeIdsToKeep[] = $outcomeModel->id; // Track IDs to keep
+            $outcomeIdsToKeep[] = $outcomeModel->id;
         }
 
-        // Delete removed outcomes
         outcomeKegiatan::where('tor_id', $id)
             ->whereNotIn('id', $outcomeIdsToKeep)
             ->delete();
 
-        // Handle Indikators: Create/Update/Delete
         $indikatorIdsToKeep = [];
         foreach ($request->indikators as $index => $indikator) {
             $indikatorModel = indikatorKegiatan::updateOrCreate(
@@ -259,7 +249,6 @@ class KegiatanBulananController extends Controller
             $indikatorIdsToKeep[] = $indikatorModel->id;
         }
 
-        // Delete removed indikator
         indikatorKegiatan::where('tor_id', $id)
             ->whereNotIn('id', $indikatorIdsToKeep)
             ->delete();

@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", function () {
             return response.json();
         })
         .then((data) => {
-            // Bar Chart (Total Pendanaan Anggaran)
             const optionsProfileVisit = {
                 annotations: {
                     position: "back",
@@ -43,7 +42,6 @@ document.addEventListener("DOMContentLoaded", function () {
             );
             chartProfileVisit.render();
 
-            // Pie Chart (Persentase Pengajuan Dana per Satuan Kerja)
             const optionsVisitorsProfile = {
                 series: data.pieChart.data,
                 labels: data.pieChart.labels,

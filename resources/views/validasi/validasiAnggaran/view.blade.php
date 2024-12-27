@@ -58,11 +58,15 @@
                                     {{ $item->status }}
                                 </span>
                             </td>
-                            <td>@if($item->status == 'Telah Diajukan')
+                            <td>
+                                @if (($item->status == 'Telah Diajukan' && auth()->user()->hasRole('Atasan Unit')) ||
+                                ($item->status == 'Diterima Atasan Unit' && auth()->user()->hasRole('Atasan Yayasan')))
                                 @can('Validasi Anggaran Tahunan')
-                                <a href="{{ route('validasi.validasiAnggaran.validasi', $item->id) }}"><i class="badge-circle font-small-1"
-                                        data-feather="check" data-bs-toggle="tooltip" data-bs-placement="top" title="Validasi"></i></a>
-                                @endCan
+                                <a href="{{ route('validasi.validasiAnggaran.validasi', $item->id) }}">
+                                    <i class="badge-circle font-small-1" data-feather="check"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Validasi"></i>
+                                </a>
+                                @endcan
                                 @endif
                             </td>
                         </tr>

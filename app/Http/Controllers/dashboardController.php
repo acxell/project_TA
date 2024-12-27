@@ -19,11 +19,9 @@ class DashboardController extends Controller
         $isAtasanUnit = $user->hasRole('Atasan Unit');
         $isPenggunaAnggaran = $user->hasRole('Pengguna Anggaran');
 
-        // Jika Atasan Unit atau Pengguna Anggaran, filter data berdasarkan unit_id
         if ($isAtasanUnit || $isPenggunaAnggaran) {
             $unitId = $user->unit_id;
 
-            // Retrieve data khusus milik unit
             $jumlahPengajuanTahunan = Kegiatan::where('unit_id', $unitId)->where('jenis', 'Tahunan')->count();
             $jumlahPengajuanBulanan = Kegiatan::where('unit_id', $unitId)->where('jenis', 'Bulanan')->count();
             $kegiatanDilaksanakan = Kegiatan::where('unit_id', $unitId)
@@ -36,7 +34,6 @@ class DashboardController extends Controller
                 ->limit(5)
                 ->get();
         } else {
-            // Jika bukan Atasan Unit atau Pengguna Anggaran, tampilkan semua data
             $jumlahPengajuanTahunan = Kegiatan::where('jenis', 'Tahunan')->count();
             $jumlahPengajuanBulanan = Kegiatan::where('jenis', 'Bulanan')->count();
             $kegiatanDilaksanakan = Kegiatan::where('status', 'Selesai')->count();
@@ -69,19 +66,17 @@ class DashboardController extends Controller
         if ($isAtasanUnit || $isPenggunaAnggaran) {
             $unitId = $user->unit_id;
             $satkerId = $user->unit->satuan->id;
-            // Total pendanaan anggaran per bulan (bar chart)
             $totalPendanaanPerBulan = Pendanaan::where('unit_id', $unitId)->selectRaw('MONTH(created_at) as bulan, SUM(besaran_transfer) as total')
                 ->whereYear('created_at', $currentYear)
                 ->groupByRaw('MONTH(created_at)')
                 ->pluck('total', 'bulan');
 
             $months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            $formattedData = array_fill(1, 12, 0); // Initialize all months with 0
+            $formattedData = array_fill(1, 12, 0);
             foreach ($totalPendanaanPerBulan as $month => $value) {
                 $formattedData[$month] = $value;
             }
 
-            // Total pengajuan dana per satuan kerja (pie chart)
             $pengajuanPerSatuanKerja = Kegiatan::whereHas('unit', function ($query) use ($satkerId) {
                 $query->where('satuan_id', $satkerId);
             })
@@ -93,19 +88,17 @@ class DashboardController extends Controller
                     return [$satuanKerja->nama ?? 'Unknown' => $item->jumlah_kegiatan];
                 });
         } else {
-            // Total pendanaan anggaran per bulan (bar chart)
             $totalPendanaanPerBulan = Pendanaan::selectRaw('MONTH(created_at) as bulan, SUM(besaran_transfer) as total')
                 ->whereYear('created_at', $currentYear)
                 ->groupByRaw('MONTH(created_at)')
                 ->pluck('total', 'bulan');
 
             $months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            $formattedData = array_fill(1, 12, 0); // Initialize all months with 0
+            $formattedData = array_fill(1, 12, 0);
             foreach ($totalPendanaanPerBulan as $month => $value) {
                 $formattedData[$month] = $value;
             }
 
-            // Total pengajuan dana per satuan kerja (pie chart)
             $pengajuanPerSatuanKerja = Kegiatan::selectRaw('satuan_id, COUNT(*) as jumlah_kegiatan')
                 ->groupBy('satuan_id')
                 ->get()
@@ -117,7 +110,7 @@ class DashboardController extends Controller
         return response()->json([
             'barChart' => [
                 'categories' => $months,
-                'data' => array_values($formattedData), // Ensure values align with the 12 months
+                'data' => array_values($formattedData),
             ],
             'pieChart' => [
                 'labels' => $pengajuanPerSatuanKerja->keys(),

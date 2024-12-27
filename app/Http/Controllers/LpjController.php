@@ -228,24 +228,19 @@ class LpjController extends Controller
         if ($request->input('action') == 'reject') {
             return redirect()->route('pesanPerbaikan.lpj.create')->with('success', 'Pengajuan telah ditolak.');
         } elseif ($request->input('action') == 'accept') {
-            // Load related Kegiatan and Pendanaan data
             $lpj->load('kegiatan.pendanaan');
 
-            // Calculate the total transfer amount from Pendanaan
             $totalTransfer = $lpj->kegiatan->pendanaan->first()->besaran_transfer;
 
-            // Calculate the difference between total transfer and total belanja
             $remainingBalance = $totalTransfer - $lpj->total_belanja;
 
-            // Determine status based on the remaining balance
             if ($remainingBalance > 0) {
                 $lpj->update(['status' => 'Perlu Retur']);
 
-                // Create a new Retur record
                 Retur::create([
                     'lpj_id' => $lpj->id,
                     'total_retur' => $remainingBalance,
-                    'status' => 'Lakukan Retur', // Initial status
+                    'status' => 'Lakukan Retur',
                 ]);
 
                 return redirect()->route('validasi.validasiLpj.view')

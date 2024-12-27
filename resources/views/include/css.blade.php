@@ -13,7 +13,6 @@
 <link rel="stylesheet" href="{{ asset('template/assets/extensions/choices.js/public/assets/styles/choices.css') }}">
 
 <style>
-    /* Floating notification styles */
     .floating-notification {
         position: fixed;
         top: 20px;

@@ -70,7 +70,6 @@ class KegiatanController extends Controller
     }
 
     // Pengajuan Anggaran Tahunan
-
     public function pengajuanIndex()
     {
         $user = auth()->user();
@@ -80,19 +79,19 @@ class KegiatanController extends Controller
 
         if ($isAtasanUnit || $isPenggunaAnggaran) {
             $kegiatan = Kegiatan::whereNotNull('rab_id')
-            ->where('unit_id', $unitId)
-            ->whereHas('rab', function ($query) {
-                $query->where('total_biaya', '>', 0);
-            })
-            ->where('jenis', 'Tahunan')
-            ->get();
+                ->where('unit_id', $unitId)
+                ->whereHas('rab', function ($query) {
+                    $query->where('total_biaya', '>', 0);
+                })
+                ->where('jenis', 'Tahunan')
+                ->get();
         } else {
             $kegiatan = Kegiatan::whereNotNull('rab_id')
-            ->whereHas('rab', function ($query) {
-                $query->where('total_biaya', '>', 0);
-            })
-            ->where('jenis', 'Tahunan')
-            ->get();
+                ->whereHas('rab', function ($query) {
+                    $query->where('total_biaya', '>', 0);
+                })
+                ->where('jenis', 'Tahunan')
+                ->get();
         }
         //$kegiatan = Kegiatan::whereIn('status', ['Belum Diajukan'])->get();
 
@@ -117,7 +116,6 @@ class KegiatanController extends Controller
 
 
     // Validasi Pengajuan by Unit & Atasan
-
     public function validasi_index()
     {
         $user = auth()->user();
@@ -126,14 +124,14 @@ class KegiatanController extends Controller
 
         if ($isAtasanUnit) {
             $kegiatan = Kegiatan::whereNotNull('rab_id')
-            ->where('unit_id', $unitId)
-            ->whereIn('status', ['Telah Diajukan', 'Diterima', 'Proses Finalisasi Pengajuan', 'Diterima Atasan Unit'])
-            ->where('jenis', 'Tahunan')
-            ->get();
+                ->where('unit_id', $unitId)
+                ->whereIn('status', ['Telah Diajukan', 'Diterima', 'Proses Finalisasi Pengajuan', 'Diterima Atasan Unit'])
+                ->where('jenis', 'Tahunan')
+                ->get();
         } else {
             $kegiatan = Kegiatan::whereIn('status', ['Telah Diajukan', 'Diterima', 'Proses Finalisasi Pengajuan', 'Diterima Atasan Unit'])
-            ->where('jenis', 'Tahunan')
-            ->get();
+                ->where('jenis', 'Tahunan')
+                ->get();
         }
 
         $proker = ProgramKerja::all();
@@ -160,12 +158,12 @@ class KegiatanController extends Controller
         if ($request->input('action') == 'reject') {
             return redirect()->route('pesanPerbaikan.anggaranTahunan.create')->with('success', 'Pengajuan telah ditolak.');
         } elseif ($request->input('action') == 'accept') {
-            
-        if ($isAtasanUnit) {
-            $kegiatan->update(['status' => 'Diterima Atasan Unit']);
-        } elseif ($isAtasanYayasan || $isAtasanSU) {
-            $kegiatan->update(['status' => 'Proses Finalisasi Pengajuan']);
-        }
+
+            if ($isAtasanUnit) {
+                $kegiatan->update(['status' => 'Diterima Atasan Unit']);
+            } elseif ($isAtasanYayasan || $isAtasanSU) {
+                $kegiatan->update(['status' => 'Proses Finalisasi Pengajuan']);
+            }
             return redirect()->route('validasi.validasiAnggaran.view')->with('success', 'Pengajuan telah diterima.');
         }
     }
@@ -174,12 +172,15 @@ class KegiatanController extends Controller
 
     public function finalisasi_index()
     {
-        $kegiatan = Perangkingan::all();
+        $kegiatan = Perangkingan::whereHas('kegiatan', function ($query) {
+            $query->whereIn('status', ['Proses Finalisasi Pengajuan', 'Diterima', 'Tidak Disetujui']);
+        })->get();
 
         $proker = ProgramKerja::all();
 
         return view('finalisasi.finalisasiKegiatan.view', ['kegiatan' => $kegiatan, 'proker' => $proker]);
     }
+
 
     public function finalisasi_pengajuan_tahunan(Kegiatan $kegiatan)
     {
@@ -199,6 +200,42 @@ class KegiatanController extends Controller
             return redirect()->route('finalisasi.finalisasiKegiatan.view')->with('success', 'Pengajuan telah diterima.');
         }
     }
+
+    public function simpanSementara(Request $request)
+    {
+        $statusKegiatan = $request->input('kegiatan', []);
+        session(['kegiatan_status' => $statusKegiatan]);
+
+        return redirect()->route('finalisasi.finalisasiKegiatan.view')
+            ->with('success', 'Perubahan status disimpan sementara. Klik Submit untuk menyimpan ke database.');
+    }
+
+    public function konfirmasi()
+    {
+        $kegiatanStatus = session('kegiatan_status', []);
+
+        $allKegiatanIds = Kegiatan::pluck('id')->toArray();
+
+        foreach ($allKegiatanIds as $kegiatanId) {
+            $kegiatan = Kegiatan::find($kegiatanId);
+
+            if ($kegiatan) {
+                if (array_key_exists($kegiatanId, $kegiatanStatus)) {
+                    $status = $kegiatanStatus[$kegiatanId];
+                } else {
+                    $status = 'Tidak Disetujui';
+                }
+
+                $kegiatan->update(['status' => $status]);
+            }
+        }
+
+        session()->forget('kegiatan_status');
+
+        return redirect()->route('finalisasi.finalisasiKegiatan.view')
+            ->with('success', 'Status kegiatan berhasil diperbarui.');
+    }
+
 
     //SAW
     public function calculateSAW()
@@ -288,41 +325,30 @@ class KegiatanController extends Controller
         return response()->json(['success' => true, 'message' => 'Perhitungan SAW selesai.']);
     }
 
-
-
-
     public function triggerCalculateSAW()
     {
         try {
-            // Truncate tabel perangkingan terlebih dahulu
             DB::table('perangkingan')->truncate();
-    
-            // Panggil fungsi calculateSAW dan tangkap responsnya
+
             $response = $this->calculateSAW();
-    
-            // Jika respons dari calculateSAW success: false, kembalikan respons gagal
+
             if (!$response->getData()->success) {
                 return $response;
             }
-    
-            // Jika semua berjalan lancar, kembalikan respons sukses
+
             return response()->json([
                 'success' => true,
                 'message' => 'Perhitungan SAW berhasil dilakukan dan disimpan.'
             ]);
         } catch (\Exception $e) {
-            // Tangani kesalahan jika terjadi exception
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan: ' . $e->getMessage()
             ]);
         }
     }
-    
-
 
     // Pengajuan Pendanaan Kegiatan
-
     public function pendanaan_kegiatan_index()
     {
         $user = auth()->user();
@@ -335,7 +361,7 @@ class KegiatanController extends Controller
         } else {
             $kegiatan = Kegiatan::where('jenis', 'Tahunan')->whereIn('status', ['Diterima', 'Proses Pendanaan'])->get();
         }
-        
+
 
         $proker = ProgramKerja::all();
 

@@ -178,6 +178,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::middleware('role.access:Acc Finalisasi Anggaran Tahunan')->group(function () {
         Route::get('/finalisasi-pengajuan-anggaran-tahunan/{kegiatan}/finalisasi-pengajuan', [KegiatanController::class, 'finalisasi_pengajuan_tahunan'])->name('finalisasi.finalisasiKegiatan.finalisasi');
         Route::post('/finalisasi-pengajuan-anggaran-tahunan/{kegiatan}/acc-finalisasis', [KegiatanController::class, 'acc_finalisasi_pengajuan_tahunan'])->name('finalisasi.finalisasiKegiatan.acc');
+        Route::post('/finalisasi/simpan', [KegiatanController::class, 'simpanSementara'])->name('finalisasi.simpan');
+        Route::post('/finalisasi/konfirmasi', [KegiatanController::class, 'konfirmasi'])->name('finalisasi.konfirmasi');
 
         //SAW
         Route::post('/calculate-saw', [KegiatanController::class, 'triggerCalculateSAW'])->name('saw.calculate');

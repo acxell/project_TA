@@ -16,12 +16,10 @@ class ReturController extends Controller
         $unitId = $user->unit_id;
 
         if ($user->hasRole('Pengguna Anggaran')) {
-            // Filter returs based on the unit_id of the authenticated user
             $retur = Retur::whereHas('lpj', function ($query) use ($unitId) {
                 $query->where('unit_id', $unitId);
             })->get();
         } else {
-            // If not Pengguna Anggaran, retrieve all returs
             $retur = Retur::all();
         }
 
@@ -101,7 +99,6 @@ class ReturController extends Controller
             'bukti_retur' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        // Upload the new file if provided
         if ($request->hasFile('bukti_retur')) {
             $filePath = $request->file('bukti_retur')->store('retur_bukti', 'public');
             $retur->bukti_retur = $filePath;

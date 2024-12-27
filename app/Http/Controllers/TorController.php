@@ -280,26 +280,22 @@ class TorController extends Controller
             }
         }
 
-        // Retrieve current outcomes, indikator, and aktivitas IDs
         $existingOutcomeIds = $request->outcome_ids ?? [];
         $existingIndikatorIds = $request->indikator_ids ?? [];
 
-        // Handle Outcomes: Create/Update/Delete
         $outcomeIdsToKeep = [];
         foreach ($request->outcomes as $index => $outcome) {
             $outcomeModel = outcomeKegiatan::updateOrCreate(
-                ['tor_id' => $id, 'id' => $existingOutcomeIds[$index] ?? null], // If ID exists, update, otherwise create new
+                ['tor_id' => $id, 'id' => $existingOutcomeIds[$index] ?? null],
                 ['outcome' => $outcome]
             );
-            $outcomeIdsToKeep[] = $outcomeModel->id; // Track IDs to keep
+            $outcomeIdsToKeep[] = $outcomeModel->id;
         }
 
-        // Delete removed outcomes
         outcomeKegiatan::where('tor_id', $id)
             ->whereNotIn('id', $outcomeIdsToKeep)
             ->delete();
 
-        // Handle Indikators: Create/Update/Delete
         $indikatorIdsToKeep = [];
         foreach ($request->indikators as $index => $indikator) {
             $indikatorModel = indikatorKegiatan::updateOrCreate(
@@ -309,7 +305,6 @@ class TorController extends Controller
             $indikatorIdsToKeep[] = $indikatorModel->id;
         }
 
-        // Delete removed indikator
         indikatorKegiatan::where('tor_id', $id)
             ->whereNotIn('id', $indikatorIdsToKeep)
             ->delete();

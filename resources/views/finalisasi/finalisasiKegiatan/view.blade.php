@@ -21,66 +21,82 @@
     <section class="section">
         <div class="card">
             <div class="card-body">
-                <!-- Tombol Trigger SAW -->
                 <div class="row mb-3">
+                @can('Acc Finalisasi Anggaran Tahunan')
                     <div class="col">
                         <button id="trigger-saw" class="btn btn-primary">Lakukan Perangkingan</button>
                     </div>
+                    @endCan
                 </div>
-
-                <!-- Hasil Perhitungan SAW -->
                 <div id="hasil-saw">
-                    <!-- Konten akan diperbarui melalui JavaScript -->
                 </div>
-
-                <!-- Tabel Kegiatan -->
-                <table class="table table-striped" id="table1">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama Kegiatan</th>
-                            <th>Nama Program Kerja</th>
-                            <th>Bulan Pelaksanaan</th>
-                            <th>Total Biaya</th>
-                            <th>Skor</th>
-                            <th>Status</th>
-                            @can('Acc Finalisasi Anggaran Tahunan')
-                            <th>Actions</th>
-                            @endCan
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($kegiatan as $item)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->kegiatan->tor->nama_kegiatan }}</td>
-                            <td>{{ $item->kegiatan->tor->proker->nama }}</td>
-                            <td>{{ $item->kegiatan->tor->waktu }}</td>
-                            <td>
-                                @unless(empty($item->kegiatan->tor->rab->total_biaya))
-                                @currency($item->kegiatan->tor->rab->total_biaya)
-                                @else
-                                N/A <!-- Atau pesan lain -->
-                                @endunless
-                            </td>
-                            <td>{{ $item->hasil_akhir }}</td>
-                            <td>
-                                <span class="badge {{ $item->kegiatan->status == 'Aktif' ? 'bg-success' : 'bg-danger' }}">
-                                    {{ $item->kegiatan->status }}
-                                </span>
-                            </td>
-                            <td>
-                                @if($item->kegiatan->status == 'Proses Finalisasi Pengajuan')
-                                @can('Acc Finalisasi Anggaran Tahunan')
-                                <a href="{{ route('finalisasi.finalisasiKegiatan.finalisasi', $item->kegiatan->id) }}"><i class="badge-circle font-small-1"
-                                        data-feather="check" data-bs-toggle="tooltip" data-bs-placement="top" title="Finalisasi Pengajuan"></i></a>
-                                        @endCan
-                                        @endif
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <form action="{{ route('finalisasi.simpan') }}" method="POST">
+                    @csrf
+                    <table class="table table-striped" id="table1">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Kegiatan</th>
+                                <th>Nama Program Kerja</th>
+                                <th>Bulan Pelaksanaan</th>
+                                <th>Total Biaya</th>
+                                <th>Skor</th>
+                                <th>Status</th>
+                                <th>ACC</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($kegiatan as $item)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->kegiatan->tor->nama_kegiatan }}</td>
+                                <td>{{ $item->kegiatan->tor->proker->nama }}</td>
+                                <td>{{ $item->kegiatan->tor->waktu }}</td>
+                                <td>
+                                    @unless(empty($item->kegiatan->tor->rab->total_biaya))
+                                    @currency($item->kegiatan->tor->rab->total_biaya)
+                                    @else
+                                    N/A
+                                    @endunless
+                                </td>
+                                <td>{{ $item->hasil_akhir }}</td>
+                                <td>
+                                    <span class="badge {{ $item->kegiatan->status == 'Aktif' ? 'bg-success' : 'bg-danger' }}">
+                                        {{ $item->kegiatan->status }}
+                                    </span>
+                                </td>
+                                <td>
+                                    @if($item->kegiatan->status == 'Proses Finalisasi Pengajuan')
+                                    @can('Acc Finalisasi Anggaran Tahunan')
+                                    <input
+                                        type="checkbox"
+                                        name="kegiatan[{{ $item->kegiatan->id }}]"
+                                        value="Diterima"
+                                        {{ session('kegiatan_status') && array_key_exists($item->kegiatan->id, session('kegiatan_status')) ? 'checked' : '' }}>
+                                    Diterima
+                                    <a href="{{ route('finalisasi.finalisasiKegiatan.finalisasi', $item->kegiatan->id) }}"><i class="badge-circle font-small-1"
+                                            data-feather="check" data-bs-toggle="tooltip" data-bs-placement="top" title="Finalisasi Pengajuan"></i></a>
+                                    @endCan
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    @can('Acc Finalisasi Anggaran Tahunan')
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                    @endCan
+                </form>
+                @if (session('kegiatan_status'))
+                <div class="d-flex justify-content-center">
+                    <form action="{{ route('finalisasi.konfirmasi') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-primary">Submit Final Status</button>
+                    </form>
+                </div>
+                @endif
             </div>
         </div>
     </section>

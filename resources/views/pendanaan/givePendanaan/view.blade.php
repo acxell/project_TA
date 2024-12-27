@@ -49,12 +49,12 @@
                                 </span>
                             </td>
                             <td>
-                            @if($item->status != 'Telah Didanai')
-                            @can('Pemberian Pendanaan')
-                            <a href="{{ route('pendanaan.givePendanaan.detail', $item->id) }}"><i class="badge-circle font-small-1"
+                                @if($item->status != 'Telah Didanai')
+                                @can('Pemberian Pendanaan')
+                                <a href="{{ route('pendanaan.givePendanaan.detail', $item->id) }}"><i class="badge-circle font-small-1"
                                         data-feather="dollar-sign" data-bs-toggle="tooltip" data-bs-placement="top" title="Berikan Pendanaan"></i></a>
-                                        @endCan
-                                        @endif
+                                @endCan
+                                @endif
                             </td>
                         </tr>
                         @endforeach

@@ -25,8 +25,7 @@
     <div class="row match-height">
         <div class="col-12">
             <div class="card">
-                <form class="form" action="{{ route('finalisasi.finalisasiKegiatan.acc', $kegiatan->id) }}" method="POST">
-                    @csrf
+                <form class="form">
                     <div class="card-header">
                         <div class="col d-flex justify-content-center">
                             <h4 class="card-title">Term Of Reference (TOR)</h4>
@@ -127,8 +126,6 @@
                                 <tr>
                                     <th colspan="5">Tahapan dan Waktu Pelaksanaan</th>
                                 </tr>
-
-                                <!-- Table Head for Aktivitas -->
                                 <tr>
                                     <th>Kategori</th>
                                     <th>Waktu Aktivitas</th>
@@ -148,15 +145,10 @@
 
                                 @foreach ($aktivitasGroup as $index => $aktivitas)
                                 <tr>
-                                    <!-- Kategori (Apply rowspan only for the first row of each category group) -->
                                     @if ($index === 0)
                                     <td rowspan="{{ $rowspanCount }}">{{ $kategori }}</td>
                                     @endif
-
-                                    <!-- Waktu Aktivitas -->
                                     <td>{{ $aktivitas->waktu_aktivitas }}</td>
-
-                                    <!-- Penjelasan Aktivitas -->
                                     <td>{{ $aktivitas->penjelasan }}</td>
                                 </tr>
                                 @endforeach
@@ -224,8 +216,6 @@
                                     <tr>
                                         <th colspan="5">Uraian Aktivitas</th>
                                     </tr>
-
-                                    <!-- Table Head for Aktivitas -->
                                     <tr>
                                         <th>Kategori</th>
                                         <th>Waktu Aktivitas</th>
@@ -246,17 +236,11 @@
 
                                     @foreach ($aktivitasGroup as $index => $aktivitas)
                                     <tr>
-                                        <!-- Kategori (Apply rowspan only for the first row of each category group) -->
                                         @if ($index === 0)
                                         <td rowspan="{{ $rowspanCount }}">{{ $kategori }}</td>
                                         @endif
-
-                                        <!-- Waktu Aktivitas -->
                                         <td>{{ $aktivitas->waktu_aktivitas }}</td>
-
-                                        <!-- Penjelasan Aktivitas -->
                                         <td>{{ $aktivitas->penjelasan }}</td>
-
                                         <td>
                                             @if ($aktivitas->kebutuhanAnggaran && $aktivitas->kebutuhanAnggaran->isNotEmpty())
                                             <table class="table table-lg">
@@ -319,7 +303,6 @@
                             </div>
                             <div class="col-12 d-flex justify-content-end">
                                 <button type="button" class="btn btn-primary me-1 mb-1" onclick="window.history.back();">Go Back</button>
-                                <button type="submit" name="action" value="accept" class="btn btn-primary me-1 mb-1">Terima Validasi</button>
                             </div>
 
                         </div>

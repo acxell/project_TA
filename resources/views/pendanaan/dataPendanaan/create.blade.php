@@ -81,12 +81,11 @@
         const fileName = file ? file.name : 'No file chosen';
         document.getElementById('selectedFileName').textContent = fileName;
 
-        // Check if the selected file is a PDF
         if (file && file.type === 'application/pdf') {
             const fileURL = URL.createObjectURL(file);
-            document.getElementById('bukti_preview').data = fileURL; // Set the object data to the PDF file URL
+            document.getElementById('bukti_preview').data = fileURL;
         } else {
-            document.getElementById('bukti_preview').data = ''; // Clear the object data if not a PDF
+            document.getElementById('bukti_preview').data = '';
             alert("Please upload a valid PDF file.");
         }
     });

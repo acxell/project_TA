@@ -30,7 +30,6 @@ class RincianLpjController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    // Store new rincian for the LPJ
     public function store(Request $request, $lpjId)
     {
         $request->validate([
@@ -53,7 +52,6 @@ class RincianLpjController extends Controller
 
         RincianLpj::create($validatedData);
 
-        // Recalculate total_belanja for the specified lpj
         $totalBelanja = RincianLpj::where('lpj_id', $lpjId)->sum('harga');
         Lpj::where('id', $lpjId)->update(['total_belanja' => $totalBelanja]);
 
@@ -96,7 +94,6 @@ class RincianLpjController extends Controller
         $lpjId = $rincianLpj->lpj_id;
         $rincianLpj->delete();
 
-        // Recalculate total_belanja after deletion
         $totalBelanja = RincianLpj::where('lpj_id', $lpjId)->sum('harga');
         Lpj::where('id', $lpjId)->update(['total_belanja' => $totalBelanja]);
 

@@ -104,7 +104,6 @@ class penggunaController extends Controller
             'unit_id' => 'required|string|exists:units,id',
         ]);
 
-        // Only hash the password if it was provided
         if ($request->filled('password')) {
             $validateData['password'] = Hash::make($validateData['password']);
         } else {
@@ -113,7 +112,6 @@ class penggunaController extends Controller
 
         $pengguna->update($validateData);
 
-        // Update roles
         $pengguna->syncRoles($request->input('roles'));
 
         return $pengguna

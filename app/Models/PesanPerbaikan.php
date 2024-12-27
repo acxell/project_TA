@@ -18,8 +18,6 @@ class PesanPerbaikan extends Model
         'id',
     ];
 
-
-    //Relational
     public function kegiatan(){
         return $this->belongsTo(Kegiatan::class, 'kegiatan_id', 'id');
     }

@@ -25,7 +25,6 @@
     document.addEventListener('DOMContentLoaded', function() {
         const items = document.querySelectorAll('.sidebar-item');
 
-        // Menandai item sidebar yang sesuai dengan URL halaman saat ini sebagai aktif
         const currentURL = window.location.href;
         items.forEach(item => {
             const link = item.querySelector('a.sidebar-link');
@@ -34,10 +33,7 @@
             }
 
             item.addEventListener('click', function() {
-                // Hapus kelas 'active' dari semua item
                 items.forEach(i => i.classList.remove('active'));
-
-                // Tambahkan kelas 'active' pada item yang diklik
                 this.classList.add('active');
             });
         });
@@ -47,8 +43,6 @@
 {{-- Tooltip --}}
 
 <script>
-    // If you want to use tooltips in your project, we suggest initializing them globally
-    // instead of a "per-page" level.
     document.addEventListener('DOMContentLoaded', function () {
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -61,54 +55,15 @@
 
 <script>
     setTimeout(() => {
-        const floatingAlerts = document.querySelectorAll('.floating-notification'); // Target only floating notifications
+        const floatingAlerts = document.querySelectorAll('.floating-notification');
         floatingAlerts.forEach(alert => {
-            alert.classList.add('fade'); // Add fade-out class
-            setTimeout(() => alert.remove(), 500); // Remove element after fade-out
+            alert.classList.add('fade');
+            setTimeout(() => alert.remove(), 500); 
         });
-    }, 5000); // Auto-close after 5 seconds
+    }, 5000);
 </script>
 
 <script>
-    //paging Form
-    /*
-document.addEventListener('DOMContentLoaded', function() {
-    let currentStep = 1;
-    const totalSteps = 3;
-
-    function showStep(step) {
-        for (let i = 1; i <= totalSteps; i++) {
-            document.getElementById(`step-${i}`).style.display = (i === step) ? 'block' : 'none';
-        }
-    }
-
-    document.getElementById('next-step-1').addEventListener('click', function() {
-        currentStep++;
-        showStep(currentStep);
-    });
-
-    document.getElementById('prev-step-2').addEventListener('click', function() {
-        currentStep--;
-        showStep(currentStep);
-    });
-
-    document.getElementById('next-step-2').addEventListener('click', function() {
-        currentStep++;
-        showStep(currentStep);
-    });
-
-    document.getElementById('prev-step-3').addEventListener('click', function() {
-        currentStep--;
-        showStep(currentStep);
-    });
-
-    showStep(currentStep);
-});
-*/
-</script>
-
-<script>
-    // =================== Outcome Section ===================
     let outcomeCount = 1;
     document.getElementById('add-outcome').addEventListener('click', function() {
         outcomeCount++;
@@ -128,7 +83,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // =================== Indikator Section ===================
     let indikatorCount = 1;
     document.getElementById('add-indikator').addEventListener('click', function() {
         indikatorCount++;
@@ -148,7 +102,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // =================== Aktivitas Section ===================
     let aktivitasCount = 1;
     document.getElementById('add-aktivitas').addEventListener('click', function() {
         aktivitasCount++;
@@ -195,21 +148,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Select all update buttons
         const updateButtons = document.querySelectorAll(".updateReturBtn");
 
         updateButtons.forEach(button => {
             button.addEventListener("click", function() {
-                // Get data attributes from clicked button
                 const id = button.getAttribute("data-id");
                 const nominal = button.getAttribute("data-nominal");
                 const buktiLink = button.getAttribute("data-bukti");
 
-                // Set form action to include the specific retur ID
                 const updateForm = document.getElementById("updateReturForm");
                 updateForm.action = `/retur/${id}`;
 
-                // Populate modal fields with the selected retur data
                 document.getElementById("nominal_retur").value = nominal;
                 const currentBuktiLink = document.getElementById("current_bukti_retur");
                 currentBuktiLink.href = buktiLink;
@@ -221,11 +170,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script>
     function showModal(item) {
-        // Set modal title and body dynamically
         document.getElementById('modalTitle').innerText = item.nama;
         document.getElementById('modalBody').innerText = item.deskripsi;
 
-        // Show the modal
         var myModal = new bootstrap.Modal(document.getElementById('primary'));
         myModal.show();
     }

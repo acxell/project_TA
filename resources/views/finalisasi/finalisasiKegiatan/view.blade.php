@@ -75,7 +75,7 @@
                                         {{ session('kegiatan_status') && array_key_exists($item->kegiatan->id, session('kegiatan_status')) ? 'checked' : '' }}>
                                     Diterima
                                     <a href="{{ route('finalisasi.finalisasiKegiatan.finalisasi', $item->kegiatan->id) }}"><i class="badge-circle font-small-1"
-                                            data-feather="check" data-bs-toggle="tooltip" data-bs-placement="top" title="Finalisasi Pengajuan"></i></a>
+                                    data-feather="eye" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail"></i></a>
                                     @endCan
                                     @endif
                                 </td>

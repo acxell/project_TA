@@ -39,7 +39,7 @@
                                                 <div class="input-group mb-3">
                                                     <label class="input-group-text" for="inputGroupFile01"><i
                                                             class="bi bi-upload"></i></label>
-                                                    <input type="file" class="form-control" id="bukti_transfer" name="bukti_transfer" accept=".pdf">
+                                                    <input type="file" class="basic-filepond" id="bukti_transfer" name="bukti_transfer" accept=".pdf">
                                                 </div>
                                             </div>
                                             @error('bukti_transfer')

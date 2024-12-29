@@ -76,7 +76,7 @@
                 <li
                     class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
-                        <i class="bi bi-stack"></i>
+                        <i class="bi bi-briefcase-fill"></i>
                         <span>Pengajuan</span>
                     </a>
 
@@ -106,7 +106,7 @@
                 ])
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
-                        <i class="bi bi-journal-check"></i>
+                        <i class="bi bi-passport"></i>
                         <span>laporan Pertanggung Jawabann</span>
                     </a>
 
@@ -140,7 +140,7 @@
                 <li
                     class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
-                        <i class="bi bi-stack"></i>
+                        <i class="bi bi-cash-coin"></i>
                         <span>Pendanaan</span>
                     </a>
                     <ul class="submenu ">
@@ -162,7 +162,7 @@
                 @can('View Kriteria dan Sub Kriteria')
                 <li class="sidebar-item  ">
                     <a href="{{ route('penyusunan.kriteria') }}" class='sidebar-link'>
-                        <i class="bi bi-file-earmark-medical-fill"></i>
+                        <i class="bi bi-tools"></i>
                         <span>Kriteria & Sub Kriteria</span>
                     </a>
                 </li>
@@ -183,7 +183,7 @@
                     ])
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
-                        <i class="bi bi-hexagon-fill"></i>
+                        <i class="bi bi-file-earmark-medical-fill"></i>
                         <span>Pengajuan</span>
                     </a>
 
@@ -205,7 +205,7 @@
                 @can('Validasi LPJ')
                 <li class="sidebar-item  ">
                     <a href="{{ route('validasi.validasiLpj.view') }}" class='sidebar-link'>
-                        <i class="bi bi-journal-check"></i>
+                        <i class="bi bi-collection-fill"></i>
                         <span>Pelaporan Pertanggung Jawaban</span>
                     </a>
 
@@ -214,18 +214,32 @@
                 </li>
                 @endcanany
 
-                @can('View Finalisasi Anggaran Tahunan')
+                @canany([
+                'View Finalisasi Anggaran Tahunan',
+                'View Riwayat Finalisasi',
+                ])
                 <li class="sidebar-title">Atasan Yayasan
-
+                @can('View Finalisasi Anggaran Tahunan')
                 <li class="sidebar-item  ">
                     <a href="{{ route('finalisasi.finalisasiKegiatan.view') }}" class='sidebar-link'>
-                        <i class="bi bi-journal-check"></i>
+                        <i class="bi bi-safe-fill"></i>
                         <span>Finalisasi Pengajuan Tahunan</span>
                     </a>
 
                 </li>
+                @endCan
+                @can('View Riwayat Finalisasi')
+                <li class="sidebar-item  ">
+                    <a href="{{ route('riwayat') }}" class='sidebar-link'>
+                        <i class="bi bi-file-earmark-medical-fill"></i>
+                        <span>Riwayat Finalisasi</span>
+                    </a>
+
                 </li>
                 @endCan
+                </li>
+                @endcanany
+
 
                 @canany([
                 'View Pengguna',
@@ -244,7 +258,7 @@
                     'View Permission',
                     ])
                     <a href="#" class='sidebar-link'>
-                        <i class="bi bi-pentagon-fill"></i>
+                        <i class="bi bi-person-fill-gear"></i>
                         <span>Pengguna</span>
                     </a>
 
@@ -269,7 +283,7 @@
                     @can('View Unit')
                 <li class="sidebar-item  ">
                     <a href="{{ route('unit.view') }}" class='sidebar-link'>
-                        <i class="bi bi-file-earmark-medical-fill"></i>
+                        <i class="bi bi-people-fill"></i>
                         <span>Unit</span>
                     </a>
                 </li>
@@ -293,15 +307,6 @@
                 </li>
                 @endcanany
                 <br>
-                <li class="sidebar-item  ">
-                    @auth
-                    <form method="post" action="{{ route('logout') }}">
-                        @csrf
-                        <button class="btn btn-danger">Log Out</button>
-                    </form>
-                    @endauth
-                </li>
-
                 </li>
             </ul>
         </div>

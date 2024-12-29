@@ -257,6 +257,9 @@
                                                 @elseif($kriteria->tipe_kriteria === 'Interval')
                                                 <input type="number" name="kriteria[{{ $kriteria->id }}][nilai]" class="form-control" placeholder="Masukkan nilai"
                                                     value="{{ $kriteriaKegiatan[$kriteria->id]->nilai ?? '' }}">
+                                                    @if($errors->has("kriteria.{$kriteria->id}.nilai"))
+                                                <small class="text-danger">{{ $errors->first("kriteria.{$kriteria->id}.nilai") }}</small>
+                                                @endif
                                                 @endif
                                             </div>
                                         </div>

@@ -51,8 +51,10 @@
                                 </span>
                             </td>
                             <td>
+                                @if(in_array($item->status, ['Perlu Retur', 'Ditolak']))
                                 @can('Pengajuan Retur')
-                                <button type="button" class="btn btn-primary btn-sm updateReturBtn" data-id="{{ $item->id }}"
+                                <button type="button" class="btn btn-primary btn-sm updateReturBtn"
+                                    data-id="{{ $item->id }}"
                                     data-nominal="{{ $item->nominal_retur }}"
                                     data-bukti="{{ asset('storage/' . $item->bukti_retur) }}"
                                     data-bs-toggle="modal"
@@ -60,6 +62,7 @@
                                     Buat Retur
                                 </button>
                                 @endCan
+                                @endif
                             </td>
                         </tr>
                         @endforeach
@@ -86,7 +89,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="bukti_retur">Bukti Retur</label>
-                                <input type="file" name="bukti_retur" id="bukti_retur" class="form-control">
+                                <input type="file" name="bukti_retur" id="bukti_retur" class="basic-filepond">
                             </div>
                         </div>
                         <div class="modal-footer">

@@ -12,6 +12,7 @@ use App\Models\outcomeKegiatan;
 use App\Models\pengguna;
 use App\Models\Perangkingan;
 use App\Models\ProgramKerja;
+use App\Models\RiwayatPerangkingan;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -38,6 +39,13 @@ class KegiatanController extends Controller
         }
 
         return view('penyusunan.kegiatan.view', ['kegiatan' => $kegiatan]);
+    }
+
+    public function riwayatIndex()
+    {
+        $kegiatan = RiwayatPerangkingan::all();
+
+        return view('finalisasi.riwayat', ['kegiatan' => $kegiatan]);
     }
 
     /**
@@ -210,23 +218,64 @@ class KegiatanController extends Controller
             ->with('success', 'Perubahan status disimpan sementara. Klik Submit untuk menyimpan ke database.');
     }
 
+    // public function konfirmasi()
+    // {
+    //     $kegiatanStatus = session('kegiatan_status', []);
+
+    //     $allKegiatanIds = Kegiatan::pluck('id')->toArray();
+
+    //     foreach ($allKegiatanIds as $kegiatanId) {
+    //         $kegiatan = Kegiatan::find($kegiatanId);
+
+    //         if ($kegiatan) {
+    //             if (array_key_exists($kegiatanId, $kegiatanStatus)) {
+    //                 $status = $kegiatanStatus[$kegiatanId];
+    //             } else {
+    //                 $status = 'Tidak Disetujui';
+    //             }
+
+    //             $kegiatan->update(['status' => $status]);
+
+    //             $hasilAkhir = Perangkingan::where('kegiatan_id', $kegiatanId)->value('hasil_akhir') ?? 0;
+
+    //             // Simpan ke tabel riwayat_saw
+    //             RiwayatPerangkingan::create([
+    //                 'id' => Str::uuid(), // Membuat UUID
+    //                 'kegiatan_id' => $kegiatanId,
+    //                 'tanggal_penerimaan' => now(),
+    //                 'hasil_akhir' => $hasilAkhir,
+    //             ]);
+    //         }
+    //     }
+
+    //     session()->forget('kegiatan_status');
+
+    //     return redirect()->route('finalisasi.finalisasiKegiatan.view')
+    //         ->with('success', 'Status kegiatan berhasil diperbarui.');
+    // }
+
     public function konfirmasi()
     {
         $kegiatanStatus = session('kegiatan_status', []);
 
-        $allKegiatanIds = Kegiatan::pluck('id')->toArray();
+        $kegiatanIdsInPerangkingan = Perangkingan::pluck('kegiatan_id')->toArray();
 
-        foreach ($allKegiatanIds as $kegiatanId) {
+        foreach ($kegiatanIdsInPerangkingan as $kegiatanId) {
             $kegiatan = Kegiatan::find($kegiatanId);
 
             if ($kegiatan) {
-                if (array_key_exists($kegiatanId, $kegiatanStatus)) {
-                    $status = $kegiatanStatus[$kegiatanId];
-                } else {
-                    $status = 'Tidak Disetujui';
-                }
+                $status = $kegiatanStatus[$kegiatanId] ?? 'Tidak Disetujui';
 
                 $kegiatan->update(['status' => $status]);
+
+                $hasilAkhir = Perangkingan::where('kegiatan_id', $kegiatanId)->value('hasil_akhir') ?? 0;
+
+                RiwayatPerangkingan::create([
+                    'id' => Str::uuid(),
+                    'kegiatan_id' => $kegiatanId,
+                    'tanggal_penerimaan' => now(),
+                    'hasil_akhir' => $hasilAkhir,
+                ]);
             }
         }
 
@@ -235,6 +284,7 @@ class KegiatanController extends Controller
         return redirect()->route('finalisasi.finalisasiKegiatan.view')
             ->with('success', 'Status kegiatan berhasil diperbarui.');
     }
+
 
 
     //SAW

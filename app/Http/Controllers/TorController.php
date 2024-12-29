@@ -79,8 +79,34 @@ class TorController extends Controller
             'penjelasan.*' => 'string|required',
             'kategori.*' => 'string|required',
             'kriteria' => 'array|required',
+            'kriteria.*.nilai' => 'nullable|numeric',
         ]);
 
+        $errors = [];
+        foreach ($request->kriteria as $kriteriaId => $data) {
+            $kriteria = Kriteria::find($kriteriaId);
+    
+            if ($kriteria && $kriteria->tipe_kriteria === 'Interval' && isset($data['nilai'])) {
+                $nilai = $data['nilai'];
+                $subkriteria = Subkriteria::where('id_kriteria', $kriteriaId)->get();
+    
+                // Check if the input value is within any subcriteria range
+                $isValid = $subkriteria->some(function ($sub) use ($nilai) {
+                    return $sub->batas_bawah_bobot_subkriteria <= $nilai && $sub->batas_atas_bobot_subkriteria >= $nilai;
+                });
+    
+                if (!$isValid) {
+                    $lowest = $subkriteria->min('batas_bawah_bobot_subkriteria');
+                    $highest = $subkriteria->max('batas_atas_bobot_subkriteria');
+                    $errors["kriteria.{$kriteriaId}.nilai"] = "Nilai harus berada dalam rentang {$lowest} hingga {$highest}.";
+                }
+            }
+        }
+    
+        if (!empty($errors)) {
+            return redirect()->back()->withErrors($errors)->withInput();
+        }
+        
         $validateData['user_id'] = Auth::id();
         $validateData['unit_id'] = Auth::user()->unit_id;
         $validateData['satuan_id'] = Auth::user()->unit->satuan_id;
@@ -241,6 +267,7 @@ class TorController extends Controller
         if (!$kegiatan) {
             return redirect()->back()->with('error', 'Kegiatan tidak ditemukan.');
         }
+        
         $tor->update($validateData);
 
         foreach ($validateData['kriteria'] as $kriteriaId => $data) {

@@ -90,6 +90,7 @@
                     'Validasi Anggaran Tahunan',
                     'View Finalisasi Anggaran Tahunan',
                     'Acc Finalisasi Anggaran Tahunan',
+                    'View Riwayat Finalisasi',
                     ],
                     'Kegiatan Bulanan' => [
                     'Create Kegiatan Bulanan',

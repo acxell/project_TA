@@ -105,6 +105,7 @@ class userUnitDataSeed extends Seeder
 
             'View Finalisasi Anggaran Tahunan',
             'Acc Finalisasi Anggaran Tahunan',
+            'View Riwayat Finalisasi',
 
             'Create Kegiatan Bulanan',
             'Edit Kegiatan Bulanan',

@@ -284,4 +284,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('penyusunan/kriteria/{subkriteria}', [KriteriaController::class, 'storeSubkriteria'])->name('penyusunan.subkriteria.store')->middleware('role.access:Create Sub Kriteria');
     Route::put('penyusunan/kriteria/subkriteria/{id}', [KriteriaController::class, 'updateSubkriteria'])->name('penyusunan.subkriteria.update')->middleware('role.access:Edit Sub Kriteria');
     Route::delete('penyusunan/aktivitas/subkriteria/{subkriteria}', [KriteriaController::class, 'destroySubkriteria'])->name('penyusunan.subkriteria.destroy')->middleware('role.access:Delete Sub Kriteria');
+
+    //Riwayat Perangkingan
+    Route::get('riwayat/perangkingan', [KegiatanController::class, 'riwayatIndex'])->name('riwayat')->middleware('role.access:View Riwayat Finalisasi');
 });

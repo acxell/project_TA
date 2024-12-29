@@ -37,7 +37,7 @@ class PesanPerbaikanController extends Controller
     {
         
         $validateData = $request->validate([
-            'pesan' => 'string|required',
+            'pesan' => 'required|string',
             'kegiatan_id' => 'string|required|exists:kegiatans,id',
         ]);
 

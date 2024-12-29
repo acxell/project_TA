@@ -94,7 +94,7 @@
                         <label>Bukti</label>
                         <div class="input-group mb-3">
                             <label class="input-group-text" for="inputGroupFile01"><i class="bi bi-upload"></i></label>
-                            <input type="file" class="form-control" id="bukti" name="bukti" accept=".pdf">
+                            <input type="file" class="basic-filepond" id="bukti" name="bukti" accept=".pdf">
                         </div>
                     </div>
                 </div>

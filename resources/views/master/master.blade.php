@@ -20,22 +20,22 @@
 
         @include('include.notification')
 
-        <div id="main">
-            <header class="mb-3">
-                <a href="#" class="burger-btn d-block d-xl-none">
-                    <i class="bi bi-justify fs-3"></i>
-                </a>
-            </header>
+        <div id="main" class='layout-navbar navbar-fixed'>
+            
+        @include('include.navbar')
 
+        <div id="main-content">
             <div class="page-heading">
                 <h3>@yield('title')</h3>
             </div>
 
             @yield('content')
 
-            @include('include.footer')
-
+            
         </div>
+
+            @include('include.footer')
+            </div>
     </div>
 
     @include('include.js')

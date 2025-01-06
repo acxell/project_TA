@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kriteria;
 use App\Models\Subkriteria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class KriteriaController extends Controller
 {
@@ -67,6 +68,16 @@ class KriteriaController extends Controller
     public function showKriteria(Kriteria $kriteria)
     {
         $kriteria = Kriteria::with('subkriteria')->get();
+
+        $kriteriaAktif = DB::table('kriterias')
+        ->where('status_kriteria', true)
+        ->get();
+
+    $totalBobot = $kriteriaAktif->sum('bobot_kriteria');
+    if ($totalBobot != 1) {
+        logger("Total bobot kriteria: {$totalBobot}.");
+        session()->flash('error', 'Pastikan total bobot kriteria Aktif sama dengan 1.');
+    }
 
         return view('penyusunan.kriteria', compact('kriteria'));
     }

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('bukti_retur')->nullable();
             $table->bigInteger('nominal_retur')->nullable();
             $table->bigInteger('total_retur');
-            $table->string('status');
+            $table->tinyInteger('status');
             $table->timestamps();
 
             $table->foreign('lpj_id')->references('id')->on('lpjs')->cascadeOnDelete();

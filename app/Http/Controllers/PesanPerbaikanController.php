@@ -53,7 +53,7 @@ class PesanPerbaikanController extends Controller
         if ($pesanPerbaikan) {
             $kegiatan = Kegiatan::find($validateData['kegiatan_id']);
 
-            $kegiatan->status = 'Ditolak';
+            $kegiatan->status = 4;
             $kegiatan->save();
 
             return to_route('validasi.validasiAnggaran.view')->with('success', 'Pesan Perbaikan Telah Ditambahkan dan Kegiatan Ditolak');
@@ -103,7 +103,7 @@ class PesanPerbaikanController extends Controller
         if ($pesanPerbaikan) {
             $lpj = Lpj::find($validateData['lpj_id']);
 
-            $lpj->status = 'Ditolak';
+            $lpj->status = 4;
             $lpj->save();
 
             return to_route('validasi.validasiLpj.view')->with('success', 'Pesan Perbaikan Telah Ditambahkan dan Kegiatan Ditolak');

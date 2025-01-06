@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('indikator_kegiatans', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('tor_id');
-            $table->string('indikator');
+            $table->longText('indikator');
             $table->timestamps();
 
             $table->foreign('tor_id')->references('id')->on('tors')->onDelete('cascade');

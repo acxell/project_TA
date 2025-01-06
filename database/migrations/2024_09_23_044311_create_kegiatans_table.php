@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('tor_id');
             $table->uuid('rab_id')->nullable();
-            $table->string('status');
+            $table->tinyInteger('status');
             $table->uuid('user_id');
             $table->uuid('unit_id');
             $table->uuid('satuan_id');

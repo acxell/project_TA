@@ -108,7 +108,7 @@ class KegiatanController extends Controller
 
     public function ajukan(Kegiatan $kegiatan)
     {
-        $kegiatan->update(['status' => 'Telah Diajukan']);
+        $kegiatan->update(['status' => 1]);
 
         return redirect()->route('pengajuan.anggaranTahunan.view')->with('success', 'Status telah diubah menjadi "Telah Diajukan"');
     }
@@ -133,11 +133,11 @@ class KegiatanController extends Controller
         if ($isAtasanUnit) {
             $kegiatan = Kegiatan::whereNotNull('rab_id')
                 ->where('unit_id', $unitId)
-                ->whereIn('status', ['Telah Diajukan', 'Diterima', 'Proses Finalisasi Pengajuan', 'Diterima Atasan Unit'])
+                ->whereIn('status', [1, 11, 3, 2])
                 ->where('jenis', 'Tahunan')
                 ->get();
         } else {
-            $kegiatan = Kegiatan::whereIn('status', ['Telah Diajukan', 'Diterima', 'Proses Finalisasi Pengajuan', 'Diterima Atasan Unit'])
+            $kegiatan = Kegiatan::whereIn('status', [1, 11, 3, 2])
                 ->where('jenis', 'Tahunan')
                 ->get();
         }
@@ -168,9 +168,9 @@ class KegiatanController extends Controller
         } elseif ($request->input('action') == 'accept') {
 
             if ($isAtasanUnit) {
-                $kegiatan->update(['status' => 'Diterima Atasan Unit']);
+                $kegiatan->update(['status' => 2]);
             } elseif ($isAtasanYayasan || $isAtasanSU) {
-                $kegiatan->update(['status' => 'Proses Finalisasi Pengajuan']);
+                $kegiatan->update(['status' => 3]);
             }
             return redirect()->route('validasi.validasiAnggaran.view')->with('success', 'Pengajuan telah diterima.');
         }
@@ -181,7 +181,7 @@ class KegiatanController extends Controller
     public function finalisasi_index()
     {
         $kegiatan = Perangkingan::whereHas('kegiatan', function ($query) {
-            $query->whereIn('status', ['Proses Finalisasi Pengajuan', 'Diterima', 'Tidak Disetujui']);
+            $query->whereIn('status', [3, 11, 5]);
         })->get();
 
         $proker = ProgramKerja::all();
@@ -204,7 +204,7 @@ class KegiatanController extends Controller
         if ($request->input('action') == 'Tidak Didanai') {
             return redirect()->route('finalisasi.finalisasiKegiatan.view')->with('success', 'Pengajuan telah ditolak.');
         } elseif ($request->input('action') == 'accept') {
-            $kegiatan->update(['status' => 'Diterima']);
+            $kegiatan->update(['status' => 11]);
             return redirect()->route('finalisasi.finalisasiKegiatan.view')->with('success', 'Pengajuan telah diterima.');
         }
     }
@@ -231,7 +231,7 @@ class KegiatanController extends Controller
     //             if (array_key_exists($kegiatanId, $kegiatanStatus)) {
     //                 $status = $kegiatanStatus[$kegiatanId];
     //             } else {
-    //                 $status = 'Tidak Disetujui';
+    //                 $status = 5;
     //             }
 
     //             $kegiatan->update(['status' => $status]);
@@ -264,7 +264,7 @@ class KegiatanController extends Controller
             $kegiatan = Kegiatan::find($kegiatanId);
 
             if ($kegiatan) {
-                $status = $kegiatanStatus[$kegiatanId] ?? 'Tidak Disetujui';
+                $status = $kegiatanStatus[$kegiatanId] ?? 5;
 
                 $kegiatan->update(['status' => $status]);
 
@@ -307,7 +307,7 @@ class KegiatanController extends Controller
             ->join('kegiatans', 'kriteria_kegiatan.kegiatan_id', '=', 'kegiatans.id')
             ->join('kriterias', 'kriteria_kegiatan.kriteria_id', '=', 'kriterias.id')
             ->leftJoin('subkriterias', 'kriteria_kegiatan.subkriteria_id', '=', 'subkriterias.id')
-            ->where('kegiatans.status', 'Proses Finalisasi Pengajuan')
+            ->where('kegiatans.status', 3)
             ->select(
                 'kriteria_kegiatan.kegiatan_id',
                 'kriteria_kegiatan.kriteria_id',
@@ -407,9 +407,9 @@ class KegiatanController extends Controller
         $isPenggunaAnggaran = $user->hasRole('Pengguna Anggaran');
 
         if ($isAtasanUnit || $isPenggunaAnggaran) {
-            $kegiatan = Kegiatan::where('jenis', 'Tahunan')->whereIn('status', ['Diterima', 'Proses Pendanaan'])->where('unit_id', $unitId)->get();
+            $kegiatan = Kegiatan::where('jenis', 'Tahunan')->whereIn('status', [11, 6])->where('unit_id', $unitId)->get();
         } else {
-            $kegiatan = Kegiatan::where('jenis', 'Tahunan')->whereIn('status', ['Diterima', 'Proses Pendanaan'])->get();
+            $kegiatan = Kegiatan::where('jenis', 'Tahunan')->whereIn('status', [11, 6])->get();
         }
 
 
@@ -429,7 +429,7 @@ class KegiatanController extends Controller
 
     public function pendanaan(Kegiatan $kegiatan)
     {
-        $kegiatan->update(['status' => 'Proses Pendanaan']);
+        $kegiatan->update(['status' => 6]);
 
         return redirect()->route('pengajuan.pendanaanKegiatan.view')->with('success', 'Status telah diubah menjadi "Telah Diajukan"');
     }
@@ -437,7 +437,7 @@ class KegiatanController extends Controller
     // Proses Pendanaan
     public function give_pendanaan_index()
     {
-        $kegiatan = Kegiatan::whereIn('status', ['Proses Pendanaan', 'Telah Didanai'])->get();
+        $kegiatan = Kegiatan::whereIn('status', [6, 7])->get();
 
         $proker = ProgramKerja::all();
 

@@ -19,7 +19,7 @@ class Lpj extends Model
     ];
 
     protected $attributes = [
-        'status' => 'Belum Dilaporkan',
+        'status' => 12,
     ];
 
 

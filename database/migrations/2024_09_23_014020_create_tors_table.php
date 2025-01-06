@@ -19,12 +19,12 @@ return new class extends Migration
             $table->string('pic');
             $table->string('kepesertaan');
             $table->string('nomor_standar_akreditasi');
-            $table->string('penjelasan_standar_akreditasi');
+            $table->longText('penjelasan_standar_akreditasi');
             $table->uuid('coa_id');
-            $table->string('latar_belakang');
-            $table->string('tujuan');
-            $table->string('manfaat_internal');
-            $table->string('manfaat_eksternal');
+            $table->longText('latar_belakang');
+            $table->longText('tujuan');
+            $table->longText('manfaat_internal');
+            $table->longText('manfaat_eksternal');
             $table->string('metode_pelaksanaan');
             $table->uuid('user_id');
             $table->uuid('unit_id');

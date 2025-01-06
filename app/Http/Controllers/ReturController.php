@@ -28,20 +28,20 @@ class ReturController extends Controller
 
     public function indexVal()
     {
-        $retur = Retur::whereIn('status', ['Proses Validasi', 'Diterima', 'Ditolak'])->get();
+        $retur = Retur::whereIn('status', [13, 11, 4])->get();
 
         return view('pengajuan.retur.validasi', ['retur' => $retur]);
     }
 
     public function accept(Retur $retur)
     {
-        $retur->status = 'Diterima';
+        $retur->status = 11;
         $retur->save();
 
-        $retur->lpj->status = 'Selesai';
+        $retur->lpj->status = 10;
         $retur->lpj->save();
 
-        $retur->lpj->kegiatan->status = 'Selesai';
+        $retur->lpj->kegiatan->status = 10;
         $retur->lpj->kegiatan->save();
 
         return redirect()->route('pengajuan.retur.validasi')->with('success', 'Retur accepted and LPJ and Kegiatan statuses updated to Selesai.');
@@ -49,7 +49,7 @@ class ReturController extends Controller
 
     public function decline(Retur $retur)
     {
-        $retur->status = 'Ditolak';
+        $retur->status = 4;
         $retur->save();
 
         return redirect()->route('pengajuan.retur.validasi')->with('success', 'Retur Declined');
@@ -105,7 +105,7 @@ class ReturController extends Controller
         }
 
         $retur->nominal_retur = $request->nominal_retur;
-        $retur->status = 'Proses Validasi';
+        $retur->status = 13;
         $retur->save();
 
         return redirect()->route('pengajuan.retur.view')->with('success', 'Retur updated successfully');
@@ -113,7 +113,7 @@ class ReturController extends Controller
 
     public function ajukan(Retur $retur)
     {
-        $retur->status = 'Proses Validasi';
+        $retur->status = 13;
         $retur->save();
 
         return redirect()->route('pengajuan.retur.view')->with('success', 'Retur submitted for validation');

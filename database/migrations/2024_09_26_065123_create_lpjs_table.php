@@ -20,7 +20,7 @@ return new class extends Migration
             $table->bigInteger('jumlah_peserta_hadir');
             $table->longText('hasil_kegiatan');
             $table->longText('perbaikan_kegiatan');
-            $table->string('status');
+            $table->tinyInteger('status');
             $table->bigInteger('total_belanja')->nullable();
             $table->uuid('user_id');
             $table->uuid('unit_id');

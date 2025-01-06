@@ -88,7 +88,7 @@
                         @endCan
                         @can('View Kegiatan Bulanan')
                         <li class="submenu-item  ">
-                            <a href="{{ route('pengajuan.pendanaanKegiatan.view') }}" class="submenu-link">Kegiatan</a>
+                            <a href="{{ route('pengajuan.pendanaanKegiatan.view') }}" class="submenu-link">Kegiatan Bulanan</a>
                         </li>
                         @endCan
                         @can('View Retur')

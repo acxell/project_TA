@@ -16,7 +16,7 @@ return new class extends Migration
             $table->uuid('lpj_id');
             $table->date('waktu_belanja');
             $table->bigInteger('harga');
-            $table->string('keterangan');
+            $table->longText('keterangan');
             $table->string('bukti');
             $table->timestamps();
 

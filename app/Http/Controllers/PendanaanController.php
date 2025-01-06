@@ -68,7 +68,7 @@ class PendanaanController extends Controller
         $pendanaan = Pendanaan::create($validateData);
 
         if ($pendanaan) {
-            $kegiatan->status = 'Telah Didanai';
+            $kegiatan->status = 7;
             $kegiatan->save();
 
             return to_route('pendanaan.givePendanaan.view')->with('success', 'Pendanaan berhasil ditambahkan dan status kegiatan diperbarui.');

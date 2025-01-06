@@ -61,17 +61,45 @@
                                 </td>
                                 <td>{{ $item->hasil_akhir }}</td>
                                 <td>
-                                    <span class="badge {{ $item->kegiatan->status == 'Aktif' ? 'bg-success' : 'bg-danger' }}">
-                                        {{ $item->kegiatan->status }}
-                                    </span>
-                                </td>
+                                @if($item->kegiatan->status == 0)
+                                <span class="badge bg-warning">Belum Diajukan</span>
+                                @elseif($item->kegiatan->status == 1)
+                                <span class="badge bg-info">Telah Diajukan</span>
+                                @elseif($item->kegiatan->status == 2)
+                                <span class="badge bg-primary">Diterima Atasan Unit</span>
+                                @elseif($item->kegiatan->status == 3)
+                                <span class="badge bg-success">Proses Finalisasi Pengajuan</span>
+                                @elseif($item->kegiatan->status == 4)
+                                <span class="badge bg-warning">Revisi</span>
+                                @elseif($item->kegiatan->status == 5)
+                                <span class="badge bg-danger">Tidak Disetujui</span>
+                                @elseif($item->kegiatan->status == 6)
+                                <span class="badge bg-primary">Proses Pendanaan</span>
+                                @elseif($item->kegiatan->status == 7)
+                                <span class="badge bg-success">Telah Didanai</span>
+                                @elseif($item->kegiatan->status == 8)
+                                <span class="badge bg-info">Proses Pelaporan</span>
+                                @elseif($item->kegiatan->status == 9)
+                                <span class="badge bg-danger">Perlu Retur</span>
+                                @elseif($item->kegiatan->status == 10)
+                                <span class="badge bg-success">Selesai</span>
+                                @elseif($item->kegiatan->status == 11)
+                                <span class="badge bg-primary">Diterima</span>
+                                @elseif($item->kegiatan->status == 12)
+                                <span class="badge bg-warning">Belum Dilaporkan</span>
+                                @elseif($item->kegiatan->status == 13)
+                                <span class="badge bg-info">Proses Validasi</span>
+                                @else
+                                <span class="badge bg-secondary">Status Tidak Diketahui</span>
+                                @endif
+                            </td>
                                 <td>
-                                    @if($item->kegiatan->status == 'Proses Finalisasi Pengajuan')
+                                    @if($item->kegiatan->status == 3)
                                     @can('Acc Finalisasi Anggaran Tahunan')
                                     <input
                                         type="checkbox"
                                         name="kegiatan[{{ $item->kegiatan->id }}]"
-                                        value="Diterima"
+                                        value=11
                                         {{ session('kegiatan_status') && array_key_exists($item->kegiatan->id, session('kegiatan_status')) ? 'checked' : '' }}>
                                     Diterima
                                     <a href="{{ route('finalisasi.finalisasiKegiatan.finalisasi', $item->kegiatan->id) }}"><i class="badge-circle font-small-1"

@@ -54,13 +54,41 @@
                                 @endunless
                             </td>
                             <td>
-                                <span class="badge {{ $item->status == 'Aktif' ? 'bg-success' : 'bg-danger' }}">
-                                    {{ $item->status }}
-                                </span>
+                                @if($item->status == 0)
+                                <span class="badge bg-warning">Belum Diajukan</span>
+                                @elseif($item->status == 1)
+                                <span class="badge bg-info">Telah Diajukan</span>
+                                @elseif($item->status == 2)
+                                <span class="badge bg-primary">Diterima Atasan Unit</span>
+                                @elseif($item->status == 3)
+                                <span class="badge bg-success">Proses Finalisasi Pengajuan</span>
+                                @elseif($item->status == 4)
+                                <span class="badge bg-warning">Revisi</span>
+                                @elseif($item->status == 5)
+                                <span class="badge bg-danger">Tidak Disetujui</span>
+                                @elseif($item->status == 6)
+                                <span class="badge bg-primary">Proses Pendanaan</span>
+                                @elseif($item->status == 7)
+                                <span class="badge bg-success">Telah Didanai</span>
+                                @elseif($item->status == 8)
+                                <span class="badge bg-info">Proses Pelaporan</span>
+                                @elseif($item->status == 9)
+                                <span class="badge bg-danger">Perlu Retur</span>
+                                @elseif($item->status == 10)
+                                <span class="badge bg-success">Selesai</span>
+                                @elseif($item->status == 11)
+                                <span class="badge bg-primary">Diterima</span>
+                                @elseif($item->status == 12)
+                                <span class="badge bg-warning">Belum Dilaporkan</span>
+                                @elseif($item->status == 13)
+                                <span class="badge bg-info">Proses Validasi</span>
+                                @else
+                                <span class="badge bg-secondary">Status Tidak Diketahui</span>
+                                @endif
                             </td>
                             <td>
-                                @if (($item->status == 'Telah Diajukan' && auth()->user()->hasRole('Atasan Unit')) ||
-                                ($item->status == 'Diterima Atasan Unit' && auth()->user()->hasRole('Atasan Yayasan')))
+                                @if (($item->status == 1 && auth()->user()->hasRole('Atasan Unit')) ||
+                                ($item->status == 2 && auth()->user()->hasRole('Atasan Yayasan')))
                                 @can('Validasi Anggaran Tahunan')
                                 <a href="{{ route('validasi.validasiAnggaran.validasi', $item->id) }}">
                                     <i class="badge-circle font-small-1" data-feather="check"

@@ -116,7 +116,7 @@ class TorController extends Controller
         if ($tor) {
             $kegiatan = Kegiatan::create([
                 'tor_id' => $tor->id,
-                'status' => 'Belum Diajukan',
+                'status' => 0,
                 'user_id' => $validateData['user_id'],
                 'unit_id' => $validateData['unit_id'],
                 'satuan_id' => $validateData['satuan_id'],

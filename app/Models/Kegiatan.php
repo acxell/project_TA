@@ -17,7 +17,7 @@ class Kegiatan extends Model
     protected $guarded = ['id',];
 
     protected $attributes = [
-        'status' => 'Belum Diajukan',
+        'status' => 0,
     ];
 
     // Relasi ke TOR

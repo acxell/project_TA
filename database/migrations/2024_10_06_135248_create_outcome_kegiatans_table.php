@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('outcome_kegiatans', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('tor_id');
-            $table->string('outcome');
+            $table->longText('outcome');
             $table->timestamps();
 
             $table->foreign('tor_id')->references('id')->on('tors')->onDelete('cascade');

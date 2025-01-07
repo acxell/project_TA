@@ -76,6 +76,61 @@ class PesanPerbaikanController extends Controller
         return view('pesanPerbaikan.anggaranTahunan.detail', ['pesanPerbaikan' => $pesanPerbaikan]);
     }
 
+    //Pesan Perbaikan Bulanan
+    public function createBulanan($kegiatan_id)
+    {
+        $kegiatan = Kegiatan::findOrFail($kegiatan_id);
+
+        return view('pesanPerbaikan.anggaranBulanan.create', ['kegiatan' => $kegiatan]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function storeBulanan(Request $request)
+    {
+        
+        $validateData = $request->validate([
+            'pesan' => 'required|string',
+            'kegiatan_id' => 'string|required|exists:kegiatans,id',
+        ]);
+
+        $validateData['user_id'] = Auth::id();
+        $validateData['unit_id'] = Auth::user()->unit_id;
+        $validateData['satuan_id'] = Auth::user()->unit->satuan_id;
+
+        //dd($validateData);
+
+        $pesanPerbaikan = PesanPerbaikan::create($validateData);
+        
+
+        if ($pesanPerbaikan) {
+            $kegiatan = Kegiatan::find($validateData['kegiatan_id']);
+
+            $kegiatan->status = 4;
+            $kegiatan->save();
+
+            return to_route('validasi.validasiBulanan.view')->with('success', 'Pesan Perbaikan Telah Ditambahkan dan Kegiatan Ditolak');
+        } else {
+            return to_route('validasi.validasiBulanan.view')->with('failed', 'Pesan Perbaikan Gagal Ditambahkan');
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function showBulanan($kegiatan_id)
+    {
+        $pesanPerbaikan = PesanPerbaikan::where('kegiatan_id', $kegiatan_id)->latest()->first();
+
+        if (!$pesanPerbaikan) {
+            return redirect()->route('validasi.validasiBulanan.view')->with('error', 'Pesan Perbaikan tidak ditemukan.');
+        }
+
+        return view('pesanPerbaikan.anggaranBulanan.detail', ['pesanPerbaikan' => $pesanPerbaikan]);
+    }
+
+
     //Pesan Perbaikan LPJ
     public function create_lpj($lpj_id)
     {

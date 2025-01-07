@@ -99,6 +99,8 @@
                     'Detail Kegiatan Bulanan',
                     'View Kegiatan Bulanan',
                     'Pengajuan Kegiatan Bulanan',
+                    'Validasi Anggaran Bulanan',
+                    'View Validasi Anggaran Bulanan',
                     ],
                     'Pendanaan' => [
                     'Pemberian Pendanaan',

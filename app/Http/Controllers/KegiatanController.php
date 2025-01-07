@@ -176,6 +176,50 @@ class KegiatanController extends Controller
         }
     }
 
+    // Validasi Pengajuan Bulanan By Unit
+    public function validasiBulanan_index()
+    {
+        $user = auth()->user();
+        $unitId = $user->unit_id;
+        $isAtasanUnit = $user->hasRole('Atasan Unit');
+
+        if ($isAtasanUnit) {
+            $kegiatan = Kegiatan::whereNotNull('rab_id')
+                ->where('unit_id', $unitId)
+                ->whereIn('status', [1, 11, 4, 6, 7])
+                ->where('jenis', 'Bulanan')
+                ->get();
+        } else {
+            $kegiatan = Kegiatan::whereIn('status', [1, 11, 4, 6, 7])
+                ->where('jenis', 'Bulanan')
+                ->get();
+        }
+
+        $proker = ProgramKerja::all();
+
+        return view('validasi.pendanaanKegiatan.view', ['kegiatan' => $kegiatan, 'proker' => $proker]);
+    }
+
+    public function validasi_pengajuan_bulanan(Kegiatan $kegiatan)
+    {
+        $proker = ProgramKerja::all();
+
+        $kegiatan->load('unit');
+
+        return view('validasi.pendanaanKegiatan.validasi', ['kegiatan' => $kegiatan, 'proker' => $proker]);
+    }
+
+    public function acc_validasi_pengajuan_bulanan(Request $request, Kegiatan $kegiatan)
+    {
+
+        if ($request->input('action') == 'reject') {
+            return redirect()->route('pesanPerbaikan.anggaranBulanan.create')->with('success', 'Pengajuan telah ditolak.');
+        } elseif ($request->input('action') == 'accept') {
+            $kegiatan->update(['status' => 6]);
+            return redirect()->route('validasi.validasiBulanan.view')->with('success', 'Pengajuan telah diterima.');
+        }
+    }
+
     // Finalisasi Pengajuan Untuk Pendanaan
 
     public function finalisasi_index()
@@ -407,9 +451,9 @@ class KegiatanController extends Controller
         $isPenggunaAnggaran = $user->hasRole('Pengguna Anggaran');
 
         if ($isAtasanUnit || $isPenggunaAnggaran) {
-            $kegiatan = Kegiatan::where('jenis', 'Tahunan')->whereIn('status', [11, 6])->where('unit_id', $unitId)->get();
+            $kegiatan = Kegiatan::where('jenis', 'Tahunan')->whereIn('status', [1, 11, 6])->where('unit_id', $unitId)->get();
         } else {
-            $kegiatan = Kegiatan::where('jenis', 'Tahunan')->whereIn('status', [11, 6])->get();
+            $kegiatan = Kegiatan::where('jenis', 'Tahunan')->whereIn('status', [1, 11, 6])->get();
         }
 
 
@@ -429,7 +473,7 @@ class KegiatanController extends Controller
 
     public function pendanaan(Kegiatan $kegiatan)
     {
-        $kegiatan->update(['status' => 6]);
+        $kegiatan->update(['status' => 1]);
 
         return redirect()->route('pengajuan.pendanaanKegiatan.view')->with('success', 'Status telah diubah menjadi "Telah Diajukan"');
     }

@@ -179,6 +179,7 @@
 
                     @canany([
                     'View Validasi Anggaran Tahunan',
+                    'View Validasi Anggaran Bulanan',
                     'Validasi Retur',
                     ])
                 <li class="sidebar-item  has-sub">
@@ -192,6 +193,11 @@
                         <li class="submenu-item  ">
                             <a href="{{ route('validasi.validasiAnggaran.view') }}" class="submenu-link">Anggaran Tahunan</a>
 
+                        </li>
+                        @endCan
+                        @can('View Validasi Anggaran Bulanan')
+                        <li class="submenu-item  ">
+                            <a href="{{ route('validasi.validasiBulanan.view') }}" class="submenu-link">Anggaran Bulanan</a>
                         </li>
                         @endCan
                         @can('Validasi Retur')

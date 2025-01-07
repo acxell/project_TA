@@ -158,8 +158,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/data-pengajuan-kegiatan', [KegiatanController::class, 'pengajuanIndex'])->name('pengajuan.anggaranTahunan.view');
         Route::get('/data-pengajuan/{kegiatan}/detail', [KegiatanController::class, 'konfirmasiPengajuan'])->name('pengajuan.anggaranTahunan.detail');
         Route::post('/data-pengajuan/{kegiatan}/ajukan', [KegiatanController::class, 'ajukan'])->name('pengajuan.anggaranTahunan.ajukan');
-
-        Route::get('/pesan-perbaikan/{kegiatan_id}', [PesanPerbaikanController::class, 'show'])->name('pesanPerbaikan.anggaranTahunan.view');
     });
 
     //Actions Validasi Anggaran Tahunan
@@ -183,6 +181,16 @@ Route::group(['middleware' => 'auth'], function () {
 
         //SAW
         Route::post('/calculate-saw', [KegiatanController::class, 'triggerCalculateSAW'])->name('saw.calculate');
+    });
+
+    //Actions Validasi Anggaran Bulanan
+    Route::get('/data-pengajuan-anggaran-bulanan', [KegiatanController::class, 'validasiBulanan_index'])->name('validasi.validasiBulanan.view')->middleware('role.access:View Validasi Anggaran Bulanan');
+    Route::middleware('role.access:Validasi Anggaran Bulanan')->group(function () {
+        Route::get('/pengajuan-anggaran-bulanan/{kegiatan}/validasi-pengajuan', [KegiatanController::class, 'validasi_pengajuan_bulanan'])->name('validasi.validasiBulanan.validasi');
+        Route::post('/pengajuan-anggaran-bulanan/{kegiatan}/acc-validasi', [KegiatanController::class, 'acc_validasi_pengajuan_bulanan'])->name('validasi.validasiBulanan.acc');
+
+        Route::get('/buat-pesan-perbaikan-bulanan/{kegiatan_id}', [PesanPerbaikanController::class, 'createBulanan'])->name('pesanPerbaikan.anggaranBulanan.create');
+        Route::post('/pesan-perbaikan-bulanan', [PesanPerbaikanController::class, 'storeBulanan'])->name('pesanPerbaikan.anggaranBulanan.store');
     });
 
     //Actions Pendanaan
@@ -237,7 +245,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/data-laporan/lpj', [LpjController::class, 'pengajuanLpjIndex'])->name('pengajuan.lpj.view');
         Route::get('/data-laporan/lpj/{lpj}/pengajuan', [LpjController::class, 'konfirmasiPengajuanLPJ'])->name('pengajuan.lpj.detail');
         Route::post('/data-laporan/lpj/{lpj}/ajukan', [LpjController::class, 'ajukanLpj'])->name('pengajuan.lpj.laporkan');
-        Route::get('/pesan-perbaikan/lpj/{lpj_id}', [PesanPerbaikanController::class, 'show_lpj'])->name('pesanPerbaikan.lpj.view');
     });
 
     //Rincian LPJ

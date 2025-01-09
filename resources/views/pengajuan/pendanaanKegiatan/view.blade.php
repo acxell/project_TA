@@ -50,37 +50,26 @@
                                 @endunless
                             </td>
                             <td>
-                                @if($item->status == 0)
-                                <span class="badge bg-warning">Belum Diajukan</span>
-                                @elseif($item->status == 1)
-                                <span class="badge bg-info">Telah Diajukan</span>
-                                @elseif($item->status == 2)
-                                <span class="badge bg-primary">Diterima Atasan Unit</span>
-                                @elseif($item->status == 3)
-                                <span class="badge bg-success">Proses Finalisasi Pengajuan</span>
-                                @elseif($item->status == 4)
-                                <span class="badge bg-warning">Revisi</span>
-                                @elseif($item->status == 5)
-                                <span class="badge bg-danger">Tidak Disetujui</span>
-                                @elseif($item->status == 6)
-                                <span class="badge bg-primary">Proses Pendanaan</span>
-                                @elseif($item->status == 7)
-                                <span class="badge bg-success">Telah Didanai</span>
-                                @elseif($item->status == 8)
-                                <span class="badge bg-info">Proses Pelaporan</span>
-                                @elseif($item->status == 9)
-                                <span class="badge bg-danger">Perlu Retur</span>
-                                @elseif($item->status == 10)
-                                <span class="badge bg-success">Selesai</span>
-                                @elseif($item->status == 11)
-                                <span class="badge bg-primary">Diterima</span>
-                                @elseif($item->status == 12)
-                                <span class="badge bg-warning">Belum Dilaporkan</span>
-                                @elseif($item->status == 13)
-                                <span class="badge bg-info">Proses Validasi</span>
-                                @else
-                                <span class="badge bg-secondary">Status Tidak Diketahui</span>
-                                @endif
+                                @php
+                                $statusColors = [
+                                'Belum Diajukan' => 'bg-warning',
+                                'Telah Diajukan' => 'bg-info',
+                                'Diterima Atasan Unit' => 'bg-primary',
+                                'Proses Finalisasi Pengajuan' => 'bg-success',
+                                'Revisi' => 'bg-warning',
+                                'Tidak Disetujui' => 'bg-danger',
+                                'Proses Pendanaan' => 'bg-primary',
+                                'Telah Didanai' => 'bg-success',
+                                'Proses Pelaporan' => 'bg-info',
+                                'Perlu Retur' => 'bg-danger',
+                                'Selesai' => 'bg-success',
+                                'Diterima' => 'bg-primary',
+                                'Belum Dilaporkan' => 'bg-warning',
+                                'Proses Validasi' => 'bg-info',
+                                ];
+                                $badgeClass = $statusColors[$item->status->status] ?? 'bg-secondary';
+                                @endphp
+                                <span class="badge {{ $badgeClass }}">{{ $item->status->status ?? 'Status Tidak Diketahui' }}</span>
                             </td>
                             <td>
                                 @can('Pengajuan Kegiatan Bulanan')

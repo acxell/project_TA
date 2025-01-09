@@ -62,7 +62,7 @@
                                 N/A
                                 @endunless
                             </td>
-                            <td> @if($item->status == 0 || $item->status == 4)
+                            <td> @if($item->status->status == 'Belum Diajukan' || $item->status->status == 'Revisi')
                                 @can('Detail Kegiatan Tahunan')
                             <a href="{{ route('penyusunan.kegiatan.detail', $item->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail">
                                     <i class="badge-circle font-small-1" data-feather="eye"></i>

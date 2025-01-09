@@ -20,7 +20,7 @@ return new class extends Migration
             $table->bigInteger('jumlah_peserta_hadir');
             $table->longText('hasil_kegiatan');
             $table->longText('perbaikan_kegiatan');
-            $table->tinyInteger('status');
+            $table->unsignedBigInteger('status_id');
             $table->bigInteger('total_belanja')->nullable();
             $table->uuid('user_id');
             $table->uuid('unit_id');
@@ -29,6 +29,7 @@ return new class extends Migration
 
             $table->foreign('kegiatan_id')->references('id')->on('kegiatans')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('penggunas')->onDelete('cascade');
+            $table->foreign('status_id')->references('id')->on('statuses');
         });
     }
 

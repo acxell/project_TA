@@ -102,9 +102,10 @@ class KegiatanBulananController extends Controller
         $tor = Tor::create($validateData);
 
         if ($tor) {
+            $status = DB::table('statuses')->where('status', 'Belum Diajukan')->first();
             $newKegiatan = Kegiatan::create([
                 'tor_id' => $tor->id,
-                'status' => 0,
+                'status_id' => $status->id,
                 'user_id' => $validateData['user_id'],
                 'unit_id' => $validateData['unit_id'],
                 'satuan_id' => $validateData['satuan_id'],

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('tor_id');
             $table->uuid('rab_id')->nullable();
-            $table->tinyInteger('status');
+            $table->unsignedBigInteger('status_id');
             $table->uuid('user_id');
             $table->uuid('unit_id');
             $table->uuid('satuan_id');
@@ -26,6 +26,7 @@ return new class extends Migration
             $table->foreign('tor_id')->references('id')->on('tors')->onDelete('cascade');
             $table->foreign('rab_id')->references('id')->on('rabs')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('penggunas')->onDelete('cascade');
+            $table->foreign('status_id')->references('id')->on('statuses');
         });
     }
 

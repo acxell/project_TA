@@ -6,6 +6,7 @@ use App\Models\Kegiatan;
 use App\Models\Pendanaan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PendanaanController extends Controller
 {
@@ -68,7 +69,10 @@ class PendanaanController extends Controller
         $pendanaan = Pendanaan::create($validateData);
 
         if ($pendanaan) {
-            $kegiatan->status = 7;
+            $status = DB::table('statuses')
+            ->where('status', 'Telah Didanai')
+            ->first();
+            $kegiatan->status_id = $status->id;
             $kegiatan->save();
 
             return to_route('pendanaan.givePendanaan.view')->with('success', 'Pendanaan berhasil ditambahkan dan status kegiatan diperbarui.');

@@ -21,6 +21,11 @@ class Retur extends Model
         return $this->belongsTo(Lpj::class, 'lpj_id', 'id');
     }
 
+    public function status()
+    {
+        return $this->hasOne(Status::class, 'id', 'status_id');
+    }
+
     public function getIncrementing()
     {
         return false;

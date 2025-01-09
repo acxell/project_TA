@@ -25,7 +25,9 @@ class DashboardController extends Controller
             $jumlahPengajuanTahunan = Kegiatan::where('unit_id', $unitId)->where('jenis', 'Tahunan')->count();
             $jumlahPengajuanBulanan = Kegiatan::where('unit_id', $unitId)->where('jenis', 'Bulanan')->count();
             $kegiatanDilaksanakan = Kegiatan::where('unit_id', $unitId)
-                ->where('status', 10)
+                ->whereHas('status', function ($query) {
+                    $query->where('status', 'Selesai');
+                })
                 ->count();
             $totalPendanaan = Pendanaan::where('unit_id', $unitId)->sum('besaran_transfer');
             $pengajuanTerbaru = Kegiatan::with('tor')
@@ -36,7 +38,9 @@ class DashboardController extends Controller
         } else {
             $jumlahPengajuanTahunan = Kegiatan::where('jenis', 'Tahunan')->count();
             $jumlahPengajuanBulanan = Kegiatan::where('jenis', 'Bulanan')->count();
-            $kegiatanDilaksanakan = Kegiatan::where('status', 10)->count();
+            $kegiatanDilaksanakan = Kegiatan::whereHas('status', function ($query) {
+                $query->where('status', 'Selesai');
+            })->count();
             $totalPendanaan = Pendanaan::sum('besaran_transfer');
             $pengajuanTerbaru = Kegiatan::with('tor')
                 ->orderBy('created_at', 'desc')

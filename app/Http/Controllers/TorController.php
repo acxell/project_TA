@@ -85,16 +85,16 @@ class TorController extends Controller
         $errors = [];
         foreach ($request->kriteria as $kriteriaId => $data) {
             $kriteria = Kriteria::find($kriteriaId);
-    
+
             if ($kriteria && $kriteria->tipe_kriteria === 'Interval' && isset($data['nilai'])) {
                 $nilai = $data['nilai'];
                 $subkriteria = Subkriteria::where('id_kriteria', $kriteriaId)->get();
-    
+
                 // Check if the input value is within any subcriteria range
                 $isValid = $subkriteria->some(function ($sub) use ($nilai) {
                     return $sub->batas_bawah_bobot_subkriteria <= $nilai && $sub->batas_atas_bobot_subkriteria >= $nilai;
                 });
-    
+
                 if (!$isValid) {
                     $lowest = $subkriteria->min('batas_bawah_bobot_subkriteria');
                     $highest = $subkriteria->max('batas_atas_bobot_subkriteria');
@@ -102,11 +102,11 @@ class TorController extends Controller
                 }
             }
         }
-    
+
         if (!empty($errors)) {
             return redirect()->back()->withErrors($errors)->withInput();
         }
-        
+
         $validateData['user_id'] = Auth::id();
         $validateData['unit_id'] = Auth::user()->unit_id;
         $validateData['satuan_id'] = Auth::user()->unit->satuan_id;
@@ -114,9 +114,13 @@ class TorController extends Controller
         $tor = Tor::create($validateData);
 
         if ($tor) {
+            $status = DB::table('statuses')
+                ->where('status', 'Belum Diajukan')
+                ->first();
+
             $kegiatan = Kegiatan::create([
                 'tor_id' => $tor->id,
-                'status' => 0,
+                'status_id' => $status->id,
                 'user_id' => $validateData['user_id'],
                 'unit_id' => $validateData['unit_id'],
                 'satuan_id' => $validateData['satuan_id'],
@@ -267,7 +271,7 @@ class TorController extends Controller
         if (!$kegiatan) {
             return redirect()->back()->with('error', 'Kegiatan tidak ditemukan.');
         }
-        
+
         $tor->update($validateData);
 
         foreach ($validateData['kriteria'] as $kriteriaId => $data) {

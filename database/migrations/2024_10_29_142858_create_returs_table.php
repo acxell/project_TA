@@ -17,10 +17,11 @@ return new class extends Migration
             $table->string('bukti_retur')->nullable();
             $table->bigInteger('nominal_retur')->nullable();
             $table->bigInteger('total_retur');
-            $table->tinyInteger('status');
+            $table->unsignedBigInteger('status_id');
             $table->timestamps();
 
             $table->foreign('lpj_id')->references('id')->on('lpjs')->cascadeOnDelete();
+            $table->foreign('status_id')->references('id')->on('statuses');
         });
     }
 

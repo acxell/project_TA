@@ -18,10 +18,6 @@ class Lpj extends Model
         'id',
     ];
 
-    protected $attributes = [
-        'status' => 12,
-    ];
-
 
     public function kegiatan()
     {
@@ -56,6 +52,11 @@ class Lpj extends Model
     public function retur()
     {
         return $this->hasOne(Lpj::class, 'lpj_id', 'id');
+    }
+
+    public function status()
+    {
+        return $this->hasOne(Status::class, 'id', 'status_id');
     }
 
     public function getIncrementing()

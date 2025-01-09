@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Retur;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReturController extends Controller
 {
@@ -28,20 +29,25 @@ class ReturController extends Controller
 
     public function indexVal()
     {
-        $retur = Retur::whereIn('status', [13, 11, 4])->get();
+        $retur = Retur::whereHas('status', function ($query) {
+            $query->whereIn('status', ['Proses Validasi', 'Diterima', 'Revisi']);
+        })->get();
 
         return view('pengajuan.retur.validasi', ['retur' => $retur]);
     }
 
     public function accept(Retur $retur)
     {
-        $retur->status = 11;
+        $statusDiterima = DB::table('statuses')->where('status', 'Diterima')->first();
+        $statusDone = DB::table('statuses')->where('status', 'Selesai')->first();
+
+        $retur->status_id = $statusDiterima->id;
         $retur->save();
 
-        $retur->lpj->status = 10;
+        $retur->lpj->status_id = $statusDone->id;
         $retur->lpj->save();
 
-        $retur->lpj->kegiatan->status = 10;
+        $retur->lpj->kegiatan->status_id = $statusDone->id;
         $retur->lpj->kegiatan->save();
 
         return redirect()->route('pengajuan.retur.validasi')->with('success', 'Retur accepted and LPJ and Kegiatan statuses updated to Selesai.');
@@ -49,7 +55,8 @@ class ReturController extends Controller
 
     public function decline(Retur $retur)
     {
-        $retur->status = 4;
+        $status = DB::table('statuses')->where('status', 'Revisi')->first();
+        $retur->status_id = $status->id;
         $retur->save();
 
         return redirect()->route('pengajuan.retur.validasi')->with('success', 'Retur Declined');
@@ -105,18 +112,11 @@ class ReturController extends Controller
         }
 
         $retur->nominal_retur = $request->nominal_retur;
-        $retur->status = 13;
+        $status = DB::table('statuses')->where('status', 'Proses Validasi')->first();
+        $retur->status_id = $status->id;
         $retur->save();
 
         return redirect()->route('pengajuan.retur.view')->with('success', 'Retur updated successfully');
-    }
-
-    public function ajukan(Retur $retur)
-    {
-        $retur->status = 13;
-        $retur->save();
-
-        return redirect()->route('pengajuan.retur.view')->with('success', 'Retur submitted for validation');
     }
 
     /**

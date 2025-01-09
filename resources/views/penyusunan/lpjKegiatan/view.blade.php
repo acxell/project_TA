@@ -59,7 +59,7 @@
                             <td>@currency($item->kegiatan->pendanaan->first()->besaran_transfer ?? 0)</td>
                             <td>@currency($item->total_belanja)</td>
                             <td>
-                                @if($item->status == 12 || $item->status == 4)
+                                @if($item->status->status == 'Belum Dilaporkan' || $item->status->status == 'Revisi')
                                 @can('Data Rincian LPJ')
                                 <a href="{{ route('penyusunan.lpjKegiatan.rincian', $item->id) }}" class="btn btn-info">Lihat Rincian</a>
                                 @endCan

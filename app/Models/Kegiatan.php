@@ -16,10 +16,6 @@ class Kegiatan extends Model
 
     protected $guarded = ['id',];
 
-    protected $attributes = [
-        'status' => 0,
-    ];
-
     // Relasi ke TOR
     public function tor()
     {
@@ -69,6 +65,11 @@ class Kegiatan extends Model
     public function riwayatSaw()
     {
         return $this->hasOne(RiwayatPerangkingan::class, 'kegiatan_id');
+    }
+
+    public function status()
+    {
+        return $this->hasOne(Status::class, 'id', 'status_id');
     }
 
     public function getIncrementing()

@@ -7,6 +7,7 @@ use App\Models\Lpj;
 use App\Models\PesanPerbaikan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PesanPerbaikanController extends Controller
 {
@@ -52,8 +53,9 @@ class PesanPerbaikanController extends Controller
 
         if ($pesanPerbaikan) {
             $kegiatan = Kegiatan::find($validateData['kegiatan_id']);
+            $status = DB::table('statuses')->where('status', 'Revisi')->first();
 
-            $kegiatan->status = 4;
+            $kegiatan->status_id = $status->id;
             $kegiatan->save();
 
             return to_route('validasi.validasiAnggaran.view')->with('success', 'Pesan Perbaikan Telah Ditambahkan dan Kegiatan Ditolak');
@@ -107,7 +109,9 @@ class PesanPerbaikanController extends Controller
         if ($pesanPerbaikan) {
             $kegiatan = Kegiatan::find($validateData['kegiatan_id']);
 
-            $kegiatan->status = 4;
+            $status = DB::table('statuses')->where('status', 'Revisi')->first();
+
+            $kegiatan->status_id = $status->id;
             $kegiatan->save();
 
             return to_route('validasi.validasiBulanan.view')->with('success', 'Pesan Perbaikan Telah Ditambahkan dan Kegiatan Ditolak');
@@ -158,7 +162,9 @@ class PesanPerbaikanController extends Controller
         if ($pesanPerbaikan) {
             $lpj = Lpj::find($validateData['lpj_id']);
 
-            $lpj->status = 4;
+            $status = DB::table('statuses')->where('status', 'Revisi')->first();
+
+            $lpj->status_id = $status->id;
             $lpj->save();
 
             return to_route('validasi.validasiLpj.view')->with('success', 'Pesan Perbaikan Telah Ditambahkan dan Kegiatan Ditolak');

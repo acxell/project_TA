@@ -7,6 +7,7 @@ use App\Models\Lpj;
 use App\Models\Retur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class LpjController extends Controller
 {
@@ -39,11 +40,12 @@ class LpjController extends Controller
         $unitId = $user->unit_id;
         $isAtasanUnit = $user->hasRole('Atasan Unit');
         $isPenggunaAnggaran = $user->hasRole('Pengguna Anggaran');
+        $status = DB::table('statuses')->where('status', 'Telah Didanai')->first();
 
         if ($isAtasanUnit || $isPenggunaAnggaran) {
-            $kegiatan = Kegiatan::where('status', 7)->where('unit_id', $unitId)->get();
+            $kegiatan = Kegiatan::where('status_id', $status->id)->where('unit_id', $unitId)->get();
         } else {
-            $kegiatan = Kegiatan::where('status', 7)->get();
+            $kegiatan = Kegiatan::where('status_id', $status->id)->get();
         }
 
         return view('penyusunan.lpjKegiatan.create', ['lpj' => $lpj, 'kegiatan' => $kegiatan]);
@@ -72,6 +74,10 @@ class LpjController extends Controller
 
         $kegiatan = Kegiatan::findOrFail($validateData['kegiatan_id']);
         $validateData['proker_id'] = $kegiatan->tor->proker_id;
+
+        $status = DB::table('statuses')->where('status', 'Belum Dilaporkan')->first();
+
+        $validateData['status_id'] = $status->id;
 
         $lpj = Lpj::create($validateData);
 
@@ -190,7 +196,10 @@ class LpjController extends Controller
 
     public function ajukanLpj(Lpj $lpj)
     {
-        $lpj->update(['status' => 8]);
+        $status = DB::table('statuses')
+        ->where('status', 'Proses Pelaporan')
+        ->first();
+        $lpj->update(['status_id' => $status->id]);
 
         return redirect()->route('pengajuan.lpj.view')->with('success', 'Status telah diubah menjadi "Telah Diajukan"');
     }
@@ -204,9 +213,13 @@ class LpjController extends Controller
         $isPenggunaAnggaran = $user->hasRole('Pengguna Anggaran');
 
         if ($isAtasanUnit || $isPenggunaAnggaran) {
-            $lpj = Lpj::whereIn('status', [8, 10, 9, 4])->where('unit_id', $unitId)->get();
+            $lpj = Lpj::whereHas('status', function ($query) {
+                $query->whereIn('status', ['Proses Pelaporan', 'Selesai', 'Perlu Retur', 'Revisi']);
+            })->where('unit_id', $unitId)->get();
         } else {
-            $lpj = Lpj::whereIn('status', [8, 10, 9, 4])->get();
+            $lpj = Lpj::whereHas('status', function ($query) {
+                $query->whereIn('status', ['Proses Pelaporan', 'Selesai', 'Perlu Retur', 'Revisi']);
+            })->get();
         }
 
         $kegiatan = Kegiatan::all();
@@ -234,21 +247,24 @@ class LpjController extends Controller
 
             $remainingBalance = $totalTransfer - $lpj->total_belanja;
 
+            $statusRetur = DB::table('statuses')->where('status', 'Perlu Retur')->first();
+            $statusDone = DB::table('statuses')->where('status', 'Selesai')->first();
+
             if ($remainingBalance > 0) {
-                $lpj->update(['status' => 9]);
+                $lpj->update(['status_id' => $statusRetur->id]);
 
                 Retur::create([
                     'lpj_id' => $lpj->id,
                     'total_retur' => $remainingBalance,
-                    'status' => 9,
+                    'status_id' => $statusRetur->id,
                 ]);
 
                 return redirect()->route('validasi.validasiLpj.view')
                     ->with('success', 'Pengajuan diterima, tetapi terdapat sisa dana yang perlu dikembalikan.');
             } else {
-                $lpj->update(['status' => 10]);
+                $lpj->update(['status_id' => $statusDone->id]);
         
-                $lpj->kegiatan->status = 10;
+                $lpj->kegiatan->status_id = $statusDone->id;
                 $lpj->kegiatan->save();
                 return redirect()->route('validasi.validasiLpj.view')
                     ->with('success', 'Pengajuan diterima dan status telah selesai.');

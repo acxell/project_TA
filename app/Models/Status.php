@@ -12,5 +12,18 @@ class Status extends Model
 
     protected $table = 'statuses';
 
-    protected $guarded = ['id',];
+    public function statusKegiatan()
+    {
+        return $this->belongsTo(Kegiatan::class, 'status_id', 'id');
+    }
+
+    public function statusLPJ()
+    {
+        return $this->belongsTo(Lpj::class, 'status_id', 'id');
+    }
+
+    public function statusRetur()
+    {
+        return $this->belongsTo(Retur::class, 'status_id', 'id');
+    }
 }
